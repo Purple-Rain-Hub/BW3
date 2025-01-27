@@ -21,6 +21,7 @@ import HomePagePremium from "../assets/HomePagePremium.svg";
 import Article from "../assets/Article.svg";
 import Calendar from "../assets/Calendar.svg";
 import send from "../assets/send.svg";
+import infoHome from "../assets/infoHome.svg";
 
 const HomePage = () => {
   return (
@@ -229,7 +230,19 @@ const HomePage = () => {
           <Col md={3}>
             <Card className="mb-3">
               <Card.Body>
-                <Card.Title>In primo piano</Card.Title>
+                <Container>
+                  <Card.Title className="d-flex justify-content-between align-items-center">
+                    <span style={{ marginLeft: "-12px" }}>In primo piano</span>
+                    <img
+                      src={infoHome}
+                      alt="Premium Icon"
+                      width="15"
+                      height="15"
+                      className="ms-auto"
+                    />
+                  </Card.Title>
+                </Container>
+
                 <Card.Subtitle className="mb-2 text-muted">
                   a cura di LinkedIn Notizie
                 </Card.Subtitle>
