@@ -13,7 +13,6 @@ function ProfilePage() {
           <Col className="col-4">
             <SideBar />
           </Col>
-          <Col></Col>
         </Row>
       </Container>
     </>
