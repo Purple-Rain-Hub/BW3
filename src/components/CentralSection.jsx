@@ -1,5 +1,6 @@
 import { Card } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
+import ExperienceSection from "./ExperienceSection";
 
 function CentralSection() {
   return (
@@ -302,6 +303,18 @@ function CentralSection() {
           Mostra tutte le analisi
           <Icon.ArrowRight className="ms-1" />
         </p>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          backgroundColor: "white",
+          marginTop: "10px",
+          border: "1px solid gray",
+          borderRadius: "10px",
+          padding: "4px",
+        }}
+      >
+        <ExperienceSection />
       </div>
     </>
   );
