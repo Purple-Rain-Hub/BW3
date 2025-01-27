@@ -5,11 +5,12 @@ function SideBar() {
     <div>
       <img
         src="https://placecats.com/310/200"
+        style={{ width: "100%" }}
         alt="placeholder"
         className=" rounded-3 border-1 border"
       />
       {/* prima sezione */}
-      <div className="p-4 pb-1 bg-body-secondary w-75 rounded-3 border border-1">
+      <div className="p-4 pb-1 bg-body-secondary w-100 rounded-3 border border-1">
         <h4 className="fs-6 m-0">Altri profili per te</h4>
         <div className=" d-flex border-bottom border-1 py-3">
           <img
@@ -114,7 +115,7 @@ function SideBar() {
         <h6 className=" text-center mt-3">Mostra tutto</h6>
       </div>
       {/* seconda sezione */}
-      <div className="p-4 pb-1 bg-body-secondary w-75 rounded-3 border border-1 mt-2">
+      <div className="p-4 pb-1 bg-body-secondary w-100 rounded-3 border border-1 mt-2">
         <h4 className="fs-6 m-0">Persone che potresti conoscere</h4>
         <p className="fw-lighter m-0">Dalla scuola o università di Epicode</p>
         <div className=" d-flex border-bottom border-1 py-3">
@@ -192,7 +193,7 @@ function SideBar() {
         <h6 className=" text-center mt-3">Mostra tutto</h6>
       </div>
       {/* terza sezione */}
-      <div className="p-4 pb-1 bg-body-secondary w-75 rounded-3 border border-1 mt-2">
+      <div className="p-4 pb-1 bg-body-secondary w-100 rounded-3 border border-1 mt-2">
         <h4 className="fs-6 m-0">Potrebbe interessarti</h4>
         <p className="m-0">Pagine per te</p>
         <div className=" d-flex border-bottom border-1 py-3">
@@ -235,6 +236,7 @@ function SideBar() {
       </div>
       <img
         src="https://placecats.com/310/200"
+        style={{ width: "100%" }}
         alt="placeholder"
         className=" rounded-3 border-1 border mt-2 sticky-top"
       />
