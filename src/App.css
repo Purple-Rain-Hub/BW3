@@ -1,6 +1,16 @@
-.hover-underline:hover {
+.footerText:hover {
   text-decoration: underline !important;
   color: #0a66c2 !important;
+}
+
+.footerText {
+  color: #828282;
+}
+
+.copyright,
+.footerText,
+.footerLanguage {
+  font-size: 12px;
 }
 
 .footer-container {
