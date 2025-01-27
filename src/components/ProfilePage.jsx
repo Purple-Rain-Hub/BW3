@@ -4,7 +4,7 @@ import SideBar from "./SideBar";
 
 function ProfilePage() {
   return (
-    <>
+    <div style={{ backgroundColor: "#F4F2EE" }}>
       <Container>
         <Row>
           <Col className="col-8">
@@ -15,7 +15,7 @@ function ProfilePage() {
           </Col>
         </Row>
       </Container>
-    </>
+    </div>
   );
 }
 
