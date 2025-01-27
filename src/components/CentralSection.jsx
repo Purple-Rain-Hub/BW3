@@ -410,7 +410,18 @@ function CentralSection() {
         </p>
       </div>
 
-      <div>+++COMPONENTE ESPERIENZE QUI+++</div>
+      <div
+        style={{
+          width: "100%",
+          backgroundColor: "white",
+          marginTop: "10px",
+          border: "1px solid gray",
+          borderRadius: "10px",
+          padding: "4px",
+        }}
+      >
+        <ExperienceSection />
+      </div>
 
       <div
         style={{
