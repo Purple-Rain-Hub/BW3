@@ -5,6 +5,12 @@
   margin: 0 auto;
 }
 
+@media (max-width: 991px) {
+  .jobButton {
+    width: 48% !important;
+  }
+}
+
 .newPostButton,
 .commentButton {
   background: none;

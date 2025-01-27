@@ -115,7 +115,7 @@ const HomePage = () => {
                 <div>
                   <Button
                     variant="outline-primary"
-                    className="me-2"
+                    className="me-2 jobButton"
                     style={{ width: "50%", borderRadius: "25px" }}
                   >
                     Sì
