@@ -1,3 +1,18 @@
+/*HomePage css */
+
+.home-container {
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.newPostButton,
+.commentButton {
+  background: none;
+  border: none;
+}
+
+/*footer css */
+
 .footerText:hover {
   text-decoration: underline !important;
   color: #0a66c2 !important;
