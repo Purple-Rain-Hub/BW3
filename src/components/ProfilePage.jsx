@@ -2,7 +2,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import CentralSection from "./CentralSection";
 import SideBar from "./SideBar";
 import { useDispatch } from "react-redux";
-import { getMyProfile } from "../redux/action";
+import { getExperience, getMyProfile } from "../redux/action";
 import { useEffect } from "react";
 
 function ProfilePage() {
@@ -10,6 +10,7 @@ function ProfilePage() {
 
   useEffect(() => {
     dispatch(getMyProfile());
+    dispatch(getExperience());
   });
 
   return (

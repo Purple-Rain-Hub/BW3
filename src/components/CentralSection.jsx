@@ -311,18 +311,6 @@ function CentralSection() {
           <Icon.ArrowRight className="ms-1" />
         </p>
       </div>
-      <div
-        style={{
-          width: "100%",
-          backgroundColor: "white",
-          marginTop: "10px",
-          border: "1px solid gray",
-          borderRadius: "10px",
-          padding: "4px",
-        }}
-      >
-        <ExperienceSection />
-      </div>
     </>
   );
 }

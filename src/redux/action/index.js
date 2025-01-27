@@ -28,3 +28,29 @@ export const getMyProfile = () => {
     }
 
 };
+
+export const getExperience = () => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/experiences",
+                {
+                    headers: {
+                        "Authorization": "Bearer " + myToken,
+                    }
+                }
+            )
+            if (response.ok) {
+                const data = await response.json()
+                console.log(data);
+                dispatch({
+                    type: "GET_EXPERIENCE",
+                    payload: data
+                })
+            }
+            else throw new Error("errore nella resposne di getExperience");
+        }
+        catch (error) {
+            console.error("ERRORE FETCH:" + error)
+        }
+    }
+}
