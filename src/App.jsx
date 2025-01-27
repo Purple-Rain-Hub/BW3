@@ -1,12 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import ProfilePage from "./components/ProfilePage";
+import UserPage from "./components/UserPage";
+import "./app.css";
 
 function App() {
-  return (
-    <>
-      <ProfilePage />
-    </>
-  );
+  return <UserPage></UserPage>;
 }
 
 export default App;

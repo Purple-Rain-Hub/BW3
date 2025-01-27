@@ -7,3 +7,21 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.hoverable-text {
+  cursor: pointer;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.hoverable-text:hover {
+  color: #1168c3 !important;
+  text-decoration: underline;
+}
+.dio {
+  width: "100%";
+  margin-top: "10px";
+  border: "1px solid #d3d3d3";
+  border-radius: "10px";
+  padding: "4px";
+  background-color: white;
+}
