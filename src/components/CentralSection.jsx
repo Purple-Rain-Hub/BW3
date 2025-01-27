@@ -1,8 +1,13 @@
 import { Card } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import ExperienceSection from "./ExperienceSection";
+import { useSelector } from "react-redux";
 
 function CentralSection() {
+  const myProfile = useSelector((state) => {
+    return state.myProfile;
+  });
+
   return (
     <>
       <div style={{ width: "100%", height: "400px" }}>
@@ -53,7 +58,9 @@ function CentralSection() {
           <Card.Body>
             <div className="d-flex justify-content-between">
               <div className="d-flex gap-1">
-                <Card.Title className="m-0">Nome Utente</Card.Title>
+                <Card.Title className="m-0">
+                  {myProfile.name} {myProfile.surname}
+                </Card.Title>
                 <div
                   className="d-flex gap-1"
                   style={{ border: "1px dashed #0B66C2", borderRadius: "10px" }}
@@ -73,10 +80,10 @@ function CentralSection() {
               </div>
               <Icon.Pencil className="align-self-center" />
             </div>
-            <Card.Text className="m-0">Studente presso Epicode.</Card.Text>
+            <Card.Text className="m-0">{myProfile.title}</Card.Text>
             <div className="d-flex gap-1">
               <p className="m-0 text-secondary" style={{ fontSize: "10px" }}>
-                Racalmuto, Sicilia, Italia
+                {myProfile.area}
               </p>
               <p className="m-0" style={{ fontSize: "10px" }}>
                 &middot;
