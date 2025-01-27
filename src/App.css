@@ -6,4 +6,25 @@ html,
 body {
   margin: 0;
   padding: 0;
+
+.footerText:hover {
+  text-decoration: underline !important;
+  color: #0a66c2 !important;
+}
+
+.footerText {
+  color: #828282;
+}
+
+.copyright,
+.footerText,
+.footerLanguage {
+  font-size: 12px;
+}
+
+.footer-container {
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+
 }
