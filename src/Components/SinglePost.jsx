@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { deletePost } from "../redux/action";
 import { modifyPost } from "../redux/action";
 import { useState } from "react";
+//commento
 
 function SinglePost(props) {
   const urlImg = "https://placecats.com/50/50";
