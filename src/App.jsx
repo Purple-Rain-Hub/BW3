@@ -1,9 +1,19 @@
+import NavBar from "./Components/NavBar";
+import Footer from "./components/Footer";
+import HomePage from "./components/HomePage";
 import "bootstrap/dist/css/bootstrap.min.css";
-import UserPage from "./components/UserPage";
-import "./app.css";
+import "./App.css";
+import ProfilePage from "./components/ProfilePage";
 
 function App() {
-  return <UserPage></UserPage>;
+  return (
+    <>
+      <NavBar />
+      <HomePage />
+      <ProfilePage />
+      <Footer />
+    </>
+  );
 }
 
 export default App;

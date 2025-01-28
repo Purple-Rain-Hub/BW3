@@ -1,3 +1,24 @@
+/*HomePage css */
+
+.home-container {
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+@media (max-width: 991px) {
+  .jobButton {
+    width: 48% !important;
+  }
+}
+
+.newPostButton,
+.commentButton {
+  background: none;
+  border: none;
+}
+
+/*footer css */
+
 * {
   box-sizing: border-box;
 }
@@ -16,4 +37,25 @@ body {
 .hoverable-text:hover {
   color: #1168c3 !important;
   text-decoration: underline;
+}
+
+.footerText:hover {
+  text-decoration: underline !important;
+  color: #0a66c2 !important;
+}
+
+.footerText {
+  color: #828282;
+}
+
+.copyright,
+.footerText,
+.footerLanguage {
+  font-size: 12px;
+}
+
+.footer-container {
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
 }
