@@ -202,9 +202,12 @@ const HomePage = () => {
             </Card>
 
             {posts &&
-              posts.slice(posts.length - 25, posts.length).map((post) => {
-                return <SinglePost key={post._id} post={post} />;
-              })}
+              posts
+                .slice(posts.length - 25, posts.length)
+                .reverse()
+                .map((post) => {
+                  return <SinglePost key={post._id} post={post} />;
+                })}
 
             {/* <Card>
               <Card.Body>
