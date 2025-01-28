@@ -24,7 +24,6 @@ body {
   padding: 0;
 }
 
-/*footer css */
 .hoverable-text {
   cursor: pointer;
   transition: color 0.3s ease, text-decoration 0.3s ease;
