@@ -19,6 +19,16 @@
 
 /*footer css */
 
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .footerText:hover {
   text-decoration: underline !important;
   color: #0a66c2 !important;
