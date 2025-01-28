@@ -108,6 +108,8 @@ function JobsPage() {
           <p>Nessun lavoro trovato.</p>
         )}
       </div>
+
+      {/* bottoni avanti e indietro */}
       <div className="d-flex justify-content-center align-items-center my-4">
         <button
           className={`btn ${
