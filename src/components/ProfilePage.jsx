@@ -1,6 +1,6 @@
 import { Col, Container, Row } from "react-bootstrap";
 import CentralSection from "./CentralSection";
-import Sidebar from "./SideBar";
+import SideBar from "./SideBar";
 import { useDispatch } from "react-redux";
 import { getExperience, getMyProfile } from "../redux/action";
 import { useEffect } from "react";
@@ -21,7 +21,7 @@ function ProfilePage() {
             <CentralSection />
           </Col>
           <Col className="col-4">
-            <Sidebar />
+            <SideBar />
           </Col>
         </Row>
       </Container>
