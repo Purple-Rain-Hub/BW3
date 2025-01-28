@@ -2,13 +2,20 @@ import { Button, Card, Form, Modal } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import ExperienceSection from "./ExperienceSection";
 import { useDispatch, useSelector } from "react-redux";
-import { postPropic } from "../redux/action";
+import { postExperience, postPropic } from "../redux/action";
 import { useState } from "react";
 
 function CentralSection() {
   const [show, setShow] = useState(false);
   const [showExperience, setShowExperience] = useState(false);
-  const [newExperience, setnewExperience] = useState({});
+  const [newExperience, setNewExperience] = useState({
+    role: "",
+    company: "",
+    startDate: "",
+    endDate: "",
+    area: "",
+    description: "",
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -28,7 +35,10 @@ function CentralSection() {
   };
 
   const handleNewExperience = (e) => {
-    console.log(e);
+    e.preventDefault();
+    console.log(newExperience);
+
+    dispatch(postExperience(newExperience));
   };
 
   return (
@@ -490,14 +500,44 @@ function CentralSection() {
             <Modal.Title>Aggiungi un Esperienza!</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form onSubmit={handleNewExperience()}>
+            <Form onSubmit={handleNewExperience}>
               <Form.Label className="mt-2 fw-lighter">Ruolo</Form.Label>
-              <Form.Control type="text" required value={newExperience.role} />
+              <Form.Control
+                type="text"
+                required
+                value={newExperience.role}
+                onChange={(e) => {
+                  setNewExperience({
+                    ...newExperience,
+                    role: e.target.value,
+                  });
+                }}
+              />
               <Form.Label className="mt-2 fw-lighter">Azienda</Form.Label>
               <Form.Control
                 type="text"
                 required
                 value={newExperience.company}
+                onChange={(e) => {
+                  setNewExperience({
+                    ...newExperience,
+                    company: e.target.value,
+                  });
+                }}
+              />
+              <Form.Label className="mt-2 fw-lighter">
+                Descrivici la tua esperienza lavorativa
+              </Form.Label>
+              <Form.Control
+                type="text"
+                required
+                value={newExperience.description}
+                onChange={(e) => {
+                  setNewExperience({
+                    ...newExperience,
+                    description: e.target.value,
+                  });
+                }}
               />
               <Form.Label className="mt-2 fw-lighter">
                 Data di inizio
@@ -506,17 +546,41 @@ function CentralSection() {
                 type="date"
                 required
                 value={newExperience.startDate}
+                onChange={(e) => {
+                  setNewExperience({
+                    ...newExperience,
+                    startDate: e.target.value,
+                  });
+                }}
               />
               <Form.Label>
                 Questa esperienza di lavoro si è terminata
               </Form.Label>
-              <Form.Check />
+              <Form.Check className="ms-2" />
               <Form.Label className="mt-2 fw-lighter">Data di fine</Form.Label>
-              <Form.Control type="date" />
+              <Form.Control
+                type="date"
+                value={newExperience.endDate}
+                onChange={(e) => {
+                  setNewExperience({
+                    ...newExperience,
+                    endDate: e.target.value,
+                  });
+                }}
+              />
               <Form.Label className="mt-2 fw-lighter">
                 Zona di lavoro
               </Form.Label>
-              <Form.Control type="text" />
+              <Form.Control
+                type="text"
+                value={newExperience.area}
+                onChange={(e) => {
+                  setNewExperience({
+                    ...newExperience,
+                    area: e.target.value,
+                  });
+                }}
+              />
               <Button
                 type="submit"
                 className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"

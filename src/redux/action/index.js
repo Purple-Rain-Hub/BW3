@@ -75,3 +75,22 @@ export const postPropic = (propicData) => {
         }
     }
 }
+
+export const postExperience = (experienceData) => {
+    return async () => {
+        try {
+            const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/experiences", {
+                method: "POST",
+                body: JSON.stringify(experienceData),
+                headers: {
+                    "Authorization": "Bearer " + myToken,
+                    "Content-type": "application/json; charset=UTF-8",
+                }
+            })
+            if (response.ok) console.log(response);
+            else throw new Error("errore nel POST della experience");
+        } catch (error) {
+            console.error(error)
+        }
+    }
+}
