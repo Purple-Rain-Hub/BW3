@@ -4,12 +4,13 @@ import { ArrowRepeat, HandThumbsUp, ChatDots } from "react-bootstrap-icons";
 import send from "../assets/send.svg";
 
 function SinglePost(props) {
+  const urlImg = "https://placecats.com/50/50";
   return (
     <Card className="mt-2">
       <Card.Body>
         <div className="d-flex align-items-center mb-3">
           <Image
-            src={props.post.image}
+            src={props.post.image ? props.post.image : urlImg}
             roundedCircle
             className="me-2"
             width="48"
