@@ -1,10 +1,20 @@
-import { Card } from "react-bootstrap";
+import { Button, Card, Form, Modal } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import ExperienceSection from "./ExperienceSection";
 import { useDispatch, useSelector } from "react-redux";
 import { postPropic } from "../redux/action";
+import { useState } from "react";
 
 function CentralSection() {
+  const [show, setShow] = useState(false);
+  const [showExperience, setShowExperience] = useState(false);
+  const [newExperience, setnewExperience] = useState({});
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const handleShowExperience = () => setShowExperience(true);
+  const handleCloseExperience = () => setShowExperience(false);
+
   const dispatch = useDispatch();
 
   const myProfile = useSelector((state) => {
@@ -15,6 +25,10 @@ function CentralSection() {
     const propicData = new FormData();
     propicData.append("profile", e.target.files[0]);
     dispatch(postPropic(propicData));
+  };
+
+  const handleNewExperience = (e) => {
+    console.log(e);
   };
 
   return (
@@ -31,29 +45,53 @@ function CentralSection() {
             }}
             variant="top"
           />
-          <img
-            src={
-              myProfile.image
-                ? myProfile.image
-                : "https://placecats.com/300/300"
-            }
+          <Button
+            onClick={handleShow}
             style={{
-              width: "80px",
-              height: "80px",
+              width: "85px",
+              height: "85px",
               position: "absolute",
               top: "20%",
               borderRadius: "50%",
               border: "2px solid white",
               marginLeft: "20px",
+              padding: "0px",
             }}
-          />
-          <input
-            type="file"
-            name="proPicInput"
-            onChange={(e) => {
-              handlePropic(e);
-            }}
-          />
+          >
+            <img
+              src={
+                myProfile.image
+                  ? myProfile.image
+                  : "https://placecats.com/300/300"
+              }
+              style={{
+                width: "80px",
+                height: "80px",
+                borderRadius: "50%",
+              }}
+            />
+          </Button>
+
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Scegli un Immagine profilo</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <input
+                type="file"
+                name="proPicInput"
+                onChange={(e) => {
+                  handlePropic(e);
+                }}
+              />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Chiudi
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
           <div
             className="d-flex justify-content-center"
             style={{
@@ -441,6 +479,48 @@ function CentralSection() {
         }}
       >
         <ExperienceSection />
+        <Button
+          onClick={handleShowExperience}
+          className="btn bg-transparent rounded-pill border border-1 border-primary text-primary px-3 py-1 fw-medium mx-4 mb-3"
+        >
+          Aggiungi Esperienza
+        </Button>
+        <Modal show={showExperience} onHide={handleCloseExperience}>
+          <Modal.Header closeButton>
+            <Modal.Title>Aggiungi un Esperienza!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form onSubmit={handleNewExperience()}>
+              <Form.Label className="mt-2 fw-lighter">Ruolo</Form.Label>
+              <Form.Control type="text" required value={newExperience.role} />
+              <Form.Label className="mt-2 fw-lighter">Azienda</Form.Label>
+              <Form.Control type="text" required value={newExperience.company}/>
+              <Form.Label className="mt-2 fw-lighter">
+                Data di inizio
+              </Form.Label>
+              <Form.Control type="date" required value={newExperience.}/>
+              <Form.Label className="mt-2 fw-lighter">
+                Data di fine (se esiste)
+              </Form.Label>
+              <Form.Control type="date" />
+              <Form.Label className="mt-2 fw-lighter">
+                Zona di lavoro
+              </Form.Label>
+              <Form.Control type="text" />
+              <Button
+                type="submit"
+                className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"
+              >
+                Salva
+              </Button>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseExperience}>
+              Chiudi
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
 
       <div
