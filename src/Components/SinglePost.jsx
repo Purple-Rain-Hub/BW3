@@ -46,7 +46,14 @@ function SinglePost(props) {
         <Card.Title>{props.post.user.title}</Card.Title>
         {!showModify && <Card.Text>{props.post.text}</Card.Text>}
         {showModify && (
-          <Form className="my-2">
+          <Form
+            className="my-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setShowModify(false);
+              handleModify(props.post._id, modifiedPost);
+            }}
+          >
             <Form.Group className="d-flex">
               {/* <img
                 className="me-2"
