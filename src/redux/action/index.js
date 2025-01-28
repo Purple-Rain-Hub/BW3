@@ -81,3 +81,34 @@ export const getAllPosts = () => {
     }
   };
 };
+
+export const sendPost = (post) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/posts/",
+        {
+          method: "POST",
+          body: JSON.stringify({ text: post }),
+          headers: {
+            Authorization: "Bearer " + myToken,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        dispatch(getAllPosts());
+        // dispatch({
+        //   type: "GET_ALLPOSTS",
+        //   payload: data,
+        // });
+      } else {
+        throw new Error("errore nella response di sendPost");
+      }
+    } catch (error) {
+      console.error("ERRORE FETCH:" + error);
+    }
+  };
+};

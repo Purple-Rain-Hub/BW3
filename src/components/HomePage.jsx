@@ -8,7 +8,6 @@ import {
   ChevronCompactDown,
 } from "react-bootstrap-icons";
 import HomePagePremium from "../assets/HomePagePremium.svg";
-import Article from "../assets/Article.svg";
 import Calendar from "../assets/Calendar.svg";
 //import send from "../assets/send.svg";
 import infoHome from "../assets/infoHome.svg";
@@ -17,8 +16,12 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getAllPosts } from "../redux/action";
 import { useSelector } from "react-redux";
+import * as Icon from "react-bootstrap-icons";
+import { useState } from "react";
+import { sendPost } from "../redux/action";
 
 const HomePage = () => {
+  const [writtenPost, setWrittenPost] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,6 +31,11 @@ const HomePage = () => {
   const posts = useSelector((state) => {
     return state.posts;
   });
+
+  const handleSubmit = function (e) {
+    e.preventDefault();
+    dispatch(sendPost(writtenPost));
+  };
 
   return (
     <Container fluid className="py-3" style={{ backgroundColor: "#F4F2EE" }}>
@@ -137,7 +145,7 @@ const HomePage = () => {
 
             <Card className="mb-3">
               <Card.Body>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                   <Form.Group className="d-flex">
                     <img
                       className="me-2"
@@ -146,6 +154,10 @@ const HomePage = () => {
                       style={{ width: "10%", borderRadius: "50%" }}
                     />
                     <Form.Control
+                      value={writtenPost}
+                      onChange={(e) => {
+                        setWrittenPost(e.target.value);
+                      }}
                       type="text"
                       placeholder="Crea un post"
                       style={{ borderRadius: "25px", fontWeight: "600" }}
@@ -170,23 +182,28 @@ const HomePage = () => {
                     />
                     Evento
                   </Button>
-                  <Button variant="light newPostButton">
-                    <img
+                  <Button variant="light newPostButton" onClick={handleSubmit}>
+                    {/* <img
                       src={Article}
                       alt="Premium Icon"
                       width="24"
                       height="24"
                       className="me-2"
+                    /> */}
+                    <Icon.Check
+                      className="text-success"
+                      style={{ fontSize: "36px" }}
                     />
-                    Scrivi un articolo
+                    Pubblica articolo
                   </Button>
                 </div>
               </Card.Body>
             </Card>
 
-            {posts.slice(posts.length - 25, posts.length).map((post) => {
-              return <SinglePost key={post._id} post={post} />;
-            })}
+            {posts &&
+              posts.slice(posts.length - 25, posts.length).map((post) => {
+                return <SinglePost key={post._id} post={post} />;
+              })}
 
             {/* <Card>
               <Card.Body>
