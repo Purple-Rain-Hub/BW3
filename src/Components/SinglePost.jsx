@@ -6,7 +6,7 @@ import send from "../assets/send.svg";
 function SinglePost(props) {
   const urlImg = "https://placecats.com/50/50";
   return (
-    <Card className="mt-2">
+    <Card className="mb-2">
       <Card.Body>
         <div className="d-flex align-items-center mb-3">
           <Image
