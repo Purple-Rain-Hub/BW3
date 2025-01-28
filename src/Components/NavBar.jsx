@@ -7,7 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-      <div className="container-fluid navbar-padding"> {/* Added custom class here */}
+      <div className="container-fluid navbar-padding"> 
         <a className="navbar-brand" href="#">
           <img src={logo} alt="LinkedIn Logo" style={{ height: '40px' }} />
         </a>
