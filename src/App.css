@@ -34,6 +34,28 @@ body {
   text-decoration: underline;
 }
 
+.jobsButton1 {
+  border: 0;
+  color: #343a40;
+  background-color: transparent;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+/*jobspage */
+
+.jobsButton1:hover {
+  background-color: #c5c4c4;
+  opacity: 0.8;
+  color: #343a40;
+}
+
+.newOfferButton:hover {
+  background-color: #9fc5ee9d;
+  opacity: 0.8;
+  color: #0a66c2;
+  transition: ease 0.3s;
+}
+
 /*footer css */
 
 .footerText:hover {

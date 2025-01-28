@@ -65,11 +65,11 @@ const JobsPage = () => {
           <Col md={3}>
             <Card>
               <Card.Body>
-                <Button className="custom-button d-flex align-items-center py-3 w-100">
+                <Button className="jobsButton1 d-flex align-items-center py-3 w-100">
                   <ListUl className="me-2" size={32} />
                   <strong>Preferenze</strong>
                 </Button>
-                <Button className="custom-button d-flex align-items-center my-3 py-3 w-100">
+                <Button className="jobsButton1 d-flex align-items-center my-3 py-3 w-100">
                   <BookmarkFill className="me-2" size={32} />
                   <strong>Le mie offerte di lavoro</strong>
                 </Button>
@@ -78,7 +78,7 @@ const JobsPage = () => {
             <div className="py-3">
               <Button
                 variant="outline-primary"
-                className="w-100 rounded-pill fs-6"
+                className="w-100 rounded-pill fs-6 newOfferButton"
               >
                 <img
                   src={NewOfferJob}
@@ -93,7 +93,7 @@ const JobsPage = () => {
           </Col>
 
           {/* Main Content */}
-          <Col md={6}>
+          <Col md={8}>
             <Card>
               <Card.Body>
                 <div className="d-flex justify-content-center align-items-center">
