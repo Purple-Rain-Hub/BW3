@@ -72,9 +72,9 @@ const NavBar = () => {
               </a>
             </li>
             <li className="nav-item dropdown">
-              <a
+              <Link
                 className="nav-link dropdown-toggle"
-                href="#"
+                to="/profile"
                 id="navbarDropdown"
                 role="button"
                 data-bs-toggle="dropdown"
@@ -83,8 +83,8 @@ const NavBar = () => {
                 <div className="text-center">
                   <FaUser />
                 </div>
-                me
-              </a>
+                Me
+              </Link>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
                   <a className="dropdown-item" href="#">
