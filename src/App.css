@@ -1,6 +1,7 @@
 /*HomePage css */
 
-.home-container {
+.home-container,
+.jobs-container {
   max-width: 1250px;
   margin: 0 auto;
 }
@@ -17,17 +18,13 @@
   border: none;
 }
 
-/*footer css */
-
-* {
-  box-sizing: border-box;
-}
-
 html,
 body {
   margin: 0;
   padding: 0;
 }
+
+/*footer css */
 
 .footerText:hover {
   text-decoration: underline !important;
