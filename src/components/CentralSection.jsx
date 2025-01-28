@@ -12,7 +12,7 @@ function CentralSection() {
     <Container fluid className="py-3" style={{ backgroundColor: "#F4F2EE" }}>
       <Container className="home-container">
         <Row className="justify-content-center">
-          <Col lg={8} className="d-flex flex-column align-items-center">
+          <Col lg={8}>
             <Card className="mb-3">
               <Card.Body className="text-center position-relative">
                 <Card.Img 
