@@ -494,14 +494,24 @@ function CentralSection() {
               <Form.Label className="mt-2 fw-lighter">Ruolo</Form.Label>
               <Form.Control type="text" required value={newExperience.role} />
               <Form.Label className="mt-2 fw-lighter">Azienda</Form.Label>
-              <Form.Control type="text" required value={newExperience.company}/>
+              <Form.Control
+                type="text"
+                required
+                value={newExperience.company}
+              />
               <Form.Label className="mt-2 fw-lighter">
                 Data di inizio
               </Form.Label>
-              <Form.Control type="date" required value={newExperience.}/>
-              <Form.Label className="mt-2 fw-lighter">
-                Data di fine (se esiste)
+              <Form.Control
+                type="date"
+                required
+                value={newExperience.startDate}
+              />
+              <Form.Label>
+                Questa esperienza di lavoro si è terminata
               </Form.Label>
+              <Form.Check />
+              <Form.Label className="mt-2 fw-lighter">Data di fine</Form.Label>
               <Form.Control type="date" />
               <Form.Label className="mt-2 fw-lighter">
                 Zona di lavoro
