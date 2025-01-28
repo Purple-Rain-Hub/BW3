@@ -1,16 +1,61 @@
-import { useState } from "react";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import { BookmarkFill, ListUl } from "react-bootstrap-icons";
 import BorsaLavoro from "../assets/BorsaLavoro.svg";
 import NewOfferJob from "../assets/NewOfferJob.svg";
-import CloseIcon from "../assets/CloseIcon.svg";
 
 const JobsPage = () => {
-  const [showFirstCard, setShowFirstCard] = useState(true);
-  const [showSecondCard, setShowSecondCard] = useState(true);
+  const [jobs, setJobs] = useState([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 10;
 
-  const handleCloseFirstCard = () => setShowFirstCard(false);
-  const handleCloseSecondCard = () => setShowSecondCard(false);
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const fetchJobs = async (query = "") => {
+    setLoading(true);
+    const url = query
+      ? `https://strive-benchmark.herokuapp.com/api/jobs?search=${query}`
+      : "https://strive-benchmark.herokuapp.com/api/jobs";
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        setJobs(data.data);
+      } else {
+        console.error("Errore nel recupero dei dati");
+      }
+    } catch (error) {
+      console.error("Errore durante il fetch:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setCurrentPage(1);
+    fetchJobs(search);
+  };
+
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
+
+  const handleNextPage = () => {
+    if (indexOfLastJob < jobs.length) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
 
   return (
     <Container fluid className="py-3" style={{ backgroundColor: "#F4F2EE" }}>
@@ -19,40 +64,14 @@ const JobsPage = () => {
           {/* Left Sidebar */}
           <Col md={3}>
             <Card>
-              <Card.Body className="position-relative">
-                <Button
-                  className="border-0 text-dark d-flex align-items-center py-3 w-100"
-                  style={{
-                    backgroundColor: "transparent",
-                    transition: "background-color 0.3s ease",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.target.style.backgroundColor = "#f0f0f0")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.target.style.backgroundColor = "transparent")
-                  }
-                >
+              <Card.Body>
+                <Button className="custom-button d-flex align-items-center py-3 w-100">
                   <ListUl className="me-2" size={32} />
-                  <strong style={{ fontWeight: "600" }}>Preferenze</strong>
+                  <strong>Preferenze</strong>
                 </Button>
-                <Button
-                  className="border-0 text-dark d-flex align-items-center my-3 py-3 w-100"
-                  style={{
-                    backgroundColor: "transparent",
-                    transition: "background-color 0.3s ease",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.target.style.backgroundColor = "#f0f0f0")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.target.style.backgroundColor = "transparent")
-                  }
-                >
+                <Button className="custom-button d-flex align-items-center my-3 py-3 w-100">
                   <BookmarkFill className="me-2" size={32} />
-                  <strong style={{ fontWeight: "600" }}>
-                    Le mie offerte di lavoro
-                  </strong>
+                  <strong>Le mie offerte di lavoro</strong>
                 </Button>
               </Card.Body>
             </Card>
@@ -60,18 +79,6 @@ const JobsPage = () => {
               <Button
                 variant="outline-primary"
                 className="w-100 rounded-pill fs-6"
-                style={{
-                  backgroundColor: "transparent",
-                  transition: "background-color 0.3s ease, color 0.3s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = "#E1E8EE";
-                  e.target.style.color = "#0D6EFD";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = "transparent";
-                  e.target.style.color = "#0D6EFD";
-                }}
               >
                 <img
                   src={NewOfferJob}
@@ -87,117 +94,90 @@ const JobsPage = () => {
 
           {/* Main Content */}
           <Col md={6}>
-            {showFirstCard && (
-              <Card className="mb-3">
-                <Card.Body className="position-relative">
-                  <img
-                    src={CloseIcon}
-                    alt="Close"
-                    className="position-absolute top-0 end-0 m-2"
-                    style={{ cursor: "pointer", width: "24px", height: "24px" }}
-                    onClick={handleCloseFirstCard}
-                  />
-                  <img
-                    className="mx-auto d-block float-end"
-                    src="src\assets\img\1svkhjtd476ns0r6daqolu2xk.png"
-                    alt=""
-                    style={{ width: "25%", height: "25%" }}
-                  />
-                  <h4 className="text-start">
-                    Ricevi notifiche sulle offerte di lavoro che ti interessano
-                  </h4>
-                  <p className="text-secondary text-start">
-                    Crea un avviso per una qualifica, un azienda o delle parole
-                    chiave.
-                  </p>
-                  <div>
-                    <Button
-                      variant="primary"
-                      className="me-2 jobButton"
-                      style={{ borderRadius: "25px" }}
-                    >
-                      Crea avviso
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            )}
-            {showSecondCard && (
-              <Card className="mb-3">
-                <Card.Body className="position-relative">
-                  <img
-                    src={CloseIcon}
-                    alt="Close"
-                    className="position-absolute top-0 end-0 m-2"
-                    style={{ cursor: "pointer", width: "24px", height: "24px" }}
-                    onClick={handleCloseSecondCard}
-                  />
-                  <h4 className="text-start">
-                    Mostra ai recruiter che sei disponibile a lavorare
-                  </h4>
-                  <p className="text-secondary text-start">
-                    Aggiungi le tue preferenze per far sapere ai recruiter che
-                    ti interessano opportunità di lavoro rilevanti.
-                  </p>
-                  <div className="d-flex align-items-center">
-                    <img
-                      src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                      alt="Avatar"
-                      className="me-3"
-                      style={{ width: "13%", borderRadius: "50%" }}
-                    />
-                    <div>
-                      <h6 className="mb-1">Disponibile a lavorare</h6>
-                      <p className="mb-0">
-                        Stabilisci tu chi può vedere questa informazione.
-                      </p>
-                    </div>
-                  </div>
-                  <Button
-                    variant="primary"
-                    className="me-2 jobButton"
-                    style={{
-                      borderRadius: "25px",
-                      width: "14%",
-                      marginTop: "1rem",
-                    }}
-                  >
-                    Inizia
-                  </Button>
-                </Card.Body>
-              </Card>
-            )}
-
             <Card>
-              <Card.Body className="position-relative">
-                <div className=" d-flex justify-content-center align-items-center">
+              <Card.Body>
+                <div className="d-flex justify-content-center align-items-center">
                   <img
                     src={BorsaLavoro}
-                    alt="Premium Icon"
-                    width="48"
-                    height="48"
-                    className="me-2"
+                    alt="Borsa Lavoro Icon"
+                    width="50"
+                    height="50"
+                    className="me-3 mx-center"
                   />
                 </div>
                 <h5 className="text-center">Cerca offerte di lavoro</h5>
-                <p className="text-secondary text-center">
-                  Avvia una ricerca e condivideremo le opportunità che
-                  corrisponono ai tuoi criteri
-                </p>
-                <div className=" d-flex justify-content-center align-items-center">
-                  <Button
-                    variant="outline-primary"
-                    style={{
-                      width: "25%",
-                      borderRadius: "25px",
-                      fontWeight: "600",
-                    }}
-                  >
-                    Cerca Subito
-                  </Button>
-                </div>
+                <form className="d-flex my-4" onSubmit={handleSearch}>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Cerca un lavoro"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                  <button className="btn btn-primary ms-2" type="submit">
+                    Cerca
+                  </button>
+                </form>
+                {loading ? (
+                  <div className="text-center my-5">
+                    <Spinner animation="border" role="status"></Spinner>
+                  </div>
+                ) : currentJobs.length > 0 ? (
+                  currentJobs.map((job) => (
+                    <div key={job._id} className="card mb-3">
+                      <div className="card-body">
+                        <h5 className="card-title">{job.title}</h5>
+                        <p className="card-text">
+                          <strong>Azienda:</strong> {job.company_name}
+                        </p>
+                        <p className="card-text">
+                          <strong>Categoria:</strong> {job.category}
+                        </p>
+                        <p className="card-text">
+                          <strong>Descrizione:</strong>{" "}
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: job.description,
+                            }}
+                          />
+                        </p>
+                        <a
+                          href="https://i.makeagif.com/media/6-20-2016/OWLxRA.gif"
+                          className="btn btn-primary"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Scopri di più
+                        </a>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>Nessun lavoro trovato.</p>
+                )}
               </Card.Body>
             </Card>
+
+            {/* bottoni avanti e indietro */}
+            <div className="d-flex justify-content-center align-items-center my-4">
+              <button
+                className={`btn ${
+                  currentPage === 1 ? "btn-secondary" : "btn-primary"
+                } me-3`}
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+              >
+                Indietro
+              </button>
+              <span>Pagina {currentPage}</span>
+              <button
+                className="btn btn-primary ms-3"
+                onClick={handleNextPage}
+                disabled={indexOfLastJob >= jobs.length}
+              >
+                Avanti
+              </button>
+            </div>
           </Col>
         </Row>
       </Container>
