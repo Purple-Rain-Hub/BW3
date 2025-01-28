@@ -34,6 +34,7 @@ const HomePage = () => {
 
   const handleSubmit = function (e) {
     e.preventDefault();
+    setWrittenPost("");
     dispatch(sendPost(writtenPost));
   };
 

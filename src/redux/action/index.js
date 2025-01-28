@@ -100,10 +100,6 @@ export const sendPost = (post) => {
         const data = await response.json();
         console.log(data);
         dispatch(getAllPosts());
-        // dispatch({
-        //   type: "GET_ALLPOSTS",
-        //   payload: data,
-        // });
       } else {
         throw new Error("errore nella response di sendPost");
       }
@@ -129,12 +125,35 @@ export const deletePost = (postId) => {
       if (response.ok) {
         console.log("Rimosso");
         dispatch(getAllPosts());
-        // dispatch({
-        //   type: "GET_ALLPOSTS",
-        //   payload: data,
-        // });
       } else {
         throw new Error("errore nella response di deletePost");
+      }
+    } catch (error) {
+      console.error("ERRORE FETCH:" + error);
+    }
+  };
+};
+
+export const modifyPost = (postId, text) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/posts/" + postId,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + myToken,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+          body: JSON.stringify({ text: text }),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        dispatch(getAllPosts());
+      } else {
+        throw new Error("errore nella response di modifyPost");
       }
     } catch (error) {
       console.error("ERRORE FETCH:" + error);

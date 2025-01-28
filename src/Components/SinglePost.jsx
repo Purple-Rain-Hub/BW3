@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
-import { Card, Image, Button } from "react-bootstrap";
+import { Card, Image, Button, Form } from "react-bootstrap";
 import { HandThumbsUp, ChatDots } from "react-bootstrap-icons";
 //import send from "../assets/send.svg";
 import * as Icon from "react-bootstrap-icons";
 import { myID } from "../redux/action";
 import { useDispatch } from "react-redux";
 import { deletePost } from "../redux/action";
+import { modifyPost } from "../redux/action";
+import { useState } from "react";
 
 function SinglePost(props) {
   const urlImg = "https://placecats.com/50/50";
@@ -15,6 +17,14 @@ function SinglePost(props) {
   const handleDelete = function (postId) {
     dispatch(deletePost(postId));
   };
+
+  const handleModify = function (postId, text) {
+    dispatch(modifyPost(postId, text));
+  };
+
+  const [showModify, setShowModify] = useState(false);
+  const [modifiedPost, setModifiedPost] = useState("");
+
   return (
     <Card className="mb-2">
       <Card.Body>
@@ -34,20 +44,62 @@ function SinglePost(props) {
           </div>
         </div>
         <Card.Title>{props.post.user.title}</Card.Title>
-        <Card.Text>{props.post.text}</Card.Text>
+        {!showModify && <Card.Text>{props.post.text}</Card.Text>}
+        {showModify && (
+          <Form className="my-2">
+            <Form.Group className="d-flex">
+              {/* <img
+                className="me-2"
+                src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                alt=""
+                style={{ width: "10%", borderRadius: "50%" }}
+              /> */}
+              <Form.Control
+                value={modifiedPost}
+                onChange={(e) => {
+                  setModifiedPost(e.target.value);
+                }}
+                type="text"
+                placeholder="Modifica il post..."
+                style={{ borderRadius: "25px", fontWeight: "600" }}
+              />
+            </Form.Group>
+          </Form>
+        )}
         <div className="d-flex justify-content-between">
-          <Button variant="light" className="commentButton">
-            <HandThumbsUp /> Consiglia
-          </Button>
-          <Button variant="light" className="commentButton">
-            <ChatDots /> Commenta
-          </Button>
+          {!showModify ? (
+            <>
+              {" "}
+              <Button variant="light" className="commentButton">
+                <HandThumbsUp /> Consiglia
+              </Button>
+              <Button variant="light" className="commentButton">
+                <ChatDots /> Commenta
+              </Button>
+            </>
+          ) : (
+            <Button
+              onClick={() => {
+                setShowModify(false);
+                handleModify(props.post._id, modifiedPost);
+              }}
+              variant="light"
+              className="commentButton text-success"
+            >
+              <Icon.Check style={{ fontSize: "28px" }} /> Aggiorna post
+            </Button>
+          )}
           {myID === props.post.user._id ? (
             <Button
+              onClick={() => {
+                setModifiedPost(props.post.text);
+                setShowModify(!showModify);
+              }}
               variant="light"
               className="commentButton text-warning fw-bold"
             >
-              <Icon.Pencil className="text-warning" /> Modifica
+              <Icon.Pencil className="text-warning" />{" "}
+              {showModify ? "Annulla..." : "Modifica"}
             </Button>
           ) : (
             <Button variant="light" className="commentButton">
