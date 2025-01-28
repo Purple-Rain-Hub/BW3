@@ -5,6 +5,8 @@ function JobsPage() {
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 10;
 
   useEffect(() => {
     fetchJobs();
@@ -32,7 +34,27 @@ function JobsPage() {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    setCurrentPage(1);
     fetchJobs(search);
+  };
+
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
+
+  {
+    /* Funzione bottoni avanti e indietro */
+  }
+  const handleNextPage = () => {
+    if (indexOfLastJob < jobs.length) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
   };
 
   return (
@@ -53,12 +75,11 @@ function JobsPage() {
       <div>
         {loading ? (
           <div className="text-center my-5">
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
+            {/*Spinner */}
+            <Spinner animation="border" role="status"></Spinner>
           </div>
-        ) : jobs.length > 0 ? (
-          jobs.map((job) => (
+        ) : currentJobs.length > 0 ? (
+          currentJobs.map((job) => (
             <div key={job._id} className="card mb-3">
               <div className="card-body">
                 <h5 className="card-title">{job.title}</h5>
@@ -86,6 +107,25 @@ function JobsPage() {
         ) : (
           <p>Nessun lavoro trovato.</p>
         )}
+      </div>
+      <div className="d-flex justify-content-center align-items-center my-4">
+        <button
+          className={`btn ${
+            currentPage === 1 ? "btn-secondary" : "btn-primary"
+          } me-3`}
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+        >
+          Indietro
+        </button>
+        <span>Pagina {currentPage}</span>
+        <button
+          className="btn btn-primary ms-3"
+          onClick={handleNextPage}
+          disabled={indexOfLastJob >= jobs.length}
+        >
+          Avanti
+        </button>
       </div>
     </div>
   );
