@@ -1,10 +1,20 @@
 /* eslint-disable react/prop-types */
 import { Card, Image, Button } from "react-bootstrap";
-import { ArrowRepeat, HandThumbsUp, ChatDots } from "react-bootstrap-icons";
-import send from "../assets/send.svg";
+import { HandThumbsUp, ChatDots } from "react-bootstrap-icons";
+//import send from "../assets/send.svg";
+import * as Icon from "react-bootstrap-icons";
+import { myID } from "../redux/action";
+import { useDispatch } from "react-redux";
+import { deletePost } from "../redux/action";
 
 function SinglePost(props) {
   const urlImg = "https://placecats.com/50/50";
+
+  const dispatch = useDispatch();
+
+  const handleDelete = function (postId) {
+    dispatch(deletePost(postId));
+  };
   return (
     <Card className="mb-2">
       <Card.Body>
@@ -32,19 +42,49 @@ function SinglePost(props) {
           <Button variant="light" className="commentButton">
             <ChatDots /> Commenta
           </Button>
-          <Button variant="light" className="commentButton">
-            <ArrowRepeat /> Diffondi il post
-          </Button>
-          <Button variant="light" className="commentButton">
-            <img
+          {myID === props.post.user._id ? (
+            <Button
+              variant="light"
+              className="commentButton text-warning fw-bold"
+            >
+              <Icon.Pencil className="text-warning" /> Modifica
+            </Button>
+          ) : (
+            <Button variant="light" className="commentButton">
+              <Icon.ArrowRepeat /> Diffondi post
+            </Button>
+          )}
+          {myID === props.post.user._id ? (
+            <Button
+              onClick={() => {
+                handleDelete(props.post._id);
+              }}
+              variant="light"
+              className="commentButton text-danger fw-bold"
+            >
+              {/* <img
               src={send}
               alt="Premium Icon"
               width="15"
               height="15"
               className="me-2"
-            />{" "}
-            Condividi
-          </Button>
+            /> */}
+              <Icon.X className="text-danger" style={{ fontSize: "28px" }} />
+              Elimina
+            </Button>
+          ) : (
+            <Button variant="light" className="commentButton">
+              {/* <img
+              src={send}
+              alt="Premium Icon"
+              width="15"
+              height="15"
+              className="me-2"
+            /> */}
+              <Icon.Share />
+              Condividi
+            </Button>
+          )}
         </div>
       </Card.Body>
     </Card>

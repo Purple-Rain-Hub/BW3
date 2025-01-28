@@ -1,4 +1,4 @@
-const myID = "6797508916f6350015fecb84";
+export const myID = "6797508916f6350015fecb84";
 const myToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzk3NTA4OTE2ZjYzNTAwMTVmZWNiODQiLCJpYXQiOjE3Mzc5Njk4MDEsImV4cCI6MTczOTE3OTQwMX0.gV22i7NwH_DHYfKE81N9UEY1Up6WHrH2EPIoPu8OD9w";
 export const getMyProfile = () => {
@@ -106,6 +106,35 @@ export const sendPost = (post) => {
         // });
       } else {
         throw new Error("errore nella response di sendPost");
+      }
+    } catch (error) {
+      console.error("ERRORE FETCH:" + error);
+    }
+  };
+};
+
+export const deletePost = (postId) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/posts/" + postId,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + myToken,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+      if (response.ok) {
+        console.log("Rimosso");
+        dispatch(getAllPosts());
+        // dispatch({
+        //   type: "GET_ALLPOSTS",
+        //   payload: data,
+        // });
+      } else {
+        throw new Error("errore nella response di deletePost");
       }
     } catch (error) {
       console.error("ERRORE FETCH:" + error);
