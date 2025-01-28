@@ -1,29 +1,34 @@
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Form,
-  Image,
-} from "react-bootstrap";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import {
   PersonFillAdd,
   BookmarkFill,
   Plus,
   CardImage,
-  HandThumbsUp,
-  ChatDots,
-  ArrowRepeat,
   ChevronCompactDown,
 } from "react-bootstrap-icons";
 import HomePagePremium from "../assets/HomePagePremium.svg";
 import Article from "../assets/Article.svg";
 import Calendar from "../assets/Calendar.svg";
-import send from "../assets/send.svg";
+//import send from "../assets/send.svg";
 import infoHome from "../assets/infoHome.svg";
+import SinglePost from "./SinglePost";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getAllPosts } from "../redux/action";
+import { useSelector } from "react-redux";
 
 const HomePage = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllPosts());
+  }, []);
+
+  const posts = useSelector((state) => {
+    return state.posts;
+  });
+
   return (
     <Container fluid className="py-3" style={{ backgroundColor: "#F4F2EE" }}>
       <Container className="home-container">
@@ -179,7 +184,11 @@ const HomePage = () => {
               </Card.Body>
             </Card>
 
-            <Card>
+            {posts.slice(posts.length - 25, posts.length).map((post) => {
+              return <SinglePost key={post._id} post={post} />;
+            })}
+
+            {/* <Card>
               <Card.Body>
                 <div className="d-flex align-items-center mb-3">
                   <Image
@@ -223,7 +232,7 @@ const HomePage = () => {
                   </Button>
                 </div>
               </Card.Body>
-            </Card>
+            </Card> */}
           </Col>
 
           {/* Right Sidebar */}
