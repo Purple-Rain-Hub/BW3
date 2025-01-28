@@ -1,12 +1,21 @@
 import { Card } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import ExperienceSection from "./ExperienceSection";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { postPropic } from "../redux/action";
 
 function CentralSection() {
+  const dispatch = useDispatch();
+
   const myProfile = useSelector((state) => {
     return state.myProfile;
   });
+
+  const handlePropic = (e) => {
+    const propicData = new FormData();
+    propicData.append("profile", e.target.files[0]);
+    dispatch(postPropic(propicData));
+  };
 
   return (
     <>
@@ -23,7 +32,11 @@ function CentralSection() {
             variant="top"
           />
           <img
-            src="https://placecats.com/100/100"
+            src={
+              myProfile.image
+                ? myProfile.image
+                : "https://placecats.com/300/300"
+            }
             style={{
               width: "80px",
               height: "80px",
@@ -32,6 +45,13 @@ function CentralSection() {
               borderRadius: "50%",
               border: "2px solid white",
               marginLeft: "20px",
+            }}
+          />
+          <input
+            type="file"
+            name="proPicInput"
+            onChange={(e) => {
+              handlePropic(e);
             }}
           />
           <div

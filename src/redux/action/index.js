@@ -13,7 +13,6 @@ export const getMyProfile = () => {
             );
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 dispatch({
                     type: "GET_MYPROFILE",
                     payload: data
@@ -41,7 +40,6 @@ export const getExperience = () => {
             )
             if (response.ok) {
                 const data = await response.json()
-                console.log(data);
                 dispatch({
                     type: "GET_EXPERIENCE",
                     payload: data
@@ -51,6 +49,29 @@ export const getExperience = () => {
         }
         catch (error) {
             console.error("ERRORE FETCH:" + error)
+        }
+    }
+}
+
+export const postPropic = (propicData) => {
+    return async () => {
+        console.log(propicData);
+
+        try {
+            const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/picture", {
+                method: "POST",
+                body: propicData,
+                headers: {
+                    "Authorization": "Bearer " + myToken,
+                }
+            }
+            )
+            if (response.ok) {
+                console.log(response);
+            }
+            else throw new Error("errore nel POST della propic")
+        } catch (error) {
+            console.error(error)
         }
     }
 }
