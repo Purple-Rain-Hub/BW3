@@ -1,18 +1,25 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./Components/NavBar";
 import Footer from "./components/Footer";
 import HomePage from "./components/HomePage";
+import ProfilePage from "./components/ProfilePage";
+import JobsPage from "./components/JobsPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import ProfilePage from "./components/ProfilePage";
 
 function App() {
   return (
-    <>
-      <NavBar />
-      <HomePage />
-      <ProfilePage />
-      <Footer />
-    </>
+    <Router>
+      <>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/jobs" element={<JobsPage />} />
+        </Routes>
+        <Footer />
+      </>
+    </Router>
   );
 }
 
