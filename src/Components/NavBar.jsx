@@ -2,12 +2,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaHome, FaUserFriends, FaBriefcase, FaEnvelope, FaBell, FaUser } from 'react-icons/fa';
 import { BsGrid3X3Gap } from "react-icons/bs";
 import logo from '../assets/logo.png';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-      <div className="container-fluid">
-      <a className="navbar-brand" href="#">
+      <div className="container-fluid navbar-padding"> {/* Added custom class here */}
+        <a className="navbar-brand" href="#">
           <img src={logo} alt="LinkedIn Logo" style={{ height: '40px' }} />
         </a>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,13 +57,13 @@ const NavBar = () => {
               </a>
             </li>
             <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMe" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <div className="text-center">
                   <FaUser />
                 </div>
                 me
               </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdownMe">
                 <li><a className="dropdown-item" href="#">Profilo</a></li>
                 <li><a className="dropdown-item" href="#">Impostazioni</a></li>
                 <li><a className="dropdown-item" href="#">Logout</a></li>
@@ -71,7 +72,7 @@ const NavBar = () => {
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownCompanies" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <div className="text-center">
-                <BsGrid3X3Gap />
+                  <BsGrid3X3Gap />
                 </div>
                 Per le Aziende
               </a>

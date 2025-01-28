@@ -49,3 +49,8 @@ body {
   padding-left: 16px;
   padding-right: 16px;
 }
+
+.navbar-padding {
+  padding-left: 4vw;
+  padding-right: 4vw; 
+}
