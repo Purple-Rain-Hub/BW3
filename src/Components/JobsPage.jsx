@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { BookmarkFill, ListUl } from "react-bootstrap-icons";
 import BorsaLavoro from "../assets/BorsaLavoro.svg";
@@ -5,6 +6,12 @@ import NewOfferJob from "../assets/NewOfferJob.svg";
 import CloseIcon from "../assets/CloseIcon.svg";
 
 const JobsPage = () => {
+  const [showFirstCard, setShowFirstCard] = useState(true);
+  const [showSecondCard, setShowSecondCard] = useState(true);
+
+  const handleCloseFirstCard = () => setShowFirstCard(false);
+  const handleCloseSecondCard = () => setShowSecondCard(false);
+
   return (
     <Container fluid className="py-3" style={{ backgroundColor: "#F4F2EE" }}>
       <Container className="jobs-container">
@@ -80,81 +87,86 @@ const JobsPage = () => {
 
           {/* Main Content */}
           <Col md={6}>
-            <Card className="mb-3">
-              <Card.Body className="position-relative">
-                <img
-                  src={CloseIcon}
-                  alt="Close"
-                  className="position-absolute top-0 end-0 m-2"
-                  style={{ cursor: "pointer", width: "24px", height: "24px" }}
-                />
-                <img
-                  className="mx-auto d-block float-end"
-                  src="src\assets\img\1svkhjtd476ns0r6daqolu2xk.png"
-                  alt=""
-                  style={{ width: "25%", height: "25%" }}
-                />
-                <h4 className="text-start">
-                  Ricevi notifiche sulle offerte di lavoro che ti interessano
-                </h4>
-                <p className="text-secondary text-start">
-                  Crea un avviso per una qualifica, un azienda o delle parole
-                  chiave.
-                </p>
-                <div>
+            {showFirstCard && (
+              <Card className="mb-3">
+                <Card.Body className="position-relative">
+                  <img
+                    src={CloseIcon}
+                    alt="Close"
+                    className="position-absolute top-0 end-0 m-2"
+                    style={{ cursor: "pointer", width: "24px", height: "24px" }}
+                    onClick={handleCloseFirstCard}
+                  />
+                  <img
+                    className="mx-auto d-block float-end"
+                    src="src\assets\img\1svkhjtd476ns0r6daqolu2xk.png"
+                    alt=""
+                    style={{ width: "25%", height: "25%" }}
+                  />
+                  <h4 className="text-start">
+                    Ricevi notifiche sulle offerte di lavoro che ti interessano
+                  </h4>
+                  <p className="text-secondary text-start">
+                    Crea un avviso per una qualifica, un azienda o delle parole
+                    chiave.
+                  </p>
+                  <div>
+                    <Button
+                      variant="primary"
+                      className="me-2 jobButton"
+                      style={{ borderRadius: "25px" }}
+                    >
+                      Crea avviso
+                    </Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            )}
+            {showSecondCard && (
+              <Card className="mb-3">
+                <Card.Body className="position-relative">
+                  <img
+                    src={CloseIcon}
+                    alt="Close"
+                    className="position-absolute top-0 end-0 m-2"
+                    style={{ cursor: "pointer", width: "24px", height: "24px" }}
+                    onClick={handleCloseSecondCard}
+                  />
+                  <h4 className="text-start">
+                    Mostra ai recruiter che sei disponibile a lavorare
+                  </h4>
+                  <p className="text-secondary text-start">
+                    Aggiungi le tue preferenze per far sapere ai recruiter che
+                    ti interessano opportunità di lavoro rilevanti.
+                  </p>
+                  <div className="d-flex align-items-center">
+                    <img
+                      src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                      alt="Avatar"
+                      className="me-3"
+                      style={{ width: "13%", borderRadius: "50%" }}
+                    />
+                    <div>
+                      <h6 className="mb-1">Disponibile a lavorare</h6>
+                      <p className="mb-0">
+                        Stabilisci tu chi può vedere questa informazione.
+                      </p>
+                    </div>
+                  </div>
                   <Button
                     variant="primary"
                     className="me-2 jobButton"
-                    style={{ borderRadius: "25px" }}
+                    style={{
+                      borderRadius: "25px",
+                      width: "14%",
+                      marginTop: "1rem",
+                    }}
                   >
-                    Crea avviso
+                    Inizia
                   </Button>
-                </div>
-              </Card.Body>
-            </Card>
-
-            <Card className="mb-3">
-              <Card.Body className="position-relative">
-                <img
-                  src={CloseIcon}
-                  alt="Close"
-                  className="position-absolute top-0 end-0 m-2"
-                  style={{ cursor: "pointer", width: "24px", height: "24px" }}
-                />
-                <h4 className="text-start">
-                  Mostra ai recruiter che sei disponibile a lavorare
-                </h4>
-                <p className="text-secondary text-start">
-                  Aggiungi le tue preferenze per far sapere ai recruiter che ti
-                  interessano opportunità di lavoro rilevanti.
-                </p>
-                <div className="d-flex align-items-center">
-                  <img
-                    src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                    alt="Avatar"
-                    className="me-3"
-                    style={{ width: "13%", borderRadius: "50%" }}
-                  />
-                  <div>
-                    <h6 className="mb-1">Disponibile a lavorare</h6>
-                    <p className="mb-0">
-                      Stabilisci tu chi può vedere questa informazione.
-                    </p>
-                  </div>
-                </div>
-                <Button
-                  variant="primary"
-                  className="me-2 jobButton"
-                  style={{
-                    borderRadius: "25px",
-                    width: "14%",
-                    marginTop: "1rem",
-                  }}
-                >
-                  Inizia
-                </Button>
-              </Card.Body>
-            </Card>
+                </Card.Body>
+              </Card>
+            )}
 
             <Card>
               <Card.Body className="position-relative">
