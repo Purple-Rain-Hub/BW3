@@ -11,7 +11,7 @@ import { useState } from "react";
 //commento
 
 function SinglePost(props) {
-  const urlImg = "https://placecats.com/50/50";
+  //const urlImg = "https://placecats.com/50/50";
 
   const dispatch = useDispatch();
 
@@ -31,7 +31,7 @@ function SinglePost(props) {
       <Card.Body>
         <div className="d-flex align-items-center mb-3">
           <Image
-            src={props.post.image ? props.post.image : urlImg}
+            src={props.post.user.image}
             roundedCircle
             className="me-2"
             width="48"
@@ -46,6 +46,11 @@ function SinglePost(props) {
         </div>
         <Card.Title>{props.post.user.title}</Card.Title>
         {!showModify && <Card.Text>{props.post.text}</Card.Text>}
+        {props.post.image ? (
+          <img src={props.post.image} />
+        ) : (
+          <img src="https://placecats.com/50/50" />
+        )}
         {showModify && (
           <Form
             className="my-2"

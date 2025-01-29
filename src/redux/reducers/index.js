@@ -2,6 +2,7 @@ const initialState = {
   myProfile: {},
   experience: [],
   posts: [],
+  postedPostId: "",
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -20,6 +21,11 @@ const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: action.payload,
+      };
+    case "GET_POSTEDPOST_ID":
+      return {
+        ...state,
+        postedPostId: action.payload,
       };
     default:
       return state;

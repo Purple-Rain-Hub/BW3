@@ -8,7 +8,7 @@ import {
   ChevronCompactDown,
 } from "react-bootstrap-icons";
 import HomePagePremium from "../assets/HomePagePremium.svg";
-import Calendar from "../assets/Calendar.svg";
+//import Calendar from "../assets/Calendar.svg";
 //import send from "../assets/send.svg";
 import infoHome from "../assets/infoHome.svg";
 import SinglePost from "./SinglePost";
@@ -19,9 +19,12 @@ import { useSelector } from "react-redux";
 import * as Icon from "react-bootstrap-icons";
 import { useState } from "react";
 import { sendPost } from "../redux/action";
+import { setPostPic } from "../redux/action";
 
 const HomePage = () => {
   const [writtenPost, setWrittenPost] = useState("");
+  const [isPostPic, setIsPostPic] = useState(false);
+  const [pic, setPic] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,11 +35,52 @@ const HomePage = () => {
     return state.posts;
   });
 
+  const postedPostId = useSelector((state) => {
+    return state.postedPostId;
+  });
+
   const handleSubmit = function (e) {
     e.preventDefault();
     setWrittenPost("");
     dispatch(sendPost(writtenPost));
+    // console.log(postedPostId);
+    // if (isPostPic) {
+    //   dispatch(setPostPic(pic, postedPostId));
+    //   console.log(isPostPic);
+    // }
   };
+  // let pic;
+  const handlePostPic = (e) => {
+    e.preventDefault();
+    console.log(e.target.files[0]);
+    const newPic = new FormData();
+    newPic.append("post", e.target.files[0]);
+    setPic(newPic);
+    setIsPostPic(true);
+    // console.log(isPostPic);
+    // setIsPostPic(true, () => {
+    //   console.log("isPostPic aggiornato:", isPostPic);
+    // });
+    // for (let [key, value] of pic.entries()) {
+    //   console.log(key, value);
+    // }
+  };
+
+  // useEffect(() => {
+  //   console.log(isPostPic);
+  //   if (isPostPic) {
+  //   }
+  // }, [isPostPic]);
+
+  useEffect(() => {
+    if (isPostPic && pic) {
+      // for (let [key, value] of pic.entries()) {
+      //   console.log(key, value);
+      // }
+      dispatch(setPostPic(pic, postedPostId));
+      setIsPostPic(false);
+    }
+  }, [postedPostId]);
 
   return (
     <Container fluid className="py-3" style={{ backgroundColor: "#F4F2EE" }}>
@@ -160,20 +204,27 @@ const HomePage = () => {
                         setWrittenPost(e.target.value);
                       }}
                       type="text"
-                      placeholder="Crea un post"
+                      placeholder="Scrivi qualcosa..."
                       style={{ borderRadius: "25px", fontWeight: "600" }}
                     />
                   </Form.Group>
                 </Form>
-                <div className="d-flex justify-content-between mt-3">
-                  <Button variant="light newPostButton">
+                <div className="d-flex flex-column justify-content-between mt-3">
+                  <div className="d-flex align-self-center mb-3">
                     <CardImage
-                      className="me-2 text-primary"
+                      className="me-2 text-primary align-self-center"
                       style={{ fontSize: "20px" }}
                     />
-                    Contenuti multimediali
-                  </Button>
-                  <Button variant="light newPostButton">
+                    <input
+                      accept="image/*"
+                      type="file"
+                      onChange={(e) => {
+                        handlePostPic(e);
+                      }}
+                    />
+                  </div>
+
+                  {/* <Button variant="light newPostButton">
                     <img
                       src={Calendar}
                       alt="Premium Icon"
@@ -182,8 +233,13 @@ const HomePage = () => {
                       className="me-2"
                     />
                     Evento
-                  </Button>
-                  <Button variant="light newPostButton" onClick={handleSubmit}>
+                  </Button> */}
+                  <Button
+                    className="align-self-center"
+                    variant="light newPostButton"
+                    style={{ width: "fit-content" }}
+                    onClick={handleSubmit}
+                  >
                     {/* <img
                       src={Article}
                       alt="Premium Icon"
@@ -195,7 +251,7 @@ const HomePage = () => {
                       className="text-success"
                       style={{ fontSize: "36px" }}
                     />
-                    Pubblica articolo
+                    Pubblica post
                   </Button>
                 </div>
               </Card.Body>
