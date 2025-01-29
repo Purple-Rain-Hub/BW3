@@ -337,18 +337,17 @@ function CentralSection() {
         }}
       >
         <div className="d-flex justify-content-between">
-          <p className="m-0" style={{ fontWeight: "bold" }}>
+          <p className="ms-3" style={{ fontWeight: "bold" }}>
             Consigliato per te
           </p>
           <Icon.X className="text-black" />
         </div>
-        <p className="m-0 text-secondary" style={{ fontSize: "10px" }}>
+        <p className="ms-3 text-secondary" style={{ fontSize: "10px" }}>
           <Icon.EyeFill /> Solo per te
         </p>
         <div
           style={{
             width: "90%",
-            border: "1px solid gray",
             borderRadius: "10px",
             marginRight: "auto",
             marginLeft: "auto",
@@ -361,13 +360,13 @@ function CentralSection() {
               src="https://placecats.com/50/50"
               style={{ borderRadius: "10px" }}
             />
-            <p className="m-0">
+            <p className="m-2">
               Entra in contatto con una persona che ricopre il ruolo ingegnere
               Full Stack per raggiungere i tuoi obiettivi professionali
             </p>
           </div>
           <p
-            className="mb-0 text-secondary"
+            className="mb-5 text-secondary"
             style={{ fontSize: "10px", marginTop: "10px" }}
           >
             Trova persone che possono fornire indicazione e aiutarti a trovare
@@ -402,7 +401,7 @@ function CentralSection() {
         }}
       >
         <div className="d-flex justify-content-between">
-          <p className="m-0" style={{ fontWeight: "bold" }}>
+          <p className="m-3" style={{ fontWeight: "bold" }}>
             Analisi
           </p>
           <Icon.X className="text-black" />

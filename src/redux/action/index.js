@@ -1,6 +1,7 @@
 export const myID = "6797508916f6350015fecb84";
 const myToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzk3NTA4OTE2ZjYzNTAwMTVmZWNiODQiLCJpYXQiOjE3Mzc5Njk4MDEsImV4cCI6MTczOTE3OTQwMX0.gV22i7NwH_DHYfKE81N9UEY1Up6WHrH2EPIoPu8OD9w";
+
 export const getMyProfile = () => {
   return async (dispatch) => {
     try {
@@ -52,43 +53,51 @@ export const getExperience = () => {
     } catch (error) {
       console.error("ERRORE FETCH:" + error);
     }
-  }
-}
+  };
+};
 
 export const postPropic = (propicData) => {
   return async () => {
     console.log(propicData);
 
     try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/picture", {
-        method: "POST",
-        body: propicData,
-        headers: {
-          "Authorization": "Bearer " + myToken,
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/" +
+        myID +
+        "/picture",
+        {
+          method: "POST",
+          body: propicData,
+          headers: {
+            Authorization: "Bearer " + myToken,
+          },
         }
-      }
-      )
+      );
       if (response.ok) {
         console.log(response);
-      }
-      else throw new Error("errore nel POST della propic")
+      } else throw new Error("errore nel POST della propic");
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-}
+  };
+};
 
 export const postExperience = (experienceData) => {
   return async (dispatch) => {
     try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/experiences", {
-        method: "POST",
-        body: JSON.stringify(experienceData),
-        headers: {
-          "Authorization": "Bearer " + myToken,
-          "Content-type": "application/json; charset=UTF-8",
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/" +
+        myID +
+        "/experiences",
+        {
+          method: "POST",
+          body: JSON.stringify(experienceData),
+          headers: {
+            Authorization: "Bearer " + myToken,
+            "Content-type": "application/json; charset=UTF-8",
+          },
         }
-      })
+      )
       if (response.ok) {
         const data = await response.json()
         dispatch({
@@ -99,10 +108,10 @@ export const postExperience = (experienceData) => {
       }
       else throw new Error("errore nel POST della experience");
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-}
+  };
+};
 
 export const postExpPic = (expPicData, expId) => {
   return async (dispatch) => {
@@ -220,6 +229,12 @@ export const sendPost = (post) => {
         const data = await response.json();
         console.log(data);
         dispatch(getAllPosts());
+        if (data) {
+          dispatch({
+            type: "GET_POSTEDPOST_ID",
+            payload: data._id,
+          });
+        }
       } else {
         throw new Error("errore nella response di sendPost");
       }
@@ -274,6 +289,32 @@ export const modifyPost = (postId, text) => {
         dispatch(getAllPosts());
       } else {
         throw new Error("errore nella response di modifyPost");
+      }
+    } catch (error) {
+      console.error("ERRORE FETCH:" + error);
+    }
+  };
+};
+
+export const setPostPic = (pic, postId) => {
+  const URL = "https://striveschool-api.herokuapp.com/api/posts/" + postId;
+  console.log(URL);
+  return async (dispatch) => {
+    try {
+      const response = await fetch(URL, {
+        method: "POST",
+        body: pic,
+        headers: {
+          Authorization: "Bearer " + myToken,
+        },
+      });
+      if (response.ok) {
+        //const data = await response.json();
+        //console.log(data);
+        // dispatch({ type: "GET_POSTEDPOST_ID", payload: data._id });
+        dispatch(getAllPosts());
+      } else {
+        throw new Error("errore nella response di setPostPic");
       }
     } catch (error) {
       console.error("ERRORE FETCH:" + error);

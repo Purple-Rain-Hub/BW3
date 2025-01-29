@@ -1,19 +1,33 @@
-import { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
-import { BookmarkFill, ListUl } from "react-bootstrap-icons";
 import BorsaLavoro from "../assets/BorsaLavoro.svg";
+import { useState, useEffect } from "react";
 import NewOfferJob from "../assets/NewOfferJob.svg";
+import { BookmarkFill, ListUl } from "react-bootstrap-icons";
+//  seLocation per accedere ai parametri dell'URL
+import { useLocation } from "react-router-dom";
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 10;
+  const jobsPerPage = 5;
 
+  // Usa useLocation per ottenere l'oggetto location corrente
+  const location = useLocation();
   useEffect(() => {
-    fetchJobs();
-  }, []);
+    // Estrai i parametri di ricerca dall'URL
+    const searchParams = new URLSearchParams(location.search);
+    const initialSearch = searchParams.get("search");
+    if (initialSearch) {
+      // Se c'è un parametro di ricerca nell'URL, impostalo come valore di ricerca iniziale
+      setSearch(initialSearch);
+      fetchJobs(initialSearch);
+    } else {
+      // Altrimenti, carica tutti i lavori
+      fetchJobs();
+    }
+  }, [location]); // Esegui l'effetto quando cambia la location
 
   const fetchJobs = async (query = "") => {
     setLoading(true);
@@ -58,7 +72,11 @@ const JobsPage = () => {
   };
 
   return (
-    <Container fluid className="py-3" style={{ backgroundColor: "#F4F2EE" }}>
+    <Container
+      fluid
+      className="py-3"
+      style={{ backgroundColor: "#F4F2EE", overflow: "hidden" }}
+    >
       <Container className="jobs-container">
         <Row>
           {/* Left Sidebar */}

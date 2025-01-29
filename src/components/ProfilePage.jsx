@@ -16,11 +16,12 @@ function ProfilePage() {
   return (
     <div style={{ backgroundColor: "#F4F2EE" }}>
       <Container>
-        <Row>
-          <Col className="col-8">
+        <Row className="justify-content-center">
+          <Col xs={12} lg={8} className="order-first order-lg-first">
             <CentralSection />
           </Col>
-          <Col className="col-4">
+
+          <Col xs={12} lg={4} className="order-last order-lg-last">
             <SideBar />
           </Col>
         </Row>
