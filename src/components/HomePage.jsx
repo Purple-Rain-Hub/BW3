@@ -376,7 +376,8 @@ const HomePage = () => {
                   </li>
                 </ul>
                 <Card.Link
-                  href="#"
+                  href="https://www.linkedin.com/showcase/linkedin-notizie/posts/?feedView=all"
+                  target="_blank"
                   style={{
                     textDecoration: "none",
                     color: "black",
