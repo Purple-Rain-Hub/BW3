@@ -15,6 +15,8 @@ import { useEffect, useState } from "react";
 function CentralSection() {
   const [show, setShow] = useState(false);
   const [showExperience, setShowExperience] = useState(false);
+  const [showExperiencePut, setShowExperiencePut] = useState(false);
+
   const [newExperience, setNewExperience] = useState({
     role: "",
     company: "",
@@ -31,6 +33,7 @@ function CentralSection() {
   const handleShow = () => setShow(true);
   const handleShowExperience = () => setShowExperience(true);
   const handleCloseExperience = () => setShowExperience(false);
+  const handleCloseExperiencePut = () => setShowExperiencePut(false);
 
   const dispatch = useDispatch();
 
@@ -94,7 +97,7 @@ function CentralSection() {
 
   useEffect(() => {
     if (expForPut.role) {
-      setShowExperience(true);
+      setShowExperiencePut(true);
       setExpForPutState({
         role: `${expForPut.role}`,
         company: `${expForPut.company}`,
@@ -810,7 +813,7 @@ function CentralSection() {
         </p>
       </div>
       {/* MODALE PER PUT */}
-      <Modal show={showExperience} onHide={handleCloseExperience}>
+      <Modal show={showExperiencePut} onHide={handleCloseExperiencePut}>
         <Modal.Header closeButton>
           <Modal.Title>Modifica Esperienza!</Modal.Title>
         </Modal.Header>
@@ -909,7 +912,7 @@ function CentralSection() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseExperience}>
+          <Button variant="secondary" onClick={handleCloseExperiencePut}>
             Chiudi
           </Button>
         </Modal.Footer>
