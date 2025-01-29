@@ -305,44 +305,67 @@ const NavBar = () => {
                     </li>
                   </ul>
                 </li>
-                <li className="nav-item dropdown">
+                <div className="d-flex align-items-center">
+                  <div className="vertical-hr"></div>
+                  <li className="nav-item dropdown">
+                    <a
+                      className="nav-link dropdown-toggle"
+                      href="#"
+                      id="navbarDropdownCompanies"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      style={{ marginRight: "15px" }}
+                    >
+                      <div className="d-flex flex-column align-items-center">
+                        <BsGrid3X3Gap />
+                        <div>
+                          Per le Aziende{" "}
+                          <FaChevronDown style={{ fontSize: "15px" }} />
+                        </div>
+                      </div>
+                    </a>
+                    <ul
+                      className="dropdown-menu"
+                      aria-labelledby="navbarDropdownCompanies"
+                    >
+                      <li>
+                        <a className="dropdown-item" href="#">
+                          Posta Lavoro
+                        </a>
+                      </li>
+                      <li>
+                        <a className="dropdown-item" href="#">
+                          Controlla lavori
+                        </a>
+                      </li>
+                      <li>
+                        <a className="dropdown-item" href="#">
+                          Pagina Compagnia
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                </div>
+                <li className="nav-item">
                   <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdownCompanies"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    style={{ marginRight: "15px" }}
+                    className="nav-link"
+                    href="https://premium.linkedin.com/"
+                    target="_blank"
                   >
-                    <div className="d-flex flex-column align-items-center">
-                      <BsGrid3X3Gap />
-                      <div>
-                        Per le Aziende{" "}
-                        <FaChevronDown style={{ fontSize: "15px" }} />
+                    <div className="d-flex flex-column align-items-center text-center text-decoration-underline">
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          width: "90%",
+                          color: "#5C3B09",
+                          fontWeight: "600",
+                        }}
+                      >
+                        Prova Premium per 0 EUR
                       </div>
                     </div>
                   </a>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="navbarDropdownCompanies"
-                  >
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Posta Lavoro
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Controlla lavori
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Pagina Compagnia
-                      </a>
-                    </li>
-                  </ul>
                 </li>
               </ul>
             </div>

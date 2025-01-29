@@ -4,6 +4,13 @@
   display: none;
 }
 
+.vertical-hr {
+  width: 2px;
+  height: 100%;
+  background-color: #ccc;
+  margin-right: 10px;
+}
+
 /*HomePage css */
 
 .home-container,
