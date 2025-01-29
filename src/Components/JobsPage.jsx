@@ -11,7 +11,7 @@ const JobsPage = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 10;
+  const jobsPerPage = 5;
 
   // Usa useLocation per ottenere l'oggetto location corrente
   const location = useLocation();

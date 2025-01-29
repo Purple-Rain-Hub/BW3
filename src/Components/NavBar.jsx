@@ -160,7 +160,7 @@ const NavBar = () => {
                       aria-labelledby="navbarDropdown"
                     >
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/profile">
                           Profilo
                         </a>
                       </li>
@@ -289,7 +289,7 @@ const NavBar = () => {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a className="dropdown-item" href="/profile">
                         Profilo
                       </a>
                     </li>

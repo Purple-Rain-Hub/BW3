@@ -33,8 +33,8 @@ export const getExperience = () => {
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/" +
-        myID +
-        "/experiences",
+          myID +
+          "/experiences",
         {
           headers: {
             Authorization: "Bearer " + myToken,
@@ -52,50 +52,58 @@ export const getExperience = () => {
     } catch (error) {
       console.error("ERRORE FETCH:" + error);
     }
-  }
-}
+  };
+};
 
 export const postPropic = (propicData) => {
   return async () => {
     console.log(propicData);
 
     try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/picture", {
-        method: "POST",
-        body: propicData,
-        headers: {
-          "Authorization": "Bearer " + myToken,
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/" +
+          myID +
+          "/picture",
+        {
+          method: "POST",
+          body: propicData,
+          headers: {
+            Authorization: "Bearer " + myToken,
+          },
         }
-      }
-      )
+      );
       if (response.ok) {
         console.log(response);
-      }
-      else throw new Error("errore nel POST della propic")
+      } else throw new Error("errore nel POST della propic");
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-}
+  };
+};
 
 export const postExperience = (experienceData) => {
   return async () => {
     try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/experiences", {
-        method: "POST",
-        body: JSON.stringify(experienceData),
-        headers: {
-          "Authorization": "Bearer " + myToken,
-          "Content-type": "application/json; charset=UTF-8",
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/" +
+          myID +
+          "/experiences",
+        {
+          method: "POST",
+          body: JSON.stringify(experienceData),
+          headers: {
+            Authorization: "Bearer " + myToken,
+            "Content-type": "application/json; charset=UTF-8",
+          },
         }
-      })
+      );
       if (response.ok) console.log(response);
       else throw new Error("errore nel POST della experience");
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-}
+  };
+};
 
 export const getAllPosts = () => {
   return async (dispatch) => {
