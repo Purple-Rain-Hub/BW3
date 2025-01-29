@@ -208,11 +208,7 @@ const HomePage = () => {
                 .reverse()
                 .map((post) => {
                   return (
-                    <SinglePost key={post._id} post={post}>
-                      <Link to={`/user ${post.userId}`} className="user-link">
-                        {post.username}
-                      </Link>
-                    </SinglePost>
+                    <SinglePost key={post._id} post={post}/>
                   );
                 })}
 
