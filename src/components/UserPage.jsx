@@ -1,5 +1,4 @@
 import { Col, Container, Row } from "react-bootstrap";
-//import CentralSection from "./CentralSection";
 import SideBar from "./SideBar";
 import SecondCentralSection from "./SecondCentralSection";
 
