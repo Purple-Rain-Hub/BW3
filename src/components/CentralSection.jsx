@@ -8,6 +8,7 @@ import {
   postExperience,
   postExpPic,
   postPropic,
+  putExperience,
 } from "../redux/action";
 import { useEffect, useState } from "react";
 
@@ -22,7 +23,9 @@ function CentralSection() {
     area: "",
     description: "",
   });
+  const [expForPutState, setExpForPutState] = useState({});
   const [expPic, setExpPic] = useState();
+  const [hasPut, setHasPut] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -36,6 +39,9 @@ function CentralSection() {
   });
   const newExpId = useSelector((state) => {
     return state.newExperienceId;
+  });
+  const expForPut = useSelector((state) => {
+    return state.expForPut;
   });
 
   const handlePropic = (e) => {
@@ -67,11 +73,38 @@ function CentralSection() {
     dispatch(getExperience());
   };
 
+  const handlePutExperience = (e) => {
+    e.preventDefault();
+    dispatch(putExperience(expForPutState, expForPut));
+    setHasPut(true);
+  };
+
+  useEffect(() => {
+    if (hasPut) {
+      dispatch(getExperience());
+      setHasPut(false);
+    }
+  }, [hasPut]);
+
   useEffect(() => {
     if (expPic) {
       dispatch(postExpPic(expPic, newExpId));
     }
   }, [newExpId]);
+
+  useEffect(() => {
+    if (expForPut.role) {
+      setShowExperience(true);
+      setExpForPutState({
+        role: `${expForPut.role}`,
+        company: `${expForPut.company}`,
+        startDate: `${expForPut.startDate}`,
+        endDate: `${expForPut.endDate}`,
+        area: `${expForPut.area}`,
+        description: `${expForPut.description}`,
+      });
+    }
+  }, [expForPut]);
 
   return (
     <>
@@ -623,7 +656,6 @@ function CentralSection() {
                   handleExpPic(e);
                 }}
               />
-              {/* aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */}
               <Button
                 type="submit"
                 className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"
@@ -777,6 +809,111 @@ function CentralSection() {
           <Icon.ArrowRight className="ms-1" />
         </p>
       </div>
+      {/* MODALE PER PUT */}
+      <Modal show={showExperience} onHide={handleCloseExperience}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modifica Esperienza!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handlePutExperience}>
+            <Form.Label className="mt-2 fw-lighter">Ruolo</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={expForPutState.role}
+              onChange={(e) => {
+                setExpForPutState({
+                  ...expForPutState,
+                  role: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Azienda</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={expForPutState.company}
+              onChange={(e) => {
+                setExpForPutState({
+                  ...expForPutState,
+                  company: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">
+              Descrivici la tua esperienza lavorativa
+            </Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={expForPutState.description}
+              onChange={(e) => {
+                setExpForPutState({
+                  ...expForPutState,
+                  description: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Data di inizio</Form.Label>
+            <Form.Control
+              type="date"
+              required
+              value={expForPutState.startDate}
+              onChange={(e) => {
+                setExpForPutState({
+                  ...expForPutState,
+                  startDate: e.target.value,
+                });
+              }}
+            />
+            <Form.Label>Questa esperienza di lavoro si è terminata</Form.Label>
+            <Form.Check className="ms-2" />
+            <Form.Label className="mt-2 fw-lighter">Data di fine</Form.Label>
+            <Form.Control
+              type="date"
+              value={expForPutState.endDate}
+              onChange={(e) => {
+                setExpForPutState({
+                  ...expForPutState,
+                  endDate: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Zona di lavoro</Form.Label>
+            <Form.Control
+              type="text"
+              value={expForPutState.area}
+              onChange={(e) => {
+                setExpForPutState({
+                  ...expForPutState,
+                  area: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">
+              Immagine Azienda
+            </Form.Label>
+            <input
+              type="file"
+              name="proPicInput"
+              onChange={(e) => {
+                handleExpPic(e);
+              }}
+            />
+            <Button
+              type="submit"
+              className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"
+            >
+              Salva
+            </Button>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseExperience}>
+            Chiudi
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

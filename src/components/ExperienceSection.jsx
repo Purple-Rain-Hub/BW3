@@ -1,9 +1,12 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import * as Icon from "react-bootstrap-icons";
+import { getExpForPut } from "../redux/action";
 
 const ExperienceSection = () => {
   const experience = useSelector((state) => {
     return state.experience;
   });
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -12,24 +15,35 @@ const ExperienceSection = () => {
         {experience.map((e) => {
           return (
             <div
-              className="d-flex border-bottom border-1 mt-3 pb-2"
+              className="d-flex border-bottom border-1 mt-3 pb-2 justify-content-between"
               key={e._id}
             >
-              <img
-                src={e.image ? e.image : "https://placecats.com/60/60"}
-                style={{
-                  width: "60px",
-                  height: "60px",
-                }}
-              />
-              <div className="ms-2">
-                <h6 className="m-0">{e.role}</h6>
-                <p className="m-0">{e.company}</p>
-                <p className="m-0 fw-lighter">
-                  Da <span>{e.startDate}</span> A <span>{e.endDate}</span>
-                </p>
-                <p className="m-0 fw-lighter">{e.area}</p>
-                <p className="m-0">{e.description}</p>
+              <div className=" d-flex">
+                <img
+                  src={e.image ? e.image : "https://placecats.com/60/60"}
+                  style={{
+                    width: "60px",
+                    height: "60px",
+                  }}
+                />
+                <div className="ms-2">
+                  <h6 className="m-0">{e.role}</h6>
+                  <p className="m-0">{e.company}</p>
+                  <p className="m-0 fw-lighter">
+                    Da <span>{e.startDate}</span> A <span>{e.endDate}</span>
+                  </p>
+                  <p className="m-0 fw-lighter">{e.area}</p>
+                  <p className="m-0">{e.description}</p>
+                </div>
+              </div>
+              <div style={{ width: "fit-content" }}>
+                <button className="btn">
+                  <Icon.Pencil
+                    onClick={() => {
+                      dispatch(getExpForPut(e._id));
+                    }}
+                  />
+                </button>
               </div>
             </div>
           );
