@@ -39,8 +39,7 @@ const HomePage = () => {
     return state.postedPostId;
   });
 
-  const handleSubmit = function (e) {
-    e.preventDefault();
+  const handleSubmit = function () {
     setWrittenPost("");
     dispatch(sendPost(writtenPost));
     // console.log(postedPostId);
@@ -78,8 +77,8 @@ const HomePage = () => {
       //   console.log(key, value);
       // }
       dispatch(setPostPic(pic, postedPostId));
-      setIsPostPic(false);
-      setPic(null);
+      //setIsPostPic(false);
+      //setPic(null);
     }
   }, [postedPostId]);
 
@@ -239,7 +238,14 @@ const HomePage = () => {
                     className="align-self-center"
                     variant="light newPostButton"
                     style={{ width: "fit-content" }}
-                    onClick={handleSubmit}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (writtenPost) {
+                        handleSubmit();
+                      } else {
+                        alert("Scrivi qualcosa.");
+                      }
+                    }}
                   >
                     {/* <img
                       src={Article}

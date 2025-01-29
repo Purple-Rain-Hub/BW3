@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { setPostPic } from "../redux/action";
 
 function SinglePost(props) {
-  //const urlImg = "https://placecats.com/50/50";
   const [showModify, setShowModify] = useState(false);
   const [modifiedPost, setModifiedPost] = useState("");
   const [postIdWithPicToChange, setPostIdWithPicToChange] = useState("");
@@ -40,8 +39,8 @@ function SinglePost(props) {
   useEffect(() => {
     if (okToModify && changingPic && postIdWithPicToChange) {
       dispatch(setPostPic(changingPic, postIdWithPicToChange));
-      setChangingPic(null);
-      setPostIdWithPicToChange("");
+      //setChangingPic(null);
+      //setPostIdWithPicToChange("");
       setOkToModify(false);
     }
   }, [okToModify]);
@@ -66,11 +65,7 @@ function SinglePost(props) {
         </div>
         <Card.Title>{props.post.user.title}</Card.Title>
         {!showModify && <Card.Text>{props.post.text}</Card.Text>}
-        {props.post.image && !showModify ? (
-          <img src={props.post.image} style={{ maxWidth: "100%" }} />
-        ) : (
-          <></>
-        )}
+
         {showModify && (
           <Form
             className="my-2"
@@ -99,9 +94,15 @@ function SinglePost(props) {
             </Form.Group>
           </Form>
         )}
+        {props.post.image ? (
+          <img src={props.post.image} style={{ maxWidth: "100%" }} />
+        ) : (
+          <></>
+        )}
         {showModify && props.post.image ? (
           <>
             <input
+              className="ms-2"
               type="file"
               accept="image/*"
               onChange={(e) => {
@@ -127,8 +128,12 @@ function SinglePost(props) {
           ) : (
             <Button
               onClick={() => {
-                setShowModify(false);
-                handleModify(props.post._id, modifiedPost);
+                if (modifiedPost) {
+                  setShowModify(false);
+                  handleModify(props.post._id, modifiedPost);
+                } else {
+                  alert("Scrivi qualcosa.");
+                }
               }}
               variant="light"
               className="commentButton text-success"
