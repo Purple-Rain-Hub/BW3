@@ -1,4 +1,4 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 import {
   FaHome,
   FaUserFriends,
@@ -9,138 +9,140 @@ import {
 } from "react-icons/fa";
 import { BsGrid3X3Gap } from "react-icons/bs";
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Container, Row, Col } from "react-bootstrap";
 
 const NavBar = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-      <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
-          <img src={logo} alt="LinkedIn Logo" style={{ height: "40px" }} />
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link className="nav-link" to="/">
-                <div className="text-center">
-                  <FaHome />
-                  <div>Home</div>
-                </div>
+    <nav className="navbar navbar-light bg-light sticky-top px-2 py-1">
+      <Container fluid>
+        <Row className="w-100 align-items-center justify-content-center">
+          <Col xs={2} className="d-none d-lg-block"></Col>
+
+          <Col
+            xs={12}
+            lg={7}
+            className="d-flex align-items-center justify-content-between"
+          >
+            <Link className="navbar-brand" to="/">
+              <img
+                src={logo}
+                alt="LinkedIn Logo"
+                style={{ height: "45px", width: "45px" }}
+              />
+            </Link>
+
+            <div className="d-flex align-items-center gap-3">
+              <Link
+                className="nav-link text-dark d-flex align-items-center"
+                to="/"
+              >
+                <FaHome size={20} />
+                <span className="d-none d-lg-inline ms-1">Home</span>
               </Link>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                <div className="text-center">
-                  <FaUserFriends />
-                  <div>Rete</div>
-                </div>
+              <a
+                className="nav-link text-dark d-flex align-items-center"
+                href="#"
+              >
+                <FaUserFriends size={20} />
+                <span className="d-none d-lg-inline ms-1">Rete</span>
               </a>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/jobs">
-                <div className="text-center">
-                  <FaBriefcase />
-                  <div>Lavori</div>
-                </div>
+              <Link
+                className="nav-link text-dark d-flex align-items-center"
+                to="/jobs"
+              >
+                <FaBriefcase size={20} />
+                <span className="d-none d-lg-inline ms-1">Lavoro</span>
               </Link>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                <div className="text-center">
-                  <FaEnvelope />
-                  <div>Messaggistica</div>
-                </div>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                <div className="text-center">
-                  <FaBell />
-                  <div>Notifiche</div>
-                </div>
-              </a>
-            </li>
-            <li className="nav-item dropdown">
               <a
-                className="nav-link dropdown-toggle"
+                className="nav-link text-dark d-flex align-items-center"
                 href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
               >
-                <div className="text-center">
-                  <FaUser />
-                </div>
-                me
+                <FaEnvelope size={20} />
+                <span className="d-none d-lg-inline ms-1">Messaggi</span>
               </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <Link className="dropdown-item" to="/profile">
-                    Profilo
-                  </Link>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Impostazioni
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Logout
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item dropdown">
               <a
-                className="nav-link dropdown-toggle"
+                className="nav-link text-dark d-flex align-items-center"
                 href="#"
-                id="navbarDropdownCompanies"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
               >
-                <div className="text-center">
-                  <BsGrid3X3Gap />
-                </div>
-                Per le Aziende
+                <FaBell size={20} />
+                <span className="d-none d-lg-inline ms-1">Notifiche</span>
               </a>
-              <ul
-                className="dropdown-menu"
-                aria-labelledby="navbarDropdownCompanies"
-              >
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Posta Lavoro
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Controlla lavori
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Pagina Compagnia
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
+
+              <div className="nav-item dropdown d-flex align-items-center">
+                <a
+                  className="nav-link dropdown-toggle text-dark"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <FaUser size={20} />
+                  <span className="d-none d-lg-inline ms-1">Me</span>
+                </a>
+                <ul
+                  className="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="navbarDropdown"
+                >
+                  <li>
+                    <Link className="dropdown-item" to="/profile">
+                      Profilo
+                    </Link>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Impostazioni
+                    </a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Logout
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="nav-item dropdown d-flex align-items-center">
+                <a
+                  className="nav-link dropdown-toggle text-dark"
+                  href="#"
+                  id="navbarDropdownCompanies"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <BsGrid3X3Gap size={20} />
+                  <span className="d-none d-lg-inline ms-1">
+                    Per le Aziende
+                  </span>
+                </a>
+                <ul
+                  className="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="navbarDropdownCompanies"
+                >
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Posta Lavoro
+                    </a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Controlla lavori
+                    </a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Pagina Compagnia
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Col>
+
+          <Col xs={2} className="d-none d-lg-block"></Col>
+        </Row>
+      </Container>
     </nav>
   );
 };
