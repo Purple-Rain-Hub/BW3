@@ -1,7 +1,14 @@
+/* NavBar css */
+
+.navbar-nav .nav-item .dropdown-toggle::after {
+  display: none;
+}
+
 /*HomePage css */
 
 .home-container,
-.jobs-container {
+.jobs-container,
+.nav-container {
   max-width: 1250px;
   margin: 0 auto;
 }

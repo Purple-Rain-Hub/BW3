@@ -58,7 +58,11 @@ const JobsPage = () => {
   };
 
   return (
-    <Container fluid className="py-3" style={{ backgroundColor: "#F4F2EE" }}>
+    <Container
+      fluid
+      className="py-3"
+      style={{ backgroundColor: "#F4F2EE", overflow: "hidden" }}
+    >
       <Container className="jobs-container">
         <Row>
           {/* Left Sidebar */}
