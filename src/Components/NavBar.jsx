@@ -1,5 +1,6 @@
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import {
   FaHome,
   FaSearch,
@@ -11,10 +12,23 @@ import {
 } from "react-icons/fa";
 import { BsGrid3X3Gap } from "react-icons/bs";
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
 const NavBar = () => {
+  // Stato per gestire il valore di ricerca
+  const [searchValue, setSearchValue] = useState("");
+  // Hook per la navigazione
+  const navigate = useNavigate();
+
+  // Funzione per gestire la ricerca
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchValue) {
+      // Naviga alla pagina dei lavori con il parametro di ricerca
+      navigate(`/jobs?search=${encodeURIComponent(searchValue)}`);
+    }
+  };
   return (
     <Container fluid className="bg-light">
       <Container className="nav-container">
@@ -23,12 +37,14 @@ const NavBar = () => {
             <Link className="navbar-brand" to="/">
               <img src={logo} alt="LinkedIn Logo" style={{ height: "40px" }} />
             </Link>
+            {/* Form di ricerca */}
             <Form
               className="d-flex align-items-center border rounded p-2 d-none d-lg-flex"
               style={{
                 backgroundColor: "#EDF3F8",
-                height: "40px",
+                height: "50px",
               }}
+              onSubmit={handleSearch}
             >
               <FaSearch className="text-muted ms-2" />
               <Form.Control
@@ -36,7 +52,17 @@ const NavBar = () => {
                 placeholder="Cerca..."
                 className="border-0 bg-transparent shadow-none"
                 aria-label="Search"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
               />
+              {/* Pulsante di ricerca che cambia colore quando c'è un valore di ricerca */}
+              <Button
+                variant={searchValue ? "primary" : "light"}
+                className="ms-2"
+                type="submit"
+              >
+                Cerca
+              </Button>
             </Form>
 
             <button
