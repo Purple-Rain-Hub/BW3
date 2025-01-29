@@ -11,7 +11,7 @@ function ProfilePage() {
   useEffect(() => {
     dispatch(getMyProfile());
     dispatch(getExperience());
-  }, [dispatch]);
+  });
 
   return (
     <div style={{ backgroundColor: "#F4F2EE" }}>
