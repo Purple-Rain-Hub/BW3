@@ -79,7 +79,7 @@ export const postPropic = (propicData) => {
 }
 
 export const postExperience = (experienceData) => {
-  return async () => {
+  return async (dispatch) => {
     try {
       const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/experiences", {
         method: "POST",
@@ -89,8 +89,44 @@ export const postExperience = (experienceData) => {
           "Content-type": "application/json; charset=UTF-8",
         }
       })
-      if (response.ok) console.log(response);
+      if (response.ok) {
+        const data = await response.json()
+        console.log("OIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII" + data._id);
+        new Promise((resolve) => {
+          dispatch({
+            type: "NEWEXPERIENCE_ID",
+            payload: data._id
+          });
+          resolve(data);
+        })
+      }
       else throw new Error("errore nel POST della experience");
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
+export const postExpPic = (expPicData, expId) => {
+  return async () => {
+    console.log("GUARDA QUESTI DUE LOG SOTTO!!!!!!!!!!!!");
+
+    console.log(expPicData);
+    console.log(expId);
+
+    try {
+      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/experiences/" + expId + "/picture", {
+        method: "POST",
+        body: expPicData,
+        headers: {
+          "Authorization": "Bearer " + myToken,
+        }
+      }
+      )
+      if (response.ok) {
+        console.log(response);
+      }
+      else throw new Error("errore nel POST della expPic")
     } catch (error) {
       console.error(error)
     }

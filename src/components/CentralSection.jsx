@@ -2,8 +2,14 @@ import { Button, Card, Form, Modal } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import ExperienceSection from "./ExperienceSection";
 import { useDispatch, useSelector } from "react-redux";
-import { postExperience, postPropic } from "../redux/action";
-import { useState } from "react";
+import {
+  getExperience,
+  getMyProfile,
+  postExperience,
+  postExpPic,
+  postPropic,
+} from "../redux/action";
+import { useEffect, useState } from "react";
 
 function CentralSection() {
   const [show, setShow] = useState(false);
@@ -16,6 +22,7 @@ function CentralSection() {
     area: "",
     description: "",
   });
+  const [expPic, setExpPic] = useState();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -27,19 +34,44 @@ function CentralSection() {
   const myProfile = useSelector((state) => {
     return state.myProfile;
   });
+  const newExpId = useSelector((state) => {
+    return state.newExperienceId;
+  });
 
   const handlePropic = (e) => {
     const propicData = new FormData();
     propicData.append("profile", e.target.files[0]);
     dispatch(postPropic(propicData));
+    dispatch(getMyProfile());
+  };
+
+  const handleExpPic = (e) => {
+    e.preventDefault();
+    const expPicData = new FormData();
+    expPicData.append("experience", e.target.files[0]);
+    setExpPic(expPicData);
   };
 
   const handleNewExperience = (e) => {
     e.preventDefault();
-    console.log(newExperience);
-
     dispatch(postExperience(newExperience));
+
+    setNewExperience({
+      role: "",
+      company: "",
+      startDate: "",
+      endDate: "",
+      area: "",
+      description: "",
+    });
+    dispatch(getExperience());
   };
+
+  useEffect(() => {
+    if (expPic) {
+      dispatch(postExpPic(expPic, newExpId));
+    }
+  }, [newExpId]);
 
   return (
     <>
@@ -581,6 +613,17 @@ function CentralSection() {
                   });
                 }}
               />
+              <Form.Label className="mt-2 fw-lighter">
+                Immagine Azienda
+              </Form.Label>
+              <input
+                type="file"
+                name="proPicInput"
+                onChange={(e) => {
+                  handleExpPic(e);
+                }}
+              />
+              {/* aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */}
               <Button
                 type="submit"
                 className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"

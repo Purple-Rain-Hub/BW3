@@ -16,9 +16,11 @@ const ExperienceSection = () => {
               key={e._id}
             >
               <img
-                src="https://placecats.com/60/60"
-                alt="QUA CI VA FOTO DINAMICA"
-                height={"100%"}
+                src={e.image ? e.image : "https://placecats.com/60/60"}
+                style={{
+                  width: "60px",
+                  height: "60px",
+                }}
               />
               <div className="ms-2">
                 <h6 className="m-0">{e.role}</h6>

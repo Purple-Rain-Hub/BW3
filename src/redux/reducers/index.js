@@ -2,6 +2,7 @@ const initialState = {
   myProfile: {},
   experience: [],
   posts: [],
+  newExperienceId: {},
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -21,6 +22,11 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         posts: action.payload,
       };
+    case "NEWEXPERIENCE_ID":
+      return {
+        ...state,
+        newExperienceId: action.payload
+      }
     default:
       return state;
   }
