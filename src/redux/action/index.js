@@ -1,6 +1,7 @@
 export const myID = "6797508916f6350015fecb84";
 const myToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzk3NTA4OTE2ZjYzNTAwMTVmZWNiODQiLCJpYXQiOjE3Mzc5Njk4MDEsImV4cCI6MTczOTE3OTQwMX0.gV22i7NwH_DHYfKE81N9UEY1Up6WHrH2EPIoPu8OD9w";
+
 export const getMyProfile = () => {
   return async (dispatch) => {
     try {
@@ -150,6 +151,12 @@ export const sendPost = (post) => {
         const data = await response.json();
         console.log(data);
         dispatch(getAllPosts());
+        if (data) {
+          dispatch({
+            type: "GET_POSTEDPOST_ID",
+            payload: data._id,
+          });
+        }
       } else {
         throw new Error("errore nella response di sendPost");
       }
@@ -204,6 +211,32 @@ export const modifyPost = (postId, text) => {
         dispatch(getAllPosts());
       } else {
         throw new Error("errore nella response di modifyPost");
+      }
+    } catch (error) {
+      console.error("ERRORE FETCH:" + error);
+    }
+  };
+};
+
+export const setPostPic = (pic, postId) => {
+  const URL = "https://striveschool-api.herokuapp.com/api/posts/" + postId;
+  console.log(URL);
+  return async (dispatch) => {
+    try {
+      const response = await fetch(URL, {
+        method: "POST",
+        body: pic,
+        headers: {
+          Authorization: "Bearer " + myToken,
+        },
+      });
+      if (response.ok) {
+        //const data = await response.json();
+        //console.log(data);
+        // dispatch({ type: "GET_POSTEDPOST_ID", payload: data._id });
+        dispatch(getAllPosts());
+      } else {
+        throw new Error("errore nella response di setPostPic");
       }
     } catch (error) {
       console.error("ERRORE FETCH:" + error);
