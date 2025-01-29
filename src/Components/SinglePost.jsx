@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { Card, Image, Button, Form } from "react-bootstrap";
 import { HandThumbsUp, ChatDots } from "react-bootstrap-icons";
@@ -7,11 +8,16 @@ import { myID } from "../redux/action";
 import { useDispatch } from "react-redux";
 import { deletePost } from "../redux/action";
 import { modifyPost } from "../redux/action";
-import { useState } from "react";
-//commento
+import { useEffect, useState } from "react";
+import { setPostPic } from "../redux/action";
 
 function SinglePost(props) {
   //const urlImg = "https://placecats.com/50/50";
+  const [showModify, setShowModify] = useState(false);
+  const [modifiedPost, setModifiedPost] = useState("");
+  const [postIdWithPicToChange, setPostIdWithPicToChange] = useState("");
+  const [changingPic, setChangingPic] = useState(null);
+  const [okToModify, setOkToModify] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -21,10 +27,24 @@ function SinglePost(props) {
 
   const handleModify = function (postId, text) {
     dispatch(modifyPost(postId, text));
+    setOkToModify(true);
   };
 
-  const [showModify, setShowModify] = useState(false);
-  const [modifiedPost, setModifiedPost] = useState("");
+  const handleChangePostPic = function (e) {
+    e.preventDefault();
+    const changedPostPic = new FormData();
+    changedPostPic.append("post", e.target.files[0]);
+    setChangingPic(changedPostPic);
+  };
+
+  useEffect(() => {
+    if (okToModify && changingPic && postIdWithPicToChange) {
+      dispatch(setPostPic(changingPic, postIdWithPicToChange));
+      setChangingPic(null);
+      setPostIdWithPicToChange("");
+      setOkToModify(false);
+    }
+  }, [okToModify]);
 
   return (
     <Card className="mb-2">
@@ -46,10 +66,10 @@ function SinglePost(props) {
         </div>
         <Card.Title>{props.post.user.title}</Card.Title>
         {!showModify && <Card.Text>{props.post.text}</Card.Text>}
-        {props.post.image ? (
-          <img src={props.post.image} />
+        {props.post.image && !showModify ? (
+          <img src={props.post.image} style={{ maxWidth: "100%" }} />
         ) : (
-          <img src="https://placecats.com/50/50" />
+          <></>
         )}
         {showModify && (
           <Form
@@ -78,6 +98,20 @@ function SinglePost(props) {
               />
             </Form.Group>
           </Form>
+        )}
+        {showModify && props.post.image ? (
+          <>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                setPostIdWithPicToChange(props.post._id);
+                handleChangePostPic(e);
+              }}
+            />
+          </>
+        ) : (
+          <></>
         )}
         <div className="d-flex justify-content-between">
           {!showModify ? (

@@ -79,6 +79,7 @@ const HomePage = () => {
       // }
       dispatch(setPostPic(pic, postedPostId));
       setIsPostPic(false);
+      setPic(null);
     }
   }, [postedPostId]);
 
