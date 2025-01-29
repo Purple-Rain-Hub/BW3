@@ -8,7 +8,7 @@ const FavoritesPage = () => {
 
   return (
     <Container className="mt-4">
-      <h2>I tuoi lavori preferiti</h2>
+      <h2>Le tue offerte lavorative salvate</h2>
       <Row>
         {favorites.map((job) => (
           <Col md={6} lg={4} key={job._id} className="mb-3">

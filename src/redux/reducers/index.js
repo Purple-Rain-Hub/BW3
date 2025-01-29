@@ -2,6 +2,7 @@ const initialState = {
   myProfile: {},
   experience: [],
   posts: [],
+  favorites: [], // Aggiungi questa riga
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -20,6 +21,16 @@ const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: action.payload,
+      };
+    case "ADD_TO_FAVORITES":
+      return {
+        ...state,
+        favorites: [...state.favorites, action.payload],
+      };
+    case "REMOVE_FROM_FAVORITES":
+      return {
+        ...state,
+        favorites: state.favorites.filter((job) => job._id !== action.payload),
       };
     default:
       return state;

@@ -185,7 +185,7 @@ const NavBar = () => {
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      <div className="d-flex flex-column align-items-center">
+                      <div className="d-flex flex-column align-items-center custom-dropdown">
                         <BsGrid3X3Gap />
                         <div>
                           Per le Aziende{" "}

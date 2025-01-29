@@ -1,11 +1,11 @@
+import "./App.css";
+import HomePage from "./components/HomePage";
+import JobsPage from "./components/JobsPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
-import HomePage from "./components/HomePage";
 import ProfilePage from "./components/ProfilePage";
-import JobsPage from "./components/JobsPage";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+import Footer from "./components/Footer";
+import FavoritesPage from "./components/FavoritesPage";
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/jobs" element={<JobsPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />{" "}
         </Routes>
         <Footer />
       </>

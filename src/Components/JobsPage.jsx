@@ -1,19 +1,23 @@
-import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
-import BorsaLavoro from "../assets/BorsaLavoro.svg";
 import { useState, useEffect } from "react";
+import { Bookmark, BookmarkFill, ListUl } from "react-bootstrap-icons";
 import NewOfferJob from "../assets/NewOfferJob.svg";
-import { BookmarkFill, ListUl } from "react-bootstrap-icons";
-//  seLocation per accedere ai parametri dell'URL
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import BorsaLavoro from "../assets/BorsaLavoro.svg";
+import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { addToFavorites, removeFromFavorites } from "../redux/action";
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.favorites);
   const jobsPerPage = 10;
 
-  // Usa useLocation per ottenere l'oggetto location corrente
+  const navigate = useNavigate();
+  // useLocation per ottenere l'oggetto location corrente
   const location = useLocation();
   useEffect(() => {
     // Estrai i parametri di ricerca dall'URL
@@ -71,6 +75,17 @@ const JobsPage = () => {
     }
   };
 
+  const toggleFavorite = (job) => {
+    if (favorites.some((fav) => fav._id === job._id)) {
+      dispatch(removeFromFavorites(job._id));
+    } else {
+      dispatch(addToFavorites(job));
+    }
+  };
+
+  const handleFavoritesClick = () => {
+    navigate("/favorites");
+  };
   return (
     <Container
       fluid
@@ -83,11 +98,20 @@ const JobsPage = () => {
           <Col md={3}>
             <Card>
               <Card.Body>
-                <Button className="jobsButton1 d-flex align-items-center py-3 w-100">
+                <Button
+                  className="jobsButton1 d-flex align-items-center py-3 w-100"
+                  variant="outline-dark"
+                  style={{ border: "0px" }}
+                >
                   <ListUl className="me-2" size={32} />
                   <strong>Preferenze</strong>
                 </Button>
-                <Button className="jobsButton1 d-flex align-items-center my-3 py-3 w-100">
+                <Button
+                  className="jobsButton1 d-flex align-items-center my-3 py-3 w-100"
+                  onClick={handleFavoritesClick}
+                  variant="outline-dark"
+                  style={{ border: "0px" }}
+                >
                   <BookmarkFill className="me-2" size={32} />
                   <strong>Le mie offerte di lavoro</strong>
                 </Button>
@@ -144,7 +168,19 @@ const JobsPage = () => {
                   currentJobs.map((job) => (
                     <div key={job._id} className="card mb-3">
                       <div className="card-body">
-                        <h5 className="card-title">{job.title}</h5>
+                        <div className="d-flex justify-content-between align-items-start">
+                          <h5 className="card-title">{job.title}</h5>
+                          <button
+                            className="btn btn-link p-0"
+                            onClick={() => toggleFavorite(job)}
+                          >
+                            {favorites.some((fav) => fav._id === job._id) ? (
+                              <BookmarkFill size={24} />
+                            ) : (
+                              <Bookmark size={24} />
+                            )}
+                          </button>
+                        </div>
                         <p className="card-text">
                           <strong>Azienda:</strong> {job.company_name}
                         </p>
