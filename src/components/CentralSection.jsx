@@ -73,7 +73,7 @@ function CentralSection() {
       area: "",
       description: "",
     });
-    dispatch(getExperience());
+    // dispatch(getExperience());
   };
 
   const handlePutExperience = (e) => {

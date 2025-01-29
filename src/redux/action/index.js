@@ -91,14 +91,11 @@ export const postExperience = (experienceData) => {
       })
       if (response.ok) {
         const data = await response.json()
-        console.log("OIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII" + data._id);
-        new Promise((resolve) => {
-          dispatch({
-            type: "NEWEXPERIENCE_ID",
-            payload: data._id
-          });
-          resolve(data);
-        })
+        dispatch({
+          type: "NEWEXPERIENCE_ID",
+          payload: data._id
+        });
+        dispatch(getExperience());
       }
       else throw new Error("errore nel POST della experience");
     } catch (error) {
@@ -108,7 +105,7 @@ export const postExperience = (experienceData) => {
 }
 
 export const postExpPic = (expPicData, expId) => {
-  return async () => {
+  return async (dispatch) => {
     console.log("GUARDA QUESTI DUE LOG SOTTO!!!!!!!!!!!!");
 
     console.log(expPicData);
@@ -125,6 +122,7 @@ export const postExpPic = (expPicData, expId) => {
       )
       if (response.ok) {
         console.log(response);
+        dispatch(getExperience());
       }
       else throw new Error("errore nel POST della expPic")
     } catch (error) {
