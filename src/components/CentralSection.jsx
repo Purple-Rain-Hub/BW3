@@ -86,7 +86,6 @@ function CentralSection() {
       area: "",
       description: "",
     });
-    // dispatch(getExperience());
   };
 
   const handlePutExperience = (e) => {
@@ -939,7 +938,14 @@ function CentralSection() {
           <p>Sei sicuro di voler eliminare questa esperienza?</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={()=>{dispatch(deleteExp(delId))}}>SI ELIMINA</Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              dispatch(deleteExp(delId));
+            }}
+          >
+            SI ELIMINA
+          </Button>
           <Button variant="secondary" onClick={handleCloseExperienceDel}>
             NO
           </Button>

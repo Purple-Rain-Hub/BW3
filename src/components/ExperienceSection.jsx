@@ -8,10 +8,6 @@ const ExperienceSection = () => {
   });
   const dispatch = useDispatch();
 
-  // const [showExperienceDel, setShowExperienceDel] = useState(false);
-  // const handleCloseExperienceDel = () => setShowExperienceDel(false);
-  // setShowExperienceDel(true) ERA NEL ON CLICK
-
   return (
     <>
       <div className="p-3">
