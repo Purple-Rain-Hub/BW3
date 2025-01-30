@@ -425,3 +425,34 @@ export const deleteComment = (commentId) => {
     }
   };
 };
+
+export const putComment = (comment, rate, elementId, commentId) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/comments/" + commentId,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + myTokenForComments,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+          body: JSON.stringify({
+            comment: comment,
+            rate: rate,
+            elementId: elementId,
+          }),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        dispatch(getComments());
+      } else {
+        throw new Error("errore nella response di putComment");
+      }
+    } catch (error) {
+      console.error("ERRORE FETCH:" + error);
+    }
+  };
+};

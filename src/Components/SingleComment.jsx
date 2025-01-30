@@ -6,6 +6,7 @@ import { postComment } from "../redux/action";
 import * as Icon from "react-bootstrap-icons";
 import { useDispatch } from "react-redux";
 import { deleteComment } from "../redux/action";
+import { putComment } from "../redux/action";
 
 function SingleComment(props) {
   const postId = props.postId;
@@ -13,10 +14,14 @@ function SingleComment(props) {
 
   const [writtenComment, setWrittenComment] = useState("");
   const [rateStars, setRateStars] = useState(0);
-  const [showModifyComment, setShowModifyComment] = useState(false);
+  const [modifyCommentId, setModifyCommentId] = useState(null);
+  const [modifyingComment, setModifyingComment] = useState("");
+  const [modifyingRateStars, setModifyingRateStars] = useState(0);
 
   const handlePublishComment = function () {
     if (rateStars > 0) {
+      setWrittenComment("");
+      setRateStars(0);
       dispatch(postComment(writtenComment, rateStars, postId));
     } else {
       alert("Valuta il post.");
@@ -25,6 +30,24 @@ function SingleComment(props) {
 
   const handleDeleteComment = function (commentId) {
     dispatch(deleteComment(commentId));
+  };
+
+  const handleModifyComment = function () {
+    if (modifyingRateStars > 0) {
+      setModifyCommentId(null);
+      setModifyingComment("");
+      setModifyingRateStars(0);
+      dispatch(
+        putComment(
+          modifyingComment,
+          modifyingRateStars,
+          postId,
+          modifyCommentId
+        )
+      );
+    } else {
+      alert("Valuta il post.");
+    }
   };
 
   const comments = useSelector((state) => {
@@ -80,7 +103,7 @@ function SingleComment(props) {
                 setRateStars(parseInt(e.target.value));
               }}
             >
-              <option>Valuta il post</option>
+              <option value="0">Valuta il post</option>
               <option>1</option>
               <option>2</option>
               <option>3</option>
@@ -128,10 +151,32 @@ function SingleComment(props) {
                     </Card.Text>
                     {authorComment === comment.author && (
                       <div className="d-flex align-self-center gap-3">
+                        {modifyCommentId === comment._id && (
+                          <Icon.Check
+                            onClick={(e) => {
+                              e.preventDefault();
+                              if (modifyingComment) {
+                                handleModifyComment();
+                              } else {
+                                alert("Scrivi qualcosa.");
+                              }
+                            }}
+                            className="align-self-center text-success"
+                            style={{ cursor: "pointer", fontSize: "24px" }}
+                          />
+                        )}
                         <Icon.Pencil
                           onClick={(e) => {
                             e.preventDefault();
-                            setShowModifyComment(!showModifyComment);
+                            setModifyCommentId(
+                              modifyCommentId === comment._id
+                                ? null
+                                : comment._id
+                            );
+                            setModifyingComment(comment.comment);
+                            if (comment.rate) {
+                              setModifyingRateStars(comment.rate);
+                            }
                           }}
                           className="align-self-center text-warning"
                           style={{ cursor: "pointer", fontSize: "18px" }}
@@ -150,12 +195,39 @@ function SingleComment(props) {
 
                   <hr className="m-0" />
                   {comment.rate &&
-                    !showModifyComment &&
+                    modifyCommentId !== comment._id &&
                     [...Array(comment.rate)].map((_, i) => (
                       <Icon.StarFill key={i} className="text-info" />
                     ))}
-                  {!showModifyComment && (
+                  {modifyCommentId !== comment._id && (
                     <Card.Text>{comment.comment}</Card.Text>
+                  )}
+                  {modifyCommentId === comment._id && comment.rate && (
+                    <Form.Select
+                      className="my-3"
+                      value={modifyingRateStars}
+                      onChange={(e) => {
+                        setModifyingRateStars(parseInt(e.target.value));
+                      }}
+                    >
+                      <option value="0">Valuta il post</option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                    </Form.Select>
+                  )}
+                  {modifyCommentId === comment._id && (
+                    <Form.Control
+                      value={modifyingComment}
+                      onChange={(e) => {
+                        setModifyingComment(e.target.value);
+                      }}
+                      type="text"
+                      placeholder="Commenta..."
+                      style={{ borderRadius: "25px", fontWeight: "600" }}
+                    />
                   )}
                 </div>
               );
