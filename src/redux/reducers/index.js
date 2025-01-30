@@ -8,6 +8,10 @@ const initialState = {
   postedPostId: "",
   comments: [],
   authorComment: "",
+  showExperienceDel: {
+    show: false,
+    id: ""
+  }
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -62,6 +66,11 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         authorComment: action.payload,
       };
+    case "SHOW_EXPERIENCE_DEL":
+      return {
+        ...state,
+        showExperienceDel: action.payload
+      }
     default:
       return state;
   }

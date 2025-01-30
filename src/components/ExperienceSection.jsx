@@ -33,22 +33,37 @@ const ExperienceSection = () => {
                   <h6 className="m-0">{e.role}</h6>
                   <p className="m-0">{e.company}</p>
                   <p className="m-0 fw-lighter">
-                    Da <span>{startDate.toLocaleDateString()}</span> A{" "}
-                    <span>{endDate.toLocaleDateString()}</span>
+                    Da <span>{startDate.toLocaleDateString()}</span>
+                    {e.endDate && (
+                      <span> A {endDate.toLocaleDateString()}</span>
+                    )}
                   </p>
                   <p className="m-0 fw-lighter">{e.area}</p>
                   <p className="m-0">{e.description}</p>
                 </div>
               </div>
               <div style={{ width: "fit-content" }}>
-                <button className="btn">
+                <button
+                  className="btn"
+                  onClick={() => {
+                    dispatch(getExpForPut(e._id));
+                  }}
+                >
                   <Icon.Pencil
                     className="align-self-center"
                     style={{ cursor: "pointer", color: "#0B66C2" }}
-                    onClick={() => {
-                      dispatch(getExpForPut(e._id));
-                    }}
                   />
+                </button>
+                <button
+                  className="btn"
+                  onClick={() => {
+                    dispatch({
+                      type: "SHOW_EXPERIENCE_DEL",
+                      payload: { show: true, id: e._id },
+                    });
+                  }}
+                >
+                  <Icon.XLg />
                 </button>
               </div>
             </div>
