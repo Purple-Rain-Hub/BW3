@@ -219,15 +219,26 @@ function SingleComment(props) {
                     </Form.Select>
                   )}
                   {modifyCommentId === comment._id && (
-                    <Form.Control
-                      value={modifyingComment}
-                      onChange={(e) => {
-                        setModifyingComment(e.target.value);
+                    <Form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        if (modifyingComment) {
+                          handleModifyComment();
+                        } else {
+                          alert("Scrivi qualcosa.");
+                        }
                       }}
-                      type="text"
-                      placeholder="Commenta..."
-                      style={{ borderRadius: "25px", fontWeight: "600" }}
-                    />
+                    >
+                      <Form.Control
+                        value={modifyingComment}
+                        onChange={(e) => {
+                          setModifyingComment(e.target.value);
+                        }}
+                        type="text"
+                        placeholder="Commenta..."
+                        style={{ borderRadius: "25px", fontWeight: "600" }}
+                      />
+                    </Form>
                   )}
                 </div>
               );
