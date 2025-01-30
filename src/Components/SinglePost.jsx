@@ -5,11 +5,12 @@ import { HandThumbsUp, ChatDots } from "react-bootstrap-icons";
 //import send from "../assets/send.svg";
 import * as Icon from "react-bootstrap-icons";
 import { myID } from "../redux/action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deletePost } from "../redux/action";
 import { modifyPost } from "../redux/action";
 import { useEffect, useState } from "react";
 import { setPostPic } from "../redux/action";
+import SingleComment from "./SingleComment";
 
 function SinglePost(props) {
   const [showModify, setShowModify] = useState(false);
@@ -17,8 +18,13 @@ function SinglePost(props) {
   const [postIdWithPicToChange, setPostIdWithPicToChange] = useState("");
   const [changingPic, setChangingPic] = useState(null);
   const [okToModify, setOkToModify] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
   const dispatch = useDispatch();
+
+  const comments = useSelector((state) => {
+    return state.comments;
+  });
 
   const handleDelete = function (postId) {
     dispatch(deletePost(postId));
@@ -121,8 +127,29 @@ function SinglePost(props) {
               <Button variant="light" className="commentButton">
                 <HandThumbsUp /> Consiglia
               </Button>
-              <Button variant="light" className="commentButton">
-                <ChatDots /> Commenta
+              <Button
+                variant="light"
+                className="commentButton"
+                onClick={() => {
+                  setShowComments(!showComments);
+                }}
+              >
+                <ChatDots /> Commenti
+                {comments.filter((comment) => {
+                  return comment.elementId === props.post._id;
+                }).length !== 0 ? (
+                  <>
+                    {" ("}
+                    {
+                      comments.filter((comment) => {
+                        return comment.elementId === props.post._id;
+                      }).length
+                    }
+                    {")"}
+                  </>
+                ) : (
+                  ""
+                )}
               </Button>
             </>
           ) : (
@@ -141,16 +168,18 @@ function SinglePost(props) {
               <Icon.Check style={{ fontSize: "28px" }} /> Aggiorna post
             </Button>
           )}
+
           {myID === props.post.user._id ? (
             <Button
               onClick={() => {
                 setModifiedPost(props.post.text);
                 setShowModify(!showModify);
+                setShowComments(false);
               }}
               variant="light"
               className="commentButton text-warning fw-bold"
             >
-              <Icon.Pencil className="text-warning" />{" "}
+              <Icon.Pencil className="text-warning" />
               {showModify ? "Annulla..." : "Modifica"}
             </Button>
           ) : (
@@ -190,6 +219,7 @@ function SinglePost(props) {
             </Button>
           )}
         </div>
+        {showComments && <SingleComment postId={props.post._id} />}
       </Card.Body>
     </Card>
   );

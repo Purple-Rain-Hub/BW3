@@ -2,6 +2,9 @@ export const myID = "6797508916f6350015fecb84";
 const myToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzk3NTA4OTE2ZjYzNTAwMTVmZWNiODQiLCJpYXQiOjE3Mzc5Njk4MDEsImV4cCI6MTczOTE3OTQwMX0.gV22i7NwH_DHYfKE81N9UEY1Up6WHrH2EPIoPu8OD9w";
 
+const myTokenForComments =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzViZjcxMWQyMjA3MTAwMTVkZTJmM2MiLCJpYXQiOjE3MzgyMjQ0NTksImV4cCI6MTczOTQzNDA1OX0.mj86CMTmgMJdD8tPTdXmtlNLlxC-t7bt7IyvVqs3gc0";
+
 export const getMyProfile = () => {
   return async (dispatch) => {
     try {
@@ -34,8 +37,8 @@ export const getExperience = () => {
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/" +
-        myID +
-        "/experiences",
+          myID +
+          "/experiences",
         {
           headers: {
             Authorization: "Bearer " + myToken,
@@ -63,8 +66,8 @@ export const postPropic = (propicData) => {
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/" +
-        myID +
-        "/picture",
+          myID +
+          "/picture",
         {
           method: "POST",
           body: propicData,
@@ -87,8 +90,8 @@ export const postExperience = (experienceData) => {
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/" +
-        myID +
-        "/experiences",
+          myID +
+          "/experiences",
         {
           method: "POST",
           body: JSON.stringify(experienceData),
@@ -97,16 +100,15 @@ export const postExperience = (experienceData) => {
             "Content-type": "application/json; charset=UTF-8",
           },
         }
-      )
+      );
       if (response.ok) {
-        const data = await response.json()
+        const data = await response.json();
         dispatch({
           type: "NEWEXPERIENCE_ID",
-          payload: data._id
+          payload: data._id,
         });
         dispatch(getExperience());
-      }
-      else throw new Error("errore nel POST della experience");
+      } else throw new Error("errore nel POST della experience");
     } catch (error) {
       console.error(error);
     }
@@ -121,68 +123,83 @@ export const postExpPic = (expPicData, expId) => {
     console.log(expId);
 
     try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/experiences/" + expId + "/picture", {
-        method: "POST",
-        body: expPicData,
-        headers: {
-          "Authorization": "Bearer " + myToken,
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/" +
+          myID +
+          "/experiences/" +
+          expId +
+          "/picture",
+        {
+          method: "POST",
+          body: expPicData,
+          headers: {
+            Authorization: "Bearer " + myToken,
+          },
         }
-      }
-      )
+      );
       if (response.ok) {
         console.log(response);
         dispatch(getExperience());
-      }
-      else throw new Error("errore nel POST della expPic")
+      } else throw new Error("errore nel POST della expPic");
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-}
+  };
+};
 
 export const getExpForPut = (id) => {
   return async (dispatch) => {
     try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/experiences/" + id, {
-        headers: {
-          Authorization: "Bearer " + myToken,
-        },
-      })
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/" +
+          myID +
+          "/experiences/" +
+          id,
+        {
+          headers: {
+            Authorization: "Bearer " + myToken,
+          },
+        }
+      );
       if (response.ok) {
-        const data = await response.json()
+        const data = await response.json();
         console.log(data);
         dispatch({
           type: "GET_EXPFORPUT",
-          payload: data
-        })
-      }
-      else throw new Error("errore nella get della exp per il PUT");
+          payload: data,
+        });
+      } else throw new Error("errore nella get della exp per il PUT");
     } catch (error) {
-      console.error("ERRORE:" + error)
+      console.error("ERRORE:" + error);
     }
-  }
-}
+  };
+};
 
 export const putExperience = (exp, id) => {
   return async () => {
     try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/experiences/" + id._id, {
-        method: "PUT",
-        body: JSON.stringify(exp),
-        headers: {
-          "Authorization": "Bearer " + myToken,
-          "Content-type": "application/json; charset=UTF-8",
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/" +
+          myID +
+          "/experiences/" +
+          id._id,
+        {
+          method: "PUT",
+          body: JSON.stringify(exp),
+          headers: {
+            Authorization: "Bearer " + myToken,
+            "Content-type": "application/json; charset=UTF-8",
+          },
         }
-      })
+      );
       if (response.ok) {
-        console.log("PUTEXP RESPONSE" + response)
-      }
-      else throw new Error("errore nella PUT dell'experience");
+        console.log("PUTEXP RESPONSE" + response);
+      } else throw new Error("errore nella PUT dell'experience");
     } catch (error) {
-      console.error("ERRORE:", error)
+      console.error("ERRORE:", error);
     }
-  }
-}
+  };
+};
 
 export const getAllPosts = () => {
   return async (dispatch) => {
@@ -315,6 +332,33 @@ export const setPostPic = (pic, postId) => {
         dispatch(getAllPosts());
       } else {
         throw new Error("errore nella response di setPostPic");
+      }
+    } catch (error) {
+      console.error("ERRORE FETCH:" + error);
+    }
+  };
+};
+
+export const getComments = () => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/comments/",
+        {
+          headers: {
+            Authorization: "Bearer " + myTokenForComments,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        dispatch({
+          type: "GET_COMMENTS",
+          payload: data,
+        });
+      } else {
+        throw new Error("errore nella response di getComments");
       }
     } catch (error) {
       console.error("ERRORE FETCH:" + error);

@@ -5,6 +5,7 @@ const initialState = {
   newExperienceId: {},
   expForPut: {},
   postedPostId: "",
+  comments: [],
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -27,17 +28,22 @@ const mainReducer = (state = initialState, action) => {
     case "NEWEXPERIENCE_ID":
       return {
         ...state,
-        newExperienceId: action.payload
-      }
+        newExperienceId: action.payload,
+      };
     case "GET_EXPFORPUT":
       return {
         ...state,
-        expForPut: action.payload
-      }
+        expForPut: action.payload,
+      };
     case "GET_POSTEDPOST_ID":
       return {
         ...state,
         postedPostId: action.payload,
+      };
+    case "GET_COMMENTS":
+      return {
+        ...state,
+        comments: action.payload,
       };
     default:
       return state;
