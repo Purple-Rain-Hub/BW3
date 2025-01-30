@@ -10,6 +10,7 @@ import { deletePost } from "../redux/action";
 import { modifyPost } from "../redux/action";
 import { useEffect, useState } from "react";
 import { setPostPic } from "../redux/action";
+import { Link } from "react-router-dom";
 import SingleComment from "./SingleComment";
 
 function SinglePost(props) {
@@ -18,6 +19,7 @@ function SinglePost(props) {
   const [postIdWithPicToChange, setPostIdWithPicToChange] = useState("");
   const [changingPic, setChangingPic] = useState(null);
   const [okToModify, setOkToModify] = useState(false);
+  const [liked, setLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [isPicRemoved, setIsPicRemoved] = useState(false);
   const [picAgain, setPicAgain] = useState(false);
@@ -63,15 +65,25 @@ function SinglePost(props) {
     <Card className="mb-2">
       <Card.Body>
         <div className="d-flex align-items-center mb-3">
-          <Image
-            src={props.post.user.image}
-            roundedCircle
-            className="me-2"
-            width="48"
-            height="48"
-          />
+          <Link to={`/user/${props.post.user._id}`}>
+            <Image
+              src={props.post.user.image}
+              roundedCircle
+              className="me-2"
+              width="48"
+              height="48"
+              style={{ cursor: "pointer" }}
+            />
+          </Link>
           <div>
-            <h6 className="mb-0">{`${props.post.user.name} ${props.post.user.surname}`}</h6>
+            <h6 className="mb-0">
+              <Link
+                to={`/user/${props.post.user._id}`}
+                className="text-decoration-none text-dark fw-bold"
+              >
+                {`${props.post.user.name} ${props.post.user.surname}`}
+              </Link>
+            </h6>
             <small className="text-muted">
               992.394 follower <br /> Post sponsorizzato
             </small>
@@ -146,8 +158,11 @@ function SinglePost(props) {
         <div className="d-flex justify-content-between">
           {!showModify ? (
             <>
-              {" "}
-              <Button variant="light" className="commentButton">
+              <Button
+                variant="light"
+                className={`commentButton ${liked ? "active" : ""}`}
+                onClick={() => setLiked(!liked)}
+              >
                 <HandThumbsUp /> Consiglia
               </Button>
               <Button
