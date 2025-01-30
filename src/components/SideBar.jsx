@@ -1,6 +1,7 @@
 import * as Icon from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Container } from "react-bootstrap";
 
 const SideBar = () => {
   const [profiles, setProfiles] = useState([]);
@@ -41,163 +42,174 @@ const SideBar = () => {
   }, []);
 
   return (
-    <div className="d-flex flex-column align-items-center">
-      <img
-        src="/banner.png"
-        style={{ width: "320px" }}
-        alt="placeholder"
-        className="rounded-3 border-1 border"
-      />
+    <Container className="mt-3 my-3 ">
+      <div className="d-flex flex-column align-items-center">
+        <img
+          src="/banner.png"
+          style={{ width: "320px" }}
+          alt="placeholder"
+          className="rounded-3 border-1 border"
+        />
 
-      <div
-        className="p-4 pb-1 mt-1 bg-white rounded-3 border border-1 d-flex flex-column align-items-center"
-        style={{ minWidth: "320px", maxWidth: "320px" }}
-      >
-        <h4 className="fs-6 m-0 text-start w-100 fw-bold">
-          Altri profili per te
-        </h4>
+        <div
+          className="p-4 pb-1 mt-1 bg-white rounded-3 border border-1 d-flex flex-column align-items-center"
+          style={{ minWidth: "320px", maxWidth: "320px" }}
+        >
+          <h4 className="fs-6 m-0 text-start w-100 fw-bold">
+            Altri profili per te
+          </h4>
 
-        {profiles.map((profile) => (
-          <div
-            key={profile._id}
-            className="d-flex align-items-center border-bottom border-1 py-3 w-100"
-          >
-            <Link to={`/user/${profile._id}`} className="text-decoration-none">
-              <img
-                src={profile.image || "https://placecats.com/700/700"}
-                alt="Profile pic"
-                className="rounded-circle"
-                width="50"
-                height="50"
-              />
-            </Link>
-
-            <div className="ms-2">
-              <h6 className="m-0">
-                <Link
-                  to={`/user/${profile._id}`}
-                  className="text-decoration-none text-dark"
-                >
-                  {profile.name} {profile.surname}
-                </Link>
-                <span className="fw-lighter"> · 3°+</span>
-              </h6>
-              <p className="mb-2">{profile.title}</p>
-
-              <button
-                type="button"
-                className="btn d-flex align-items-center justify-content-center rounded-pill border border-1 px-3 py-1 fw-medium"
-                style={{ color: "#404040", borderColor: "#404040" }}
+          {profiles.map((profile) => (
+            <div
+              key={profile._id}
+              className="d-flex align-items-center border-bottom border-1 py-3 w-100"
+            >
+              <Link
+                to={`/user/${profile._id}`}
+                className="text-decoration-none"
               >
-                <Icon.PersonFillAdd className="me-2" />
-                Collegati
-              </button>
-            </div>
-          </div>
-        ))}
+                <img
+                  src={profile.image || "https://placecats.com/700/700"}
+                  alt="Profile pic"
+                  className="rounded-circle"
+                  width="50"
+                  height="50"
+                />
+              </Link>
 
-        <h6 className="text-center mt-3">Mostra tutto</h6>
-      </div>
+              <div className="ms-2">
+                <h6 className="m-0">
+                  <Link
+                    to={`/user/${profile._id}`}
+                    className="text-decoration-none text-dark"
+                  >
+                    {profile.name} {profile.surname}
+                  </Link>
+                  <span className="fw-lighter"> · 3°+</span>
+                </h6>
+                <p className="mb-2">{profile.title}</p>
 
-      <div
-        className="p-4 pb-1 mt-1 bg-white rounded-3 border border-1 d-flex flex-column align-items-center"
-        style={{ minWidth: "320px", maxWidth: "320px" }}
-      >
-        <h4 className="fs-6 m-0 text-start w-100 fw-bold">
-          Esplora i profili Premium
-        </h4>
-        {suggestedProfiles.map((profile) => (
-          <div
-            key={profile._id}
-            className="d-flex align-items-center border-bottom border-1 py-3 w-100"
-          >
-            <Link to={`/user/${profile._id}`} className="text-decoration-none">
-              <img
-                src={profile.image || "https://placecats.com/700/700"}
-                alt="Profile pic"
-                className="rounded-circle"
-                width="50"
-                height="50"
-              />
-            </Link>
-            <div className="ms-2">
-              <h6 className="m-0">
-                <Link
-                  to={`/user/${profile._id}`}
-                  className="text-decoration-none text-dark"
+                <button
+                  type="button"
+                  className="btn d-flex align-items-center justify-content-center rounded-pill border border-1 px-3 py-1 fw-medium"
+                  style={{ color: "#404040", borderColor: "#404040" }}
                 >
-                  {profile.name} {profile.surname}
-                </Link>
-              </h6>
-              <p className="mb-2">{profile.title}</p>
-
-              <button
-                type="button"
-                className="btn rounded-pill d-flex align-items-center justify-content-center border border-1 border-secondary text-secondary px-3 py-1 fw-medium"
-              >
-                <Icon.Plus className="me-1" />
-                Segui
-              </button>
+                  <Icon.PersonFillAdd className="me-2" />
+                  Collegati
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        <h6 className="text-center mt-3">Mostra tutto</h6>
-      </div>
+          <h6 className="text-center mt-3">Mostra tutto</h6>
+        </div>
 
-      <div
-        className="p-4 pb-1 mt-1 bg-white rounded-3 border border-1 d-flex flex-column align-items-center"
-        style={{ minWidth: "320px", maxWidth: "320px" }}
-      >
-        <h4 className="fs-6 m-0 text-start w-100 fw-bold">
-          Persone che potresti conoscere
-        </h4>
-        {peopleYouMayKnow.map((profile) => (
-          <div
-            key={profile._id}
-            className="d-flex align-items-center border-bottom border-1 py-3 w-100"
-          >
-            <Link to={`/user/${profile._id}`} className="text-decoration-none">
-              <img
-                src={profile.image || "https://placecats.com/700/700"}
-                alt="Profile pic"
-                className="rounded-circle"
-                width="50"
-                height="50"
-              />
-            </Link>
-            <div className="ms-2">
-              <h6 className="m-0">
-                <Link
-                  to={`/user/${profile._id}`}
-                  className="text-decoration-none text-dark"
+        <div
+          className="p-4 pb-1 mt-1 bg-white rounded-3 border border-1 d-flex flex-column align-items-center"
+          style={{ minWidth: "320px", maxWidth: "320px" }}
+        >
+          <h4 className="fs-6 m-0 text-start w-100 fw-bold">
+            Esplora i profili Premium
+          </h4>
+          {suggestedProfiles.map((profile) => (
+            <div
+              key={profile._id}
+              className="d-flex align-items-center border-bottom border-1 py-3 w-100"
+            >
+              <Link
+                to={`/user/${profile._id}`}
+                className="text-decoration-none"
+              >
+                <img
+                  src={profile.image || "https://placecats.com/700/700"}
+                  alt="Profile pic"
+                  className="rounded-circle"
+                  width="50"
+                  height="50"
+                />
+              </Link>
+              <div className="ms-2">
+                <h6 className="m-0">
+                  <Link
+                    to={`/user/${profile._id}`}
+                    className="text-decoration-none text-dark"
+                  >
+                    {profile.name} {profile.surname}
+                  </Link>
+                </h6>
+                <p className="mb-2">{profile.title}</p>
+
+                <button
+                  type="button"
+                  className="btn rounded-pill d-flex align-items-center justify-content-center border border-1 border-secondary text-secondary px-3 py-1 fw-medium"
                 >
-                  {profile.name} {profile.surname}
-                </Link>
-              </h6>
-              <p className="mb-2">{profile.title}</p>
-
-              <button
-                type="button"
-                className="btn rounded-pill d-flex align-items-center justify-content-center border border-1 border-secondary text-secondary px-3 py-1 fw-medium"
-              >
-                <Icon.PersonFillAdd className="me-2" />
-                Collegati
-              </button>
+                  <Icon.Plus className="me-1" />
+                  Segui
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        <h6 className="text-center mt-3">Mostra tutto</h6>
+          <h6 className="text-center mt-3">Mostra tutto</h6>
+        </div>
+
+        <div
+          className="p-4 pb-1 mt-1 bg-white rounded-3 border border-1 d-flex flex-column align-items-center"
+          style={{ minWidth: "320px", maxWidth: "320px" }}
+        >
+          <h4 className="fs-6 m-0 text-start w-100 fw-bold">
+            Persone che potresti conoscere
+          </h4>
+          {peopleYouMayKnow.map((profile) => (
+            <div
+              key={profile._id}
+              className="d-flex align-items-center border-bottom border-1 py-3 w-100"
+            >
+              <Link
+                to={`/user/${profile._id}`}
+                className="text-decoration-none"
+              >
+                <img
+                  src={profile.image || "https://placecats.com/700/700"}
+                  alt="Profile pic"
+                  className="rounded-circle"
+                  width="50"
+                  height="50"
+                />
+              </Link>
+              <div className="ms-2">
+                <h6 className="m-0">
+                  <Link
+                    to={`/user/${profile._id}`}
+                    className="text-decoration-none text-dark"
+                  >
+                    {profile.name} {profile.surname}
+                  </Link>
+                </h6>
+                <p className="mb-2">{profile.title}</p>
+
+                <button
+                  type="button"
+                  className="btn rounded-pill d-flex align-items-center justify-content-center border border-1 border-secondary text-secondary px-3 py-1 fw-medium"
+                >
+                  <Icon.PersonFillAdd className="me-2" />
+                  Collegati
+                </button>
+              </div>
+            </div>
+          ))}
+
+          <h6 className="text-center mt-3">Mostra tutto</h6>
+        </div>
+
+        <img
+          src="/banner.png"
+          style={{ width: "320px", marginTop: "10px" }}
+          alt="placeholder"
+          className="rounded-3 border-1 border"
+        />
       </div>
-
-      <img
-        src="/banner.png"
-        style={{ width: "320px", marginTop: "10px" }}
-        alt="placeholder"
-        className="rounded-3 border-1 border"
-      />
-    </div>
+    </Container>
   );
 };
 
