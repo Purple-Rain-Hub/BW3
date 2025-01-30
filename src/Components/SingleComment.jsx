@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { postComment } from "../redux/action";
@@ -57,10 +57,6 @@ function SingleComment(props) {
   const authorComment = useSelector((state) => {
     return state.authorComment || "samu.converso@gmail.com";
   });
-
-  useEffect(() => {
-    // roba
-  }, []);
 
   return (
     <>
