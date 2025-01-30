@@ -21,6 +21,7 @@ import { useState } from "react";
 import { sendPost } from "../redux/action";
 import { setPostPic } from "../redux/action";
 import { getComments } from "../redux/action";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [writtenPost, setWrittenPost] = useState("");
