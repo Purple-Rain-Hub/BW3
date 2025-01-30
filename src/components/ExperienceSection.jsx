@@ -8,6 +8,10 @@ const ExperienceSection = () => {
   });
   const dispatch = useDispatch();
 
+  // const [showExperienceDel, setShowExperienceDel] = useState(false);
+  // const handleCloseExperienceDel = () => setShowExperienceDel(false);
+  // setShowExperienceDel(true) ERA NEL ON CLICK
+
   return (
     <>
       <div className="p-3">
@@ -47,6 +51,17 @@ const ExperienceSection = () => {
                       dispatch(getExpForPut(e._id));
                     }}
                   />
+                </button>
+                <button
+                  className="btn"
+                  onClick={() => {
+                    dispatch({
+                      type: "SHOW_EXPERIENCE_DEL",
+                      payload: { show: true, id: e._id },
+                    });
+                  }}
+                >
+                  <Icon.XLg />
                 </button>
               </div>
             </div>

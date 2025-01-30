@@ -5,6 +5,10 @@ const initialState = {
   newExperienceId: {},
   expForPut: {},
   postedPostId: "",
+  showExperienceDel: {
+    show: false,
+    id: ""
+  }
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -39,6 +43,11 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         postedPostId: action.payload,
       };
+    case "SHOW_EXPERIENCE_DEL":
+      return {
+        ...state,
+        showExperienceDel: action.payload
+      }
     default:
       return state;
   }

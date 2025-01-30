@@ -3,6 +3,7 @@ import * as Icon from "react-bootstrap-icons";
 import ExperienceSection from "./ExperienceSection";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteExp,
   getExperience,
   getMyProfile,
   postExperience,
@@ -34,6 +35,12 @@ function CentralSection() {
   const handleShowExperience = () => setShowExperience(true);
   const handleCloseExperience = () => setShowExperience(false);
   const handleCloseExperiencePut = () => setShowExperiencePut(false);
+  const handleCloseExperienceDel = () => {
+    dispatch({
+      type: "SHOW_EXPERIENCE_DEL",
+      payload: false,
+    });
+  };
 
   const dispatch = useDispatch();
 
@@ -45,6 +52,12 @@ function CentralSection() {
   });
   const expForPut = useSelector((state) => {
     return state.expForPut;
+  });
+  const showExperienceDel = useSelector((state) => {
+    return state.showExperienceDel.show;
+  });
+  const delId = useSelector((state) => {
+    return state.showExperienceDel.id;
   });
 
   const handlePropic = (e) => {
@@ -913,6 +926,22 @@ function CentralSection() {
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseExperiencePut}>
             Chiudi
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* MODALE PER LA DELETE DI EXP */}
+      <Modal show={showExperienceDel} onHide={handleCloseExperienceDel}>
+        <Modal.Header closeButton>
+          <Modal.Title>ELIMINARE Esperienza?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Sei sicuro di voler eliminare questa esperienza?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={()=>{dispatch(deleteExp(delId))}}>SI ELIMINA</Button>
+          <Button variant="secondary" onClick={handleCloseExperienceDel}>
+            NO
           </Button>
         </Modal.Footer>
       </Modal>
