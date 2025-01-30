@@ -206,6 +206,27 @@ export const deleteExp = (id) => {
   }
 }
 
+export const putProfile = (profile) => {
+  return async () => {
+    try {
+      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/", {
+        method: "PUT",
+        body: JSON.stringify(profile),
+        headers: {
+          "Authorization": "Bearer " + myToken,
+          "Content-type": "application/json; charset=UTF-8",
+        }
+      })
+      if (response.ok) {
+        console.log("PUT PROFILE RESPONSE" + response)
+      }
+      else throw new Error("errore nella PUT dell'profile");
+    } catch (error) {
+      console.error("ERRORE:", error)
+    }
+  }
+}
+
 export const getAllPosts = () => {
   return async (dispatch) => {
     try {

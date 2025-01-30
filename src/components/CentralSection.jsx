@@ -10,6 +10,7 @@ import {
   postExpPic,
   postPropic,
   putExperience,
+  putProfile,
 } from "../redux/action";
 import { useEffect, useState } from "react";
 
@@ -17,6 +18,7 @@ function CentralSection() {
   const [show, setShow] = useState(false);
   const [showExperience, setShowExperience] = useState(false);
   const [showExperiencePut, setShowExperiencePut] = useState(false);
+  const [showProfilePut, setShowProfilePut] = useState(false);
 
   const [newExperience, setNewExperience] = useState({
     role: "",
@@ -29,12 +31,15 @@ function CentralSection() {
   const [expForPutState, setExpForPutState] = useState({});
   const [expPic, setExpPic] = useState();
   const [hasPut, setHasPut] = useState(false);
+  const [hasPutProfile, setHasPutProfile] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleShowExperience = () => setShowExperience(true);
   const handleCloseExperience = () => setShowExperience(false);
   const handleCloseExperiencePut = () => setShowExperiencePut(false);
+  const handleCloseProfilePut = () => setShowProfilePut(false);
+
   const handleCloseExperienceDel = () => {
     dispatch({
       type: "SHOW_EXPERIENCE_DEL",
@@ -60,6 +65,8 @@ function CentralSection() {
   const delId = useSelector((state) => {
     return state.showExperienceDel.id;
   });
+
+  const [myProfileInfo, setMyProfileInfo] = useState({});
 
   const handlePropic = (e) => {
     const propicData = new FormData();
@@ -95,7 +102,20 @@ function CentralSection() {
     setHasPut(true);
   };
 
+  const handlePutProfile = (e) => {
+    e.preventDefault();
+    dispatch(putProfile(myProfileInfo));
+    setHasPutProfile(true);
+  };
+
   // USE EFFECT
+  useEffect(() => {
+    if (hasPutProfile) {
+      dispatch(getMyProfile());
+      setHasPutProfile(false);
+    }
+  }, [hasPutProfile]);
+
   useEffect(() => {
     if (hasPut) {
       dispatch(getExperience());
@@ -122,6 +142,18 @@ function CentralSection() {
       });
     }
   }, [expForPut]);
+
+  useEffect(() => {
+    setMyProfileInfo({
+      name: `${myProfile.name}`,
+      surname: `${myProfile.surname}`,
+      email: `${myProfile.email}`,
+      username: `${myProfile.username}`,
+      bio: `${myProfile.bio}`,
+      title: `${myProfile.title}`,
+      area: `${myProfile.area}`,
+    });
+  }, [myProfile]);
 
   return (
     <>
@@ -228,7 +260,9 @@ function CentralSection() {
                   </p>
                 </div>
               </div>
-              <Icon.Pencil className="align-self-center" />
+              <button className="btn" onClick={() => setShowProfilePut(true)}>
+                <Icon.Pencil className="align-self-center" />
+              </button>
             </div>
             <Card.Text className="m-0">{myProfile.title}</Card.Text>
             <div className="d-flex gap-1">
@@ -955,6 +989,115 @@ function CentralSection() {
           </Button>
           <Button variant="secondary" onClick={handleCloseExperienceDel}>
             NO
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* MODALE PER LA PUT DEL PROFILO */}
+      <Modal size="lg" show={showProfilePut} onHide={handleCloseProfilePut}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modifica Profilo</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form onSubmit={handlePutProfile}>
+            <Form.Label className="mt-2 fw-lighter">Nome</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={myProfileInfo.name}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  name: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Cognome</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={myProfileInfo.surname}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  surname: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Email</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={myProfileInfo.email}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  email: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Username</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={myProfileInfo.username}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  username: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Biografia</Form.Label>
+            <Form.Control
+              as="textarea"
+              required
+              value={myProfileInfo.bio}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  bio: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">
+              Occupazione Attuale
+            </Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={myProfileInfo.title}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  title: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Area di Lavoro</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={myProfileInfo.area}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  area: e.target.value,
+                });
+              }}
+            />
+            <Button
+              type="submit"
+              className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"
+            >
+              Salva
+            </Button>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseProfilePut}>
+            Chiudi
           </Button>
         </Modal.Footer>
       </Modal>
