@@ -288,10 +288,14 @@ const NavBar = () => {
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
-                    <li>
-                      <a className="dropdown-item" href="/profile">
-                        Profilo
-                      </a>
+                    <li className="d-flex justify-content-center align-items-center">
+                      <button
+                        className="btn w-90 btn-outline-primary navButtonLink"
+                        style={{ borderRadius: "25px" }}
+                        onClick={() => (window.location.href = "/profile")}
+                      >
+                        Visualizza Profilo
+                      </button>
                     </li>
                     <li>
                       <a className="dropdown-item" href="#">

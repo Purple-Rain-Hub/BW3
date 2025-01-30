@@ -20,7 +20,6 @@ import * as Icon from "react-bootstrap-icons";
 import { useState } from "react";
 import { sendPost } from "../redux/action";
 import { setPostPic } from "../redux/action";
-import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [writtenPost, setWrittenPost] = useState("");
@@ -270,9 +269,7 @@ const HomePage = () => {
                 .slice(posts.length - 25, posts.length)
                 .reverse()
                 .map((post) => {
-                  return (
-                    <SinglePost key={post._id} post={post}/>
-                  );
+                  return <SinglePost key={post._id} post={post} />;
                 })}
 
             {/* <Card>

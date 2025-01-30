@@ -43,6 +43,8 @@ const ExperienceSection = () => {
               <div style={{ width: "fit-content" }}>
                 <button className="btn">
                   <Icon.Pencil
+                    className="align-self-center"
+                    style={{ cursor: "pointer", color: "#0B66C2" }}
                     onClick={() => {
                       dispatch(getExpForPut(e._id));
                     }}
