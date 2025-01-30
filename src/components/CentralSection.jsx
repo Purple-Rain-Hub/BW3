@@ -113,150 +113,75 @@ function CentralSection() {
   return (
     <>
       <Container fluid className="profilePage-container py-3">
-        <div style={{ width: "100%", height: "400px" }}>
+        <div style={{ width: "100%" }}>
           <Card
-            style={{
-              width: "100%",
-              height: "100%",
-              position: "relative",
-              border: "none",
-              borderRadius: "15px",
-            }}
+            style={{ width: "100%", height: "500px", position: "relative" }}
           >
             <Card.Img
               style={{
                 width: "100%",
-                height: "100%",
-                backgroundImage: "url(https://placecats.com/700/700)",
+                height: "50%",
+                backgroundImage: `url(${
+                  myProfile.image || "https://placecats.com/700/700"
+                })`,
                 backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                borderTopLeftRadius: "15px",
-                borderTopRightRadius: "15px",
+                backgroundSize: "100% 100%",
               }}
               variant="top"
             />
-            <Button
-              onClick={handleShow}
+            <img
+              src={myProfile.image || "https://placecats.com/100/100"}
               style={{
-                width: "85px",
-                height: "85px",
+                width: "120px",
+                height: "120px",
                 position: "absolute",
-                top: "20%",
+                top: "30%",
                 borderRadius: "50%",
-                border: "2px solid white",
+                border: "3px solid white",
                 marginLeft: "20px",
-                padding: "0px",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                zIndex: 2,
               }}
-            >
-              <img
-                src={
-                  myProfile.image
-                    ? myProfile.image
-                    : "https://placecats.com/300/300"
-                }
-                style={{
-                  width: "80px",
-                  height: "80px",
-                  borderRadius: "50%",
-                }}
-              />
-            </Button>
-
-            <Modal show={show} onHide={handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>Scegli un Immagine profilo</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <input
-                  type="file"
-                  name="proPicInput"
-                  onChange={(e) => handlePropic(e)}
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    borderRadius: "5px",
-                    border: "1px solid #ddd",
-                  }}
-                />
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                  Chiudi
-                </Button>
-              </Modal.Footer>
-            </Modal>
-
-            <div
-              className="d-flex justify-content-center"
-              style={{
-                position: "absolute",
-                left: "90%",
-                top: "4%",
-                width: "40px",
-                height: "40px",
-                backgroundColor: "white",
-                borderRadius: "50%",
-                boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <Icon.Pencil
-                className="align-self-center"
-                style={{
-                  color: "#0B66C2",
-                  fontSize: "20px",
-                  backgroundColor: "white",
-                }}
-              />
-            </div>
-
-            <Card.Body>
+              alt="Profilo utente"
+            />
+            <Card.Body style={{ paddingTop: "60px", minHeight: "150px" }}>
               <div className="d-flex justify-content-between">
                 <div className="d-flex gap-1">
                   <Card.Title className="m-0">
                     {myProfile.name} {myProfile.surname}
                   </Card.Title>
-                  <div
-                    className="d-flex gap-1"
-                    style={{
-                      border: "1px dashed #0B66C2",
-                      borderRadius: "10px",
-                      padding: "3px 8px",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Icon.ShieldCheck
-                      className="align-self-center"
-                      color="#0B66C2"
-                      style={{ fontSize: "10px" }}
-                    />
-                    <p
-                      className="m-0 align-self-center"
-                      style={{ color: "#0B66C2", fontSize: "10px" }}
-                    >
-                      Aggiungi badge di verifica
-                    </p>
-                  </div>
+                  <Icon.VolumeUpFill className="align-self-center" />
                 </div>
-                <Icon.Pencil
-                  className="align-self-center"
-                  style={{ fontSize: "16px", color: "#0B66C2" }}
-                />
               </div>
-
-              <Card.Text className="m-0">{myProfile.title}</Card.Text>
-
-              <div className="d-flex gap-1">
-                <p className="m-0 text-secondary" style={{ fontSize: "10px" }}>
-                  {myProfile.area}
+              <Card.Text className="m-0">
+                {myProfile.title || "Titolo non disponibile"}
+              </Card.Text>
+              <div className="d-flex align-items-center gap-1">
+                <p
+                  className="m-0 text-secondary"
+                  style={{ fontSize: "15px", lineHeight: "1.5" }}
+                >
+                  {myProfile.area || "Località non disponibile"}
                 </p>
-                <p className="m-0" style={{ fontSize: "10px" }}>
+                <p
+                  className="m-0 text-secondary"
+                  style={{ fontSize: "15px", lineHeight: "1.5" }}
+                >
+                  - Italia
+                </p>
+                <p
+                  className="m-0"
+                  style={{ fontSize: "15px", lineHeight: "1.5" }}
+                >
                   &middot;
                 </p>
                 <a
                   href="#"
                   className="text-decoration-none"
-                  style={{ color: "#0B66C2", fontSize: "10px" }}
+                  style={{
+                    color: "#0B66C2",
+                    fontSize: "15px",
+                    lineHeight: "1.5",
+                  }}
                 >
                   Informazioni di contatto
                 </a>
@@ -265,92 +190,116 @@ function CentralSection() {
               <a
                 href="#"
                 className="text-decoration-none"
-                style={{ color: "#0B66C2", fontSize: "10px" }}
+                style={{
+                  color: "#0B66C2",
+                  fontSize: "15px",
+                  display: "block",
+                  marginTop: "5px",
+                }}
               >
                 14 collegamenti
               </a>
 
-              <div className="d-flex gap-1" style={{ marginTop: "10px" }}>
+              <div
+                className="d-flex align-items-center"
+                style={{ borderRadius: "10px", padding: "10px" }}
+              >
+                <div className="d-flex">
+                  <img
+                    src="https://placecats.com/700/700"
+                    alt="Utente 1"
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                      border: "2px solid white",
+                      marginRight: "-10px",
+                      zIndex: 2,
+                    }}
+                  />
+                  <img
+                    src="https://placecats.com/700/700"
+                    alt="Utente 2"
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                      border: "2px solid white",
+                      zIndex: 1,
+                    }}
+                  />
+                </div>
                 <p
-                  className="m-0"
+                  className="hoverable-text m-0"
+                  style={{
+                    fontSize: "12px",
+                    color: "gray",
+                    marginLeft: "10px",
+                    lineHeight: "1.5",
+                  }}
+                >
+                  <strong>Michela Vivacqua</strong>,{" "}
+                  <strong>Gaetano Napoli</strong> e un altro collegamento in
+                  comune
+                </p>
+              </div>
+
+              <div className="d-flex gap-1">
+                <p
+                  className="m-0 fw-bold"
                   style={{
                     backgroundColor: "#0B66C2",
                     color: "white",
-                    borderRadius: "10px",
-                    padding: "2px 8px",
-                    fontSize: "10px",
+                    width: "110px",
+                    height: "35px",
+                    borderRadius: "20px",
+                    padding: "2px",
                     cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "5px",
                   }}
                 >
-                  Disponibile per
+                  <Icon.PersonPlus className="align-self-center" />
+                  {"Collegati"}
                 </p>
                 <p
-                  className="m-0"
+                  className="m-0 fw-bold"
                   style={{
                     color: "#0B66C2",
-                    borderRadius: "10px",
-                    padding: "2px 8px",
-                    fontSize: "10px",
+                    width: "110px",
+                    height: "35px",
+                    borderRadius: "20px",
+                    padding: "2px",
                     cursor: "pointer",
                     border: "1px solid #0B66C2",
+                    fontSize: "14px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  Aggiungi sezione del profilo
+                  {" "}
+                  Messaggio
                 </p>
                 <p
-                  className="m-0"
+                  className="m-0 fw-bold"
                   style={{
-                    color: "#0B66C2",
-                    borderRadius: "10px",
-                    padding: "2px 8px",
-                    fontSize: "10px",
-                    cursor: "pointer",
-                    border: "1px solid #0B66C2",
-                  }}
-                >
-                  Migliora profilo
-                </p>
-                <p
-                  className="m-0"
-                  style={{
-                    color: "gray",
-                    borderRadius: "10px",
-                    padding: "2px 8px",
-                    fontSize: "10px",
+                    color: "black",
+                    width: "70px",
+                    borderRadius: "20px",
+                    padding: "2px",
                     cursor: "pointer",
                     border: "1px solid gray",
+                    fontSize: "14px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
                   Altro
                 </p>
-              </div>
-
-              <div
-                style={{
-                  width: "50%",
-                  backgroundColor: "#DDE7F1",
-                  borderRadius: "10px",
-                  padding: "10px",
-                  marginTop: "10px",
-                }}
-              >
-                <div className="d-flex justify-content-between">
-                  <p className="m-0" style={{ fontWeight: "bold" }}>
-                    Disponibile a lavorare
-                  </p>
-                  <Icon.Pencil
-                    className="align-self-center"
-                    style={{ fontSize: "16px", color: "#0B66C2" }}
-                  />
-                </div>
-                <p className="m-0">Altra descrizione...</p>
-                <a
-                  href="#"
-                  className="text-decoration-none"
-                  style={{ color: "#0B66C2" }}
-                >
-                  Mostra dettagli
-                </a>
               </div>
             </Card.Body>
           </Card>

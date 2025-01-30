@@ -20,6 +20,7 @@ import * as Icon from "react-bootstrap-icons";
 import { useState } from "react";
 import { sendPost } from "../redux/action";
 import { setPostPic } from "../redux/action";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [writtenPost, setWrittenPost] = useState("");
@@ -140,9 +141,26 @@ const HomePage = () => {
                   <br />
                 </Card.Text>
                 <hr />
-                <Card.Text className="text-start">
-                  <BookmarkFill className=" me-2" size={24} /> Elementi salvati
-                </Card.Text>
+                <li className="d-flex justify-content-center align-items-center">
+                  <Link
+                    to="/favourites"
+                    className="btn w-90 btn-outline-primary navButtonLink9"
+                    style={{
+                      borderRadius: "25px",
+                      padding: "10px 20px",
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <BookmarkFill
+                      style={{ marginRight: "8px", fontSize: "18px" }}
+                    />
+                    Visualizza Preferiti
+                  </Link>
+                </li>
               </Card.Body>
             </Card>
 
