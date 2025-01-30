@@ -150,10 +150,13 @@ function SingleComment(props) {
 
                   <hr className="m-0" />
                   {comment.rate &&
+                    !showModifyComment &&
                     [...Array(comment.rate)].map((_, i) => (
                       <Icon.StarFill key={i} className="text-info" />
                     ))}
-                  <Card.Text>{comment.comment}</Card.Text>
+                  {!showModifyComment && (
+                    <Card.Text>{comment.comment}</Card.Text>
+                  )}
                 </div>
               );
             })}
