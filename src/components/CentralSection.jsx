@@ -32,6 +32,9 @@ function CentralSection() {
   const [expPic, setExpPic] = useState();
   const [hasPut, setHasPut] = useState(false);
   const [hasPutProfile, setHasPutProfile] = useState(false);
+  const [hasExpPicPost, setHasExpPicPost] = useState(false);
+  const [hasExpPicPut, setHasExpPicPut] = useState(false);
+  const [hasDelPut, setHasDelPut] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -80,6 +83,15 @@ function CentralSection() {
     const expPicData = new FormData();
     expPicData.append("experience", e.target.files[0]);
     setExpPic(expPicData);
+    setHasExpPicPost(true);
+  };
+
+  const handleExpPicPut = (e) => {
+    e.preventDefault();
+    const expPicData = new FormData();
+    expPicData.append("experience", e.target.files[0]);
+    setExpPic(expPicData);
+    setHasExpPicPut(true);
   };
 
   const handleNewExperience = (e) => {
@@ -124,10 +136,18 @@ function CentralSection() {
   }, [hasPut]);
 
   useEffect(() => {
-    if (expPic) {
+    if (hasExpPicPost) {
       dispatch(postExpPic(expPic, newExpId));
+      setHasExpPicPost(false);
     }
   }, [newExpId]);
+
+  useEffect(() => {
+    if (hasExpPicPut) {
+      dispatch(postExpPic(expPic, expForPut._id));
+      setHasExpPicPut(false);
+    }
+  }, [hasPut]);
 
   useEffect(() => {
     if (expForPut.role) {
@@ -859,7 +879,13 @@ function CentralSection() {
         </p>
       </div>
       {/* MODALE PER PUT */}
-      <Modal show={showExperiencePut} onHide={handleCloseExperiencePut}>
+      <Modal
+        show={showExperiencePut}
+        onHide={handleCloseExperiencePut}
+        onShow={() => {
+          setHasDelPut(false);
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Modifica Esperienza!</Modal.Title>
         </Modal.Header>
@@ -944,16 +970,43 @@ function CentralSection() {
                 });
               }}
             />
-            <Form.Label className="mt-2 fw-lighter">
-              Immagine Azienda
+            <Form.Label className="mt-3 fw-lighter">
+              Immagine Azienda:
             </Form.Label>
-            <input
-              type="file"
-              name="proPicInput"
-              onChange={(e) => {
-                handleExpPic(e);
-              }}
-            />
+            <div>
+              {!hasDelPut && expForPut.image && (
+                <div>
+                  <img
+                    src={expForPut.image}
+                    alt="immagine azienda"
+                    style={{
+                      width: "60px",
+                      height: "60px",
+                    }}
+                  />
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      setExpForPutState({
+                        ...expForPutState,
+                        image: null,
+                      });
+                      setHasDelPut(true);
+                    }}
+                  >
+                    <Icon.XCircleFill className="text-danger" />
+                  </button>
+                </div>
+              )}
+              <input
+                className="mt-1"
+                type="file"
+                name="proPicInput"
+                onChange={(e) => {
+                  handleExpPicPut(e);
+                }}
+              />
+            </div>
             <Button
               type="submit"
               className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"

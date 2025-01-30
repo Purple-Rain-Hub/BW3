@@ -116,11 +116,6 @@ export const postExperience = (experienceData) => {
 
 export const postExpPic = (expPicData, expId) => {
   return async (dispatch) => {
-    console.log("GUARDA QUESTI DUE LOG SOTTO!!!!!!!!!!!!");
-
-    console.log(expPicData);
-    console.log(expId);
-
     try {
       const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/experiences/" + expId + "/picture", {
         method: "POST",
