@@ -73,7 +73,7 @@ const SideBar = () => {
             <div className="ms-2">
               <h6 className="m-0">
                 <Link
-                  to={`/profile/${profile._id}`}
+                  to={`/user/${profile._id}`}
                   className="text-decoration-none text-dark"
                 >
                   {profile.name} {profile.surname}
@@ -97,7 +97,7 @@ const SideBar = () => {
         <h6 className="text-center mt-3">Mostra tutto</h6>
       </div>
 
-      {/*seconda sezione */}
+      {/* Altri blocchi simili con routing aggiunto */}
       <div
         className="p-4 pb-1 mt-1 bg-white rounded-3 border border-1 d-flex flex-column align-items-center"
         style={{ minWidth: "320px", maxWidth: "320px" }}
@@ -121,7 +121,7 @@ const SideBar = () => {
             <div className="ms-2">
               <h6 className="m-0">
                 <Link
-                  to={`/profile/${profile._id}`}
+                  to={`/user/${profile._id}`}
                   className="text-decoration-none text-dark"
                 >
                   {profile.name} {profile.surname}
@@ -142,7 +142,7 @@ const SideBar = () => {
 
         <h6 className="text-center mt-3">Mostra tutto</h6>
       </div>
-      {/*terza sezione */}
+
       <div
         className="p-4 pb-1 mt-1 bg-white rounded-3 border border-1 d-flex flex-column align-items-center"
         style={{ minWidth: "320px", maxWidth: "320px" }}
@@ -166,7 +166,7 @@ const SideBar = () => {
             <div className="ms-2">
               <h6 className="m-0">
                 <Link
-                  to={`/profile/${profile._id}`}
+                  to={`/user/${profile._id}`}
                   className="text-decoration-none text-dark"
                 >
                   {profile.name} {profile.surname}
@@ -187,6 +187,7 @@ const SideBar = () => {
 
         <h6 className="text-center mt-3">Mostra tutto</h6>
       </div>
+
       <img
         src="/banner.png"
         style={{ width: "320px", marginTop: "10px" }}

@@ -91,13 +91,26 @@ const HomePage = () => {
           <Col md={3}>
             <Card className="mb-3">
               <Card.Body className="text-center position-relative">
-                <img
-                  src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                  alt=""
-                  style={{ width: "30%", borderRadius: "50%" }}
-                />
+                <Link to="/profile">
+                  <img
+                    src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                    alt="Profile Avatar"
+                    style={{
+                      width: "30%",
+                      borderRadius: "50%",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Link>
 
-                <Card.Title>Nome.Cognome</Card.Title>
+                <Card.Title>
+                  <Link
+                    to="/profile"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    Nome.Cognome
+                  </Link>
+                </Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">
                   Cosa fa nella vita
                 </Card.Subtitle>
@@ -270,9 +283,7 @@ const HomePage = () => {
                 .slice(posts.length - 25, posts.length)
                 .reverse()
                 .map((post) => {
-                  return (
-                    <SinglePost key={post._id} post={post}/>
-                  );
+                  return <SinglePost key={post._id} post={post} />;
                 })}
 
             {/* <Card>
