@@ -43,12 +43,13 @@ const ExperienceSection = () => {
                 </div>
               </div>
               <div style={{ width: "fit-content" }}>
-                <button className="btn">
-                  <Icon.Pencil
-                    onClick={() => {
-                      dispatch(getExpForPut(e._id));
-                    }}
-                  />
+                <button
+                  className="btn"
+                  onClick={() => {
+                    dispatch(getExpForPut(e._id));
+                  }}
+                >
+                  <Icon.Pencil />
                 </button>
                 <button
                   className="btn"
