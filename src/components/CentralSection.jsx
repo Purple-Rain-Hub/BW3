@@ -44,6 +44,7 @@ function CentralSection() {
 
   const dispatch = useDispatch();
 
+  // USE SELECTOR
   const myProfile = useSelector((state) => {
     return state.myProfile;
   });
@@ -94,6 +95,7 @@ function CentralSection() {
     setHasPut(true);
   };
 
+  // USE EFFECT
   useEffect(() => {
     if (hasPut) {
       dispatch(getExperience());
@@ -624,7 +626,7 @@ function CentralSection() {
               <Form.Control
                 type="date"
                 required
-                value={newExperience.startDate}
+                value={newExperience.startDate.split("T")[0]}
                 onChange={(e) => {
                   setNewExperience({
                     ...newExperience,
@@ -639,7 +641,7 @@ function CentralSection() {
               <Form.Label className="mt-2 fw-lighter">Data di fine</Form.Label>
               <Form.Control
                 type="date"
-                value={newExperience.endDate}
+                value={newExperience.endDate.split("T")[0]}
                 onChange={(e) => {
                   setNewExperience({
                     ...newExperience,
@@ -872,7 +874,10 @@ function CentralSection() {
             <Form.Control
               type="date"
               required
-              value={expForPutState.startDate}
+              value={
+                expForPutState.startDate &&
+                expForPutState.startDate.split("T")[0]
+              }
               onChange={(e) => {
                 setExpForPutState({
                   ...expForPutState,
@@ -885,7 +890,9 @@ function CentralSection() {
             <Form.Label className="mt-2 fw-lighter">Data di fine</Form.Label>
             <Form.Control
               type="date"
-              value={expForPutState.endDate}
+              value={
+                expForPutState.endDate && expForPutState.endDate.split("T")[0]
+              }
               onChange={(e) => {
                 setExpForPutState({
                   ...expForPutState,
