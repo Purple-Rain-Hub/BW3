@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { Card, Image, Button, Form } from "react-bootstrap";
 import { HandThumbsUp, ChatDots } from "react-bootstrap-icons";
@@ -7,11 +8,15 @@ import { myID } from "../redux/action";
 import { useDispatch } from "react-redux";
 import { deletePost } from "../redux/action";
 import { modifyPost } from "../redux/action";
-import { useState } from "react";
-//commento
+import { useEffect, useState } from "react";
+import { setPostPic } from "../redux/action";
 
 function SinglePost(props) {
-  const urlImg = "https://placecats.com/50/50";
+  const [showModify, setShowModify] = useState(false);
+  const [modifiedPost, setModifiedPost] = useState("");
+  const [postIdWithPicToChange, setPostIdWithPicToChange] = useState("");
+  const [changingPic, setChangingPic] = useState(null);
+  const [okToModify, setOkToModify] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -21,17 +26,31 @@ function SinglePost(props) {
 
   const handleModify = function (postId, text) {
     dispatch(modifyPost(postId, text));
+    setOkToModify(true);
   };
 
-  const [showModify, setShowModify] = useState(false);
-  const [modifiedPost, setModifiedPost] = useState("");
+  const handleChangePostPic = function (e) {
+    e.preventDefault();
+    const changedPostPic = new FormData();
+    changedPostPic.append("post", e.target.files[0]);
+    setChangingPic(changedPostPic);
+  };
+
+  useEffect(() => {
+    if (okToModify && changingPic && postIdWithPicToChange) {
+      dispatch(setPostPic(changingPic, postIdWithPicToChange));
+      //setChangingPic(null);
+      //setPostIdWithPicToChange("");
+      setOkToModify(false);
+    }
+  }, [okToModify]);
 
   return (
     <Card className="mb-2">
       <Card.Body>
         <div className="d-flex align-items-center mb-3">
           <Image
-            src={props.post.image ? props.post.image : urlImg}
+            src={props.post.user.image}
             roundedCircle
             className="me-2"
             width="48"
@@ -46,6 +65,7 @@ function SinglePost(props) {
         </div>
         <Card.Title>{props.post.user.title}</Card.Title>
         {!showModify && <Card.Text>{props.post.text}</Card.Text>}
+
         {showModify && (
           <Form
             className="my-2"
@@ -74,6 +94,26 @@ function SinglePost(props) {
             </Form.Group>
           </Form>
         )}
+        {props.post.image ? (
+          <img src={props.post.image} style={{ maxWidth: "100%" }} />
+        ) : (
+          <></>
+        )}
+        {showModify && props.post.image ? (
+          <>
+            <input
+              className="ms-2"
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                setPostIdWithPicToChange(props.post._id);
+                handleChangePostPic(e);
+              }}
+            />
+          </>
+        ) : (
+          <></>
+        )}
         <div className="d-flex justify-content-between">
           {!showModify ? (
             <>
@@ -88,8 +128,12 @@ function SinglePost(props) {
           ) : (
             <Button
               onClick={() => {
-                setShowModify(false);
-                handleModify(props.post._id, modifiedPost);
+                if (modifiedPost) {
+                  setShowModify(false);
+                  handleModify(props.post._id, modifiedPost);
+                } else {
+                  alert("Scrivi qualcosa.");
+                }
               }}
               variant="light"
               className="commentButton text-success"

@@ -2,7 +2,10 @@ const initialState = {
   myProfile: {},
   experience: [],
   posts: [],
-  favorites: [], // Aggiungi questa riga
+  favorites: [],
+  newExperienceId: {},
+  expForPut: {},
+  postedPostId: "",
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -31,6 +34,21 @@ const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         favorites: state.favorites.filter((job) => job._id !== action.payload),
+      };
+    case "NEWEXPERIENCE_ID":
+      return {
+        ...state,
+        newExperienceId: action.payload,
+      };
+    case "GET_EXPFORPUT":
+      return {
+        ...state,
+        expForPut: action.payload,
+      };
+    case "GET_POSTEDPOST_ID":
+      return {
+        ...state,
+        postedPostId: action.payload,
       };
     default:
       return state;

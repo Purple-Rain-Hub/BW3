@@ -1,6 +1,7 @@
 export const myID = "6797508916f6350015fecb84";
 const myToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzk3NTA4OTE2ZjYzNTAwMTVmZWNiODQiLCJpYXQiOjE3Mzc5Njk4MDEsImV4cCI6MTczOTE3OTQwMX0.gV22i7NwH_DHYfKE81N9UEY1Up6WHrH2EPIoPu8OD9w";
+
 export const getMyProfile = () => {
   return async (dispatch) => {
     try {
@@ -82,7 +83,7 @@ export const postPropic = (propicData) => {
 };
 
 export const postExperience = (experienceData) => {
-  return async () => {
+  return async (dispatch) => {
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/" +
@@ -97,10 +98,102 @@ export const postExperience = (experienceData) => {
           },
         }
       );
-      if (response.ok) console.log(response);
-      else throw new Error("errore nel POST della experience");
+      if (response.ok) {
+        const data = await response.json();
+        dispatch({
+          type: "NEWEXPERIENCE_ID",
+          payload: data._id,
+        });
+        dispatch(getExperience());
+      } else throw new Error("errore nel POST della experience");
     } catch (error) {
       console.error(error);
+    }
+  };
+};
+
+export const postExpPic = (expPicData, expId) => {
+  return async (dispatch) => {
+    console.log("GUARDA QUESTI DUE LOG SOTTO!!!!!!!!!!!!");
+
+    console.log(expPicData);
+    console.log(expId);
+
+    try {
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/" +
+          myID +
+          "/experiences/" +
+          expId +
+          "/picture",
+        {
+          method: "POST",
+          body: expPicData,
+          headers: {
+            Authorization: "Bearer " + myToken,
+          },
+        }
+      );
+      if (response.ok) {
+        console.log(response);
+        dispatch(getExperience());
+      } else throw new Error("errore nel POST della expPic");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const getExpForPut = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/" +
+          myID +
+          "/experiences/" +
+          id,
+        {
+          headers: {
+            Authorization: "Bearer " + myToken,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        dispatch({
+          type: "GET_EXPFORPUT",
+          payload: data,
+        });
+      } else throw new Error("errore nella get della exp per il PUT");
+    } catch (error) {
+      console.error("ERRORE:" + error);
+    }
+  };
+};
+
+export const putExperience = (exp, id) => {
+  return async () => {
+    try {
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/" +
+          myID +
+          "/experiences/" +
+          id._id,
+        {
+          method: "PUT",
+          body: JSON.stringify(exp),
+          headers: {
+            Authorization: "Bearer " + myToken,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+      if (response.ok) {
+        console.log("PUTEXP RESPONSE" + response);
+      } else throw new Error("errore nella PUT dell'experience");
+    } catch (error) {
+      console.error("ERRORE:", error);
     }
   };
 };
@@ -150,6 +243,12 @@ export const sendPost = (post) => {
         const data = await response.json();
         console.log(data);
         dispatch(getAllPosts());
+        if (data) {
+          dispatch({
+            type: "GET_POSTEDPOST_ID",
+            payload: data._id,
+          });
+        }
       } else {
         throw new Error("errore nella response di sendPost");
       }
@@ -220,3 +319,28 @@ export const removeFromFavorites = (jobId) => ({
   type: "REMOVE_FROM_FAVORITES",
   payload: jobId,
 });
+export const setPostPic = (pic, postId) => {
+  const URL = "https://striveschool-api.herokuapp.com/api/posts/" + postId;
+  console.log(URL);
+  return async (dispatch) => {
+    try {
+      const response = await fetch(URL, {
+        method: "POST",
+        body: pic,
+        headers: {
+          Authorization: "Bearer " + myToken,
+        },
+      });
+      if (response.ok) {
+        //const data = await response.json();
+        //console.log(data);
+        // dispatch({ type: "GET_POSTEDPOST_ID", payload: data._id });
+        dispatch(getAllPosts());
+      } else {
+        throw new Error("errore nella response di setPostPic");
+      }
+    } catch (error) {
+      console.error("ERRORE FETCH:" + error);
+    }
+  };
+};
