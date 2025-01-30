@@ -20,7 +20,7 @@ import * as Icon from "react-bootstrap-icons";
 import { useState } from "react";
 import { sendPost } from "../redux/action";
 import { setPostPic } from "../redux/action";
-import { Link } from "react-router-dom";
+import { getComments } from "../redux/action";
 
 const HomePage = () => {
   const [writtenPost, setWrittenPost] = useState("");
@@ -30,6 +30,7 @@ const HomePage = () => {
 
   useEffect(() => {
     dispatch(getAllPosts());
+    dispatch(getComments());
   }, []);
 
   const posts = useSelector((state) => {
@@ -221,7 +222,16 @@ const HomePage = () => {
 
             <Card className="mb-3">
               <Card.Body>
-                <Form onSubmit={handleSubmit}>
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (writtenPost) {
+                      handleSubmit();
+                    } else {
+                      alert("Scrivi qualcosa.");
+                    }
+                  }}
+                >
                   <Form.Group className="d-flex">
                     <img
                       className="me-2"
