@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { postComment } from "../redux/action";
 import * as Icon from "react-bootstrap-icons";
 import { useDispatch } from "react-redux";
+import { deleteComment } from "../redux/action";
 
 function SingleComment(props) {
   const postId = props.postId;
@@ -21,8 +22,16 @@ function SingleComment(props) {
     }
   };
 
+  const handleDeleteComment = function (commentId) {
+    dispatch(deleteComment(commentId));
+  };
+
   const comments = useSelector((state) => {
     return state.comments;
+  });
+
+  const authorComment = useSelector((state) => {
+    return state.authorComment || "samu.converso@gmail.com";
   });
 
   useEffect(() => {
@@ -112,9 +121,22 @@ function SingleComment(props) {
                     padding: "4px",
                   }}
                 >
-                  <Card.Text className="fw-bold mb-0">
-                    {comment.author}
-                  </Card.Text>
+                  <div className="d-flex justify-content-between">
+                    <Card.Text className="fw-bold mb-0">
+                      {comment.author}
+                    </Card.Text>
+                    {authorComment === comment.author && (
+                      <Icon.Trash
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleDeleteComment(comment._id);
+                        }}
+                        className="align-self-center text-danger"
+                        style={{ cursor: "pointer", fontSize: "18px" }}
+                      />
+                    )}
+                  </div>
+
                   <hr className="m-0" />
                   {comment.rate &&
                     [...Array(comment.rate)].map((_, i) => (

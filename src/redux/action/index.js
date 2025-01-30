@@ -385,11 +385,40 @@ export const postComment = (comment, rate, elementId) => {
         }
       );
       if (response.ok) {
-        //const data = await response.json();
-        //console.log(data);
+        const data = await response.json();
+        console.log(data);
         dispatch(getComments());
+        dispatch({
+          type: "GET_AUTHOR_COMMENT",
+          payload: data.author,
+        });
       } else {
         throw new Error("errore nella response di postComment");
+      }
+    } catch (error) {
+      console.error("ERRORE FETCH:" + error);
+    }
+  };
+};
+
+export const deleteComment = (commentId) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/comments/" + commentId,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + myTokenForComments,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+      if (response.ok) {
+        console.log("Rimosso");
+        dispatch(getComments());
+      } else {
+        throw new Error("errore nella response di deleteComment");
       }
     } catch (error) {
       console.error("ERRORE FETCH:" + error);

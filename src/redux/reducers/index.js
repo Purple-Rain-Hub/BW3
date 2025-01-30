@@ -6,6 +6,7 @@ const initialState = {
   expForPut: {},
   postedPostId: "",
   comments: [],
+  authorComment: "",
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -44,6 +45,11 @@ const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         comments: action.payload,
+      };
+    case "GET_AUTHOR_COMMENT":
+      return {
+        ...state,
+        authorComment: action.payload,
       };
     default:
       return state;
