@@ -8,7 +8,9 @@ const initialState = {
   showExperienceDel: {
     show: false,
     id: ""
-  }
+  },
+  comments: [],
+  authorComment: "",
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -31,13 +33,13 @@ const mainReducer = (state = initialState, action) => {
     case "NEWEXPERIENCE_ID":
       return {
         ...state,
-        newExperienceId: action.payload
-      }
+        newExperienceId: action.payload,
+      };
     case "GET_EXPFORPUT":
       return {
         ...state,
-        expForPut: action.payload
-      }
+        expForPut: action.payload,
+      };
     case "GET_POSTEDPOST_ID":
       return {
         ...state,
@@ -48,6 +50,16 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         showExperienceDel: action.payload
       }
+    case "GET_COMMENTS":
+      return {
+        ...state,
+        comments: action.payload,
+      };
+    case "GET_AUTHOR_COMMENT":
+      return {
+        ...state,
+        authorComment: action.payload,
+      };
     default:
       return state;
   }
