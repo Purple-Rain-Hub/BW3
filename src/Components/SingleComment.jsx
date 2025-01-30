@@ -13,6 +13,7 @@ function SingleComment(props) {
 
   const [writtenComment, setWrittenComment] = useState("");
   const [rateStars, setRateStars] = useState(0);
+  const [showModifyComment, setShowModifyComment] = useState(false);
 
   const handlePublishComment = function () {
     if (rateStars > 0) {
@@ -126,14 +127,24 @@ function SingleComment(props) {
                       {comment.author}
                     </Card.Text>
                     {authorComment === comment.author && (
-                      <Icon.Trash
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleDeleteComment(comment._id);
-                        }}
-                        className="align-self-center text-danger"
-                        style={{ cursor: "pointer", fontSize: "18px" }}
-                      />
+                      <div className="d-flex align-self-center gap-3">
+                        <Icon.Pencil
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowModifyComment(!showModifyComment);
+                          }}
+                          className="align-self-center text-warning"
+                          style={{ cursor: "pointer", fontSize: "18px" }}
+                        />
+                        <Icon.Trash
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleDeleteComment(comment._id);
+                          }}
+                          className="align-self-center text-danger"
+                          style={{ cursor: "pointer", fontSize: "18px" }}
+                        />
+                      </div>
                     )}
                   </div>
 
