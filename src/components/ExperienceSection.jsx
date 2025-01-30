@@ -34,7 +34,9 @@ const ExperienceSection = () => {
                   <p className="m-0">{e.company}</p>
                   <p className="m-0 fw-lighter">
                     Da <span>{startDate.toLocaleDateString()}</span>
-                    {e.endDate && <span>A {endDate.toLocaleDateString()}</span>}
+                    {e.endDate && (
+                      <span> A {endDate.toLocaleDateString()}</span>
+                    )}
                   </p>
                   <p className="m-0 fw-lighter">{e.area}</p>
                   <p className="m-0">{e.description}</p>

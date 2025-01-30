@@ -133,25 +133,24 @@ function CentralSection() {
     if (expForPut.role) {
       setShowExperiencePut(true);
       setExpForPutState({
-        role: `${expForPut.role}`,
-        company: `${expForPut.company}`,
-        startDate: `${expForPut.startDate}`,
-        endDate: `${expForPut.endDate}`,
-        area: `${expForPut.area}`,
-        description: `${expForPut.description}`,
+        role: expForPut.role,
+        company: expForPut.company,
+        startDate: expForPut.startDate,
+        endDate: expForPut.endDate,
+        area: expForPut.area,
+        description: expForPut.description,
       });
     }
   }, [expForPut]);
 
   useEffect(() => {
     setMyProfileInfo({
-      name: `${myProfile.name}`,
-      surname: `${myProfile.surname}`,
-      email: `${myProfile.email}`,
-      username: `${myProfile.username}`,
-      bio: `${myProfile.bio}`,
-      title: `${myProfile.title}`,
-      area: `${myProfile.area}`,
+      name: myProfile.name,
+      surname: myProfile.surname,
+      email: myProfile.email,
+      bio: myProfile.bio,
+      title: myProfile.title,
+      area: myProfile.area,
     });
   }, [myProfile]);
 
@@ -1034,18 +1033,6 @@ function CentralSection() {
                 setMyProfileInfo({
                   ...myProfileInfo,
                   email: e.target.value,
-                });
-              }}
-            />
-            <Form.Label className="mt-2 fw-lighter">Username</Form.Label>
-            <Form.Control
-              type="text"
-              required
-              value={myProfileInfo.username}
-              onChange={(e) => {
-                setMyProfileInfo({
-                  ...myProfileInfo,
-                  username: e.target.value,
                 });
               }}
             />
