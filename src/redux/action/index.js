@@ -286,9 +286,10 @@ export const deletePost = (postId) => {
   };
 };
 
-export const modifyPost = (postId, text) => {
+export const modifyPost = (postId, text, noImage) => {
   return async (dispatch) => {
     try {
+      const noPic = noImage;
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/posts/" + postId,
         {
@@ -297,7 +298,9 @@ export const modifyPost = (postId, text) => {
             Authorization: "Bearer " + myToken,
             "Content-type": "application/json; charset=UTF-8",
           },
-          body: JSON.stringify({ text: text }),
+          body: noPic
+            ? JSON.stringify({ text: text, image: null })
+            : JSON.stringify({ text: text }),
         }
       );
       if (response.ok) {

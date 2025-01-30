@@ -19,6 +19,8 @@ function SinglePost(props) {
   const [changingPic, setChangingPic] = useState(null);
   const [okToModify, setOkToModify] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [isPicRemoved, setIsPicRemoved] = useState(false);
+  const [picAgain, setPicAgain] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -31,8 +33,14 @@ function SinglePost(props) {
   };
 
   const handleModify = function (postId, text) {
-    dispatch(modifyPost(postId, text));
-    setOkToModify(true);
+    if (!isPicRemoved) {
+      dispatch(modifyPost(postId, text));
+      setOkToModify(true);
+    } else {
+      const noImage = true;
+      dispatch(modifyPost(postId, text, noImage));
+      setIsPicRemoved(false);
+    }
   };
 
   const handleChangePostPic = function (e) {
@@ -100,12 +108,12 @@ function SinglePost(props) {
             </Form.Group>
           </Form>
         )}
-        {props.post.image ? (
+        {props.post.image && !isPicRemoved && !picAgain ? (
           <img src={props.post.image} style={{ maxWidth: "100%" }} />
         ) : (
           <></>
         )}
-        {showModify && props.post.image ? (
+        {showModify && (
           <>
             <input
               className="ms-2"
@@ -113,12 +121,27 @@ function SinglePost(props) {
               accept="image/*"
               onChange={(e) => {
                 setPostIdWithPicToChange(props.post._id);
+                setIsPicRemoved(false);
                 handleChangePostPic(e);
               }}
             />
+            {props.post.image && (
+              <p
+                className={
+                  isPicRemoved
+                    ? "btn btn-warning text-white"
+                    : "btn btn-danger text-white"
+                }
+                onClick={() => {
+                  setPostIdWithPicToChange(props.post._id);
+                  setIsPicRemoved(true);
+                  setPicAgain(true);
+                }}
+              >
+                {!isPicRemoved ? "✖️ Rimuovi immagine" : "Immagine rimossa"}
+              </p>
+            )}
           </>
-        ) : (
-          <></>
         )}
         <div className="d-flex justify-content-between">
           {!showModify ? (
@@ -158,6 +181,7 @@ function SinglePost(props) {
                 if (modifiedPost) {
                   setShowModify(false);
                   handleModify(props.post._id, modifiedPost);
+                  setPicAgain(false);
                 } else {
                   alert("Scrivi qualcosa.");
                 }
@@ -174,7 +198,11 @@ function SinglePost(props) {
               onClick={() => {
                 setModifiedPost(props.post.text);
                 setShowModify(!showModify);
+                setPicAgain(false);
                 setShowComments(false);
+                if (props.post.image) {
+                  setIsPicRemoved(false);
+                }
               }}
               variant="light"
               className="commentButton text-warning fw-bold"
