@@ -112,17 +112,28 @@ function CentralSection() {
   return (
     <>
       <div style={{ width: "100%", height: "400px" }}>
-        <Card style={{ width: "100%", height: "100%", position: "relative" }}>
+        <Card
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "relative",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            borderRadius: "12px",
+          }}
+        >
           <Card.Img
             style={{
               width: "100%",
               height: "50%",
               backgroundImage: "url(https://placecats.com/700/700)",
               backgroundRepeat: "no-repeat",
-              backgroundSize: "100% 100%",
+              backgroundSize: "110% 110%",
+              borderTopLeftRadius: "12px",
+              borderTopRightRadius: "12px",
             }}
             variant="top"
           />
+
           <Button
             onClick={handleShow}
             style={{
@@ -130,10 +141,11 @@ function CentralSection() {
               height: "85px",
               position: "absolute",
               top: "20%",
+              left: "5%",
               borderRadius: "50%",
               border: "2px solid white",
-              marginLeft: "20px",
               padding: "0px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
             <img
@@ -146,6 +158,7 @@ function CentralSection() {
                 width: "80px",
                 height: "80px",
                 borderRadius: "50%",
+                objectFit: "cover",
               }}
             />
           </Button>
@@ -155,13 +168,7 @@ function CentralSection() {
               <Modal.Title>Scegli un Immagine profilo</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <input
-                type="file"
-                name="proPicInput"
-                onChange={(e) => {
-                  handlePropic(e);
-                }}
-              />
+              <input type="file" name="proPicInput" onChange={handlePropic} />
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
@@ -180,6 +187,7 @@ function CentralSection() {
               height: "40px",
               backgroundColor: "white",
               borderRadius: "50%",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
             <Icon.Pencil
@@ -191,43 +199,40 @@ function CentralSection() {
               }}
             />
           </div>
+
           <Card.Body>
             <div className="d-flex justify-content-between">
-              <div className="d-flex gap-1">
+              <div className="d-flex gap-2">
                 <Card.Title className="m-0">
                   {myProfile.name} {myProfile.surname}
                 </Card.Title>
                 <div
-                  className="d-flex gap-1"
-                  style={{ border: "1px dashed #0B66C2", borderRadius: "10px" }}
+                  className="d-flex gap-1 align-items-center px-2 py-1 border rounded-3"
+                  style={{
+                    borderColor: "#0B66C2",
+                    color: "#0B66C2",
+                    fontSize: "12px",
+                  }}
                 >
-                  <Icon.ShieldCheck
-                    className="align-self-center"
-                    color="#0B66C2"
-                    style={{ fontSize: "10px" }}
-                  />
-                  <p
-                    className="m-0 align-self-center"
-                    style={{ color: "#0B66C2", fontSize: "10px" }}
-                  >
-                    Aggiungi badge di verifica
-                  </p>
+                  <Icon.ShieldCheck style={{ fontSize: "12px" }} />
+                  <span>Aggiungi badge di verifica</span>
                 </div>
               </div>
               <Icon.Pencil className="align-self-center" />
             </div>
-            <Card.Text className="m-0">{myProfile.title}</Card.Text>
+
+            <Card.Text className="text-muted mt-1">{myProfile.title}</Card.Text>
             <div className="d-flex gap-1">
-              <p className="m-0 text-secondary" style={{ fontSize: "10px" }}>
+              <p className="m-0 text-muted" style={{ fontSize: "12px" }}>
                 {myProfile.area}
               </p>
-              <p className="m-0" style={{ fontSize: "10px" }}>
+              <p className="m-0" style={{ fontSize: "12px" }}>
                 &middot;
               </p>
               <a
                 href="#"
                 className="text-decoration-none"
-                style={{ color: "#0B66C2", fontSize: "10px" }}
+                style={{ color: "#0B66C2", fontSize: "12px" }}
               >
                 Informazioni di contatto
               </a>
@@ -235,69 +240,50 @@ function CentralSection() {
             <a
               href="#"
               className="text-decoration-none"
-              style={{ color: "#0B66C2", fontSize: "10px" }}
+              style={{ color: "#0B66C2", fontSize: "12px" }}
             >
               14 collegamenti
             </a>
-            <div className="d-flex gap-1">
+
+            <div className="d-flex gap-2 mt-2">
               <p
-                className="m-0"
-                style={{
-                  backgroundColor: "#0B66C2",
-                  color: "white",
-                  width: "fit-content",
-                  height: "",
-                  borderRadius: "10px",
-                  padding: "2px",
-                  cursor: "pointer",
-                  fontSize: "10px",
-                }}
+                className="m-0 bg-primary text-white rounded-3 px-3 py-1"
+                style={{ fontSize: "12px" }}
               >
                 Disponibile per
               </p>
               <p
-                className="m-0"
+                className="m-0 border rounded-3 px-3 py-1 text-primary"
                 style={{
-                  color: "#0B66C2",
-                  width: "fit-content",
-                  borderRadius: "10px",
-                  padding: "2px",
+                  fontSize: "12px",
+                  borderColor: "#0B66C2",
                   cursor: "pointer",
-                  border: "1px solid #0B66C2",
-                  fontSize: "10px",
                 }}
               >
                 Aggiungi sezione del profilo
               </p>
               <p
-                className="m-0"
+                className="m-0 border rounded-3 px-3 py-1 text-primary"
                 style={{
-                  color: "#0B66C2",
-                  width: "fit-content",
-                  borderRadius: "10px",
-                  padding: "2px",
+                  fontSize: "12px",
+                  borderColor: "#0B66C2",
                   cursor: "pointer",
-                  border: "1px solid #0B66C2",
-                  fontSize: "10px",
                 }}
               >
                 Migliora profilo
               </p>
               <p
-                className="m-0"
+                className="m-0 border rounded-3 px-3 py-1 text-muted"
                 style={{
-                  color: "gray",
-                  width: "fit-content",
-                  borderRadius: "10px",
-                  padding: "2px",
+                  fontSize: "12px",
+                  borderColor: "gray",
                   cursor: "pointer",
-                  border: "1px solid gray",
-                  fontSize: "10px",
                 }}
               >
                 Altro
               </p>
             </div>
+
             <div
               style={{
                 width: "50%",
@@ -307,17 +293,19 @@ function CentralSection() {
                 marginTop: "10px",
               }}
             >
-              <div className="d-flex justify-content-between">
-                <p className="m-0" style={{ fontWeight: "bold" }}>
+              <div className="d-flex justify-content-between align-items-center">
+                <p className="m-0 fw-bold" style={{ fontSize: "14px" }}>
                   Disponibile a lavorare
                 </p>
                 <Icon.Pencil className="align-self-center" />
               </div>
-              <p className="m-0">Altra descrizione...</p>
+              <p className="m-0" style={{ fontSize: "12px" }}>
+                Altra descrizione...
+              </p>
               <a
                 href="#"
                 className="text-decoration-none"
-                style={{ color: "#0B66C2" }}
+                style={{ color: "#0B66C2", fontSize: "12px" }}
               >
                 Mostra dettagli
               </a>
