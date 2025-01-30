@@ -21,6 +21,7 @@ function App() {
           <Route path="/jobs" element={<JobsPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />{" "}
           <Route path="/user/" element={<UserPage />} />
+          <Route path="/user/:id" element={<UserPage />} />
         </Routes>
         <Footer />
       </>
