@@ -365,3 +365,34 @@ export const getComments = () => {
     }
   };
 };
+
+export const postComment = (comment, rate, elementId) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/comments/",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            comment: comment,
+            rate: rate,
+            elementId: elementId,
+          }),
+          headers: {
+            Authorization: "Bearer " + myTokenForComments,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+      if (response.ok) {
+        //const data = await response.json();
+        //console.log(data);
+        dispatch(getComments());
+      } else {
+        throw new Error("errore nella response di postComment");
+      }
+    } catch (error) {
+      console.error("ERRORE FETCH:" + error);
+    }
+  };
+};

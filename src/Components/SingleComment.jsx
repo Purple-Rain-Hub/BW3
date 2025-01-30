@@ -2,15 +2,24 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
-//import { useDispatch } from "react-redux";
+import { postComment } from "../redux/action";
+import * as Icon from "react-bootstrap-icons";
+import { useDispatch } from "react-redux";
 
 function SingleComment(props) {
   const postId = props.postId;
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [writtenComment, setWrittenComment] = useState("");
+  const [rateStars, setRateStars] = useState(0);
 
-  const handlePublishComment = function () {};
+  const handlePublishComment = function () {
+    if (rateStars > 0) {
+      dispatch(postComment(writtenComment, rateStars, postId));
+    } else {
+      alert("Valuta il post.");
+    }
+  };
 
   const comments = useSelector((state) => {
     return state.comments;
@@ -54,9 +63,23 @@ function SingleComment(props) {
                 style={{ borderRadius: "25px", fontWeight: "600" }}
               />
             </Form.Group>
+            <Form.Select
+              className="my-3"
+              value={rateStars}
+              onChange={(e) => {
+                setRateStars(parseInt(e.target.value));
+              }}
+            >
+              <option>Valuta il post</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </Form.Select>
           </Form>
           <Button
-            className="my-3"
+            className="mb-3"
             onClick={(e) => {
               e.preventDefault();
               if (writtenComment) {
@@ -68,6 +91,7 @@ function SingleComment(props) {
           >
             Pubblica commento
           </Button>
+          <hr className="mt-0" />
           <Card.Title>Commenti</Card.Title>
           {comments
             .filter((comment) => {
@@ -91,7 +115,11 @@ function SingleComment(props) {
                   <Card.Text className="fw-bold mb-0">
                     {comment.author}
                   </Card.Text>
-                  <hr className="mt-0" />
+                  <hr className="m-0" />
+                  {comment.rate &&
+                    [...Array(comment.rate)].map((_, i) => (
+                      <Icon.StarFill key={i} className="text-info" />
+                    ))}
                   <Card.Text>{comment.comment}</Card.Text>
                 </div>
               );
