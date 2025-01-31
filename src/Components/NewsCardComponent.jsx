@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Card, Col, Container } from "react-bootstrap";
@@ -40,13 +41,10 @@ const NewsCardComponent = ({ infoHome }) => {
   };
 
   return (
-    <Col md={3}>
-      <Card
-        className="mb-3"
-        style={{ width: "100%", minWidth: "300px", marginLeft: "-70px" }}
-      >
+    <Col md={12}>
+      <Card className="mb-3" style={{ width: "100%", minWidth: "300px" }}>
         <Card.Body>
-          <Container className="p-0">
+          <Container fluid className="p-0">
             <Card.Title className="d-flex justify-content-between align-items-center">
               <h2>In primo piano</h2>
               <img
@@ -108,22 +106,6 @@ const NewsCardComponent = ({ infoHome }) => {
               />
             )}
           </Card.Link>
-        </Card.Body>
-      </Card>
-      <Card
-        className="mb-3"
-        style={{ width: "100%", minWidth: "300px", marginLeft: "-70px" }}
-      >
-        <Card.Body>
-          <Card.Title>I giochi di oggi</Card.Title>
-          <div className="d-flex justify-content-between mb-2">
-            <span>Tango</span>
-            <i className="bi bi-chevron-right"></i>
-          </div>
-          <div className="d-flex justify-content-between">
-            <span>Queens</span>
-            <i className="bi bi-chevron-right"></i>
-          </div>
         </Card.Body>
       </Card>
     </Col>
