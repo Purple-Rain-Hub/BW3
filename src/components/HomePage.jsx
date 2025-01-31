@@ -5,7 +5,6 @@ import {
   BookmarkFill,
   Plus,
   CardImage,
-  ChevronCompactDown,
 } from "react-bootstrap-icons";
 import HomePagePremium from "../assets/HomePagePremium.svg";
 //import Calendar from "../assets/Calendar.svg";
@@ -22,6 +21,7 @@ import { sendPost } from "../redux/action";
 import { setPostPic } from "../redux/action";
 import { getComments } from "../redux/action";
 import { Link } from "react-router-dom";
+import NewsCardComponent from "./NewsCardComponent";
 
 const HomePage = () => {
   const [writtenPost, setWrittenPost] = useState("");
@@ -345,89 +345,8 @@ const HomePage = () => {
           </Col>
 
           {/* Right Sidebar */}
-          <Col md={3}>
-            <Card className="mb-3">
-              <Card.Body>
-                <Container>
-                  <Card.Title className="d-flex justify-content-between align-items-center">
-                    <span style={{ marginLeft: "-12px" }}>In primo piano</span>
-                    <img
-                      src={infoHome}
-                      alt="Premium Icon"
-                      width="15"
-                      height="15"
-                      className="ms-auto"
-                    />
-                  </Card.Title>
-                </Container>
-
-                <Card.Subtitle className="mb-2 text-muted">
-                  a cura di LinkedIn Notizie
-                </Card.Subtitle>
-                <ul className="list-unstyled">
-                  <li>
-                    <strong> Come sta cambiando il lavoro... </strong> <br />
-                    <small className="text-muted">
-                      7 ore fa • 6.557 lettori
-                    </small>
-                  </li>
-                  <li>
-                    <strong>Torna il Frecciarossa Milano-Parigi </strong> <br />
-                    <small className="text-muted">
-                      7 ore fa • 6.557 lettori
-                    </small>
-                  </li>
-                  <li>
-                    <strong>Mps vuole acquisire Mediobanca </strong> <br />
-                    <small className="text-muted">
-                      7 ore fa • 6.557 lettori
-                    </small>
-                  </li>
-                  <li>
-                    <strong>Lavoro: l impatto del referendum amer... </strong>{" "}
-                    <br />
-                    <small className="text-muted">
-                      7 ore fa • 6.557 lettori
-                    </small>
-                  </li>
-                  <li>
-                    <strong>Generali Natale: è il razzismo </strong> <br />
-                    <small className="text-muted">
-                      7 ore fa • 6.557 lettori
-                    </small>
-                  </li>
-                </ul>
-                <Card.Link
-                  href="https://www.linkedin.com/showcase/linkedin-notizie/posts/?feedView=all"
-                  target="_blank"
-                  style={{
-                    textDecoration: "none",
-                    color: "black",
-                    fontWeight: "600",
-                  }}
-                >
-                  Vedi altro
-                  <ChevronCompactDown
-                    className="mx-2"
-                    style={{ fontSize: "20px" }}
-                  />
-                </Card.Link>
-              </Card.Body>
-            </Card>
-
-            <Card>
-              <Card.Body>
-                <Card.Title>I giochi di oggi</Card.Title>
-                <div className="d-flex justify-content-between mb-2">
-                  <span>Tango</span>
-                  <i className="bi bi-chevron-right"></i>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <span>Queens</span>
-                  <i className="bi bi-chevron-right"></i>
-                </div>
-              </Card.Body>
-            </Card>
+          <Col md={3} className="d-flex justify-content-center">
+            <NewsCardComponent infoHome={infoHome} />
           </Col>
         </Row>
       </Container>
