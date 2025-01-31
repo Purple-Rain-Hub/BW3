@@ -40,7 +40,7 @@ const NewsCardComponent = ({ infoHome }) => {
   };
 
   return (
-    <Col xs={12} md={4} lg={3} className="mb-3">
+    <Col xs={12} md={12} lg={12} className="mb-3">
       <Row className="justify-content-center">
         <Col xs={12} sm={10} md={12}>
           <Card className="mb-3">
@@ -55,7 +55,6 @@ const NewsCardComponent = ({ infoHome }) => {
                   className="ms-auto"
                 />
               </Card.Title>
-
               <Card.Subtitle className="mb-3 text-muted">
                 a cura di LinkedinNews
               </Card.Subtitle>
