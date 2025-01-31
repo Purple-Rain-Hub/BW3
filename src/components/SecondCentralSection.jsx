@@ -9,9 +9,12 @@ const SecondCentralSection = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [experiences, setExperiences] = useState([]);
+  const [randomImage, setRandomImage] = useState(null);
 
   const TOKEN =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzk3NTA4OTE2ZjYzNTAwMTVmZWNiODQiLCJpYXQiOjE3Mzc5Njk4MDEsImV4cCI6MTczOTE3OTQwMX0.gV22i7NwH_DHYfKE81N9UEY1Up6WHrH2EPIoPu8OD9w";
+
+  const API_KEY = "48545245-df42dd6ae1b58ed4617a974db";
 
   const [selectedSection, setSelectedSection] = useState("Aziende");
   useEffect(() => {
@@ -51,6 +54,7 @@ const SecondCentralSection = () => {
 
         const expData = await expResponse.json();
         setExperiences(expData);
+        fetchRandomImage();
       } catch (error) {
         console.error("❌ Errore nel fetch:", error);
         setError("Impossibile caricare il profilo utente o le esperienze.");
@@ -61,6 +65,24 @@ const SecondCentralSection = () => {
 
     fetchData();
   }, [userId]);
+
+  const fetchRandomImage = async () => {
+    try {
+      const response = await fetch(
+        `https://pixabay.com/api/?key=${API_KEY}&q=coding&image_type=photo&per_page=50`
+      );
+      const data = await response.json();
+
+      if (data.hits.length > 0) {
+        const randomIndex = Math.floor(Math.random() * data.hits.length);
+        setRandomImage(data.hits[randomIndex].largeImageURL);
+      } else {
+        console.log("Nessuna immagine trovata.");
+      }
+    } catch (error) {
+      console.error("Errore nel fetch delle immagini:", error);
+    }
+  };
 
   if (loading) {
     return (
@@ -86,7 +108,7 @@ const SecondCentralSection = () => {
               width: "100%",
               height: "50%",
               backgroundImage: `url(${
-                user.image || "https://placecats.com/700/700"
+                randomImage || user?.image || "https://placecats.com/700/700"
               })`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 100%",
