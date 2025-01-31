@@ -5,10 +5,7 @@ import ExperienceSection from "./ExperienceSection";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteExp,
-  getExperience,
-  getMyProfile,
   postExperience,
-  postExpPic,
   postPropic,
   putExperience,
   putProfile,
@@ -34,10 +31,6 @@ function CentralSection() {
   });
   const [expForPutState, setExpForPutState] = useState({});
   const [expPic, setExpPic] = useState();
-  const [hasPut, setHasPut] = useState(false);
-  const [hasPutProfile, setHasPutProfile] = useState(false);
-  const [hasExpPicPost, setHasExpPicPost] = useState(false);
-  const [hasExpPicPut, setHasExpPicPut] = useState(false);
   const [hasDelPut, setHasDelPut] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -72,6 +65,12 @@ function CentralSection() {
   const delId = useSelector((state) => {
     return state.showExperienceDel.id;
   });
+  const hasExpPicPut = useSelector((state) => {
+    return state.hasExpPicPut;
+  });
+  const hasExpPicPost = useSelector((state) => {
+    return state.hasExpPicPost;
+  });
 
   const [myProfileInfo, setMyProfileInfo] = useState({});
 
@@ -79,7 +78,6 @@ function CentralSection() {
     const propicData = new FormData();
     propicData.append("profile", e.target.files[0]);
     dispatch(postPropic(propicData));
-    dispatch(getMyProfile());
   };
 
   const handleExpPic = (e) => {
@@ -87,7 +85,10 @@ function CentralSection() {
     const expPicData = new FormData();
     expPicData.append("experience", e.target.files[0]);
     setExpPic(expPicData);
-    setHasExpPicPost(true);
+    dispatch({
+      type: "HAS_EXP_PIC_POST",
+      payload: true,
+    });
   };
 
   const handleExpPicPut = (e) => {
@@ -95,12 +96,15 @@ function CentralSection() {
     const expPicData = new FormData();
     expPicData.append("experience", e.target.files[0]);
     setExpPic(expPicData);
-    setHasExpPicPut(true);
+    dispatch({
+      type: "HAS_EXP_PIC_PUT",
+      payload: true,
+    });
   };
 
   const handleNewExperience = (e) => {
     e.preventDefault();
-    dispatch(postExperience(newExperience));
+    dispatch(postExperience(newExperience, expPic, newExpId, hasExpPicPost));
 
     setNewExperience({
       role: "",
@@ -114,44 +118,13 @@ function CentralSection() {
 
   const handlePutExperience = (e) => {
     e.preventDefault();
-    dispatch(putExperience(expForPutState, expForPut));
-    setHasPut(true);
+    dispatch(putExperience(expForPutState, expForPut, hasExpPicPut, expPic));
   };
 
   const handlePutProfile = (e) => {
     e.preventDefault();
     dispatch(putProfile(myProfileInfo));
-    setHasPutProfile(true);
   };
-
-  // USE EFFECT
-  useEffect(() => {
-    if (hasPutProfile) {
-      dispatch(getMyProfile());
-      setHasPutProfile(false);
-    }
-  }, [hasPutProfile]);
-
-  useEffect(() => {
-    if (hasPut) {
-      dispatch(getExperience());
-      setHasPut(false);
-    }
-  }, [hasPut]);
-
-  useEffect(() => {
-    if (hasExpPicPost) {
-      dispatch(postExpPic(expPic, newExpId));
-      setHasExpPicPost(false);
-    }
-  }, [newExpId]);
-
-  useEffect(() => {
-    if (hasExpPicPut) {
-      dispatch(postExpPic(expPic, expForPut._id));
-      setHasExpPicPut(false);
-    }
-  }, [hasPut]);
 
   useEffect(() => {
     if (expForPut.role) {
