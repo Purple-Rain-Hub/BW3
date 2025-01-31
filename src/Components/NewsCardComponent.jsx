@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Card, Col, Container } from "react-bootstrap";
+import { Card, Col, Container, Row, Button } from "react-bootstrap";
 import { ChevronCompactDown, ChevronCompactUp } from "react-bootstrap-icons";
 
 const NewsCardComponent = ({ infoHome }) => {
@@ -40,92 +40,80 @@ const NewsCardComponent = ({ infoHome }) => {
   };
 
   return (
-    <Col md={3}>
-      <Card
-        className="mb-3"
-        style={{ width: "100%", minWidth: "300px", marginLeft: "-70px" }}
-      >
-        <Card.Body>
-          <Container>
-            <Card.Title className="d-flex justify-content-between align-items-center">
-              <span>In primo piano</span>
-              <img
-                src={infoHome}
-                alt="Premium Icon"
-                width="15"
-                height="15"
-                className="ms-auto"
-              />
-            </Card.Title>
-          </Container>
-          <Card.Subtitle className="mb-2 text-muted">
-            a cura di LinkedinNews
-          </Card.Subtitle>
-          <ul className="list-unstyled">
-            {news.length > 0 ? (
-              news.slice(0, visibleCount).map((article, index) => (
-                <li key={index} className="mb-3">
-                  <strong>{article.title}</strong> <br />
-                  <small className="text-muted">
-                    {new Date(article.publishedAt).toLocaleTimeString()} •{" "}
-                    {article.source?.name || "Sconosciuto"}
-                  </small>
-                  {article.urlToImage && (
-                    <div className="mt-2">
-                      <img
-                        src={article.urlToImage}
-                        alt="News"
-                        style={{ width: "100%", borderRadius: "5px" }}
-                      />
-                    </div>
-                  )}
-                  <hr
-                    style={{ border: "1px solid #e5e5e5", margin: "10px 0" }}
-                  />
-                </li>
-              ))
-            ) : (
-              <li>Caricamento notizie...</li>
-            )}
-          </ul>
-          <Card.Link
-            href="#"
-            onClick={toggleNews}
-            style={{
-              textDecoration: "none",
-              color: "black",
-              fontWeight: "600",
-              cursor: "pointer",
-            }}
-          >
-            {expanded ? "Mostra meno" : "Vedi altro"}
-            {expanded ? (
-              <ChevronCompactUp className="mx-2" style={{ fontSize: "20px" }} />
-            ) : (
-              <ChevronCompactDown
-                className="mx-2"
-                style={{ fontSize: "20px" }}
-              />
-            )}
-          </Card.Link>
-        </Card.Body>
-      </Card>
-      <Card
-        className="mb-3"
-        style={{ width: "100%", minWidth: "300px", marginLeft: "-70px" }}
-      >
-        <Card.Body>
-          <Card.Title>I giochi di oggi</Card.Title>
-          <div className="d-flex justify-content-between mb-2">
-            <span>Tango</span>
-            <i className="bi bi-chevron-right"></i>
-          </div>
-          <div className="d-flex justify-content-between">
-            <span>Queens</span>
-            <i className="bi bi-chevron-right"></i>
-          </div>
-        </Card.Body>
-      </Card>
+    <Col xs={12} md={4} lg={3} className="mb-3">
+      <Row className="justify-content-center">
+        <Col xs={12} sm={10} md={12}>
+          <Card className="mb-3">
+            <Card.Body>
+              <Card.Title className="d-flex justify-content-between align-items-center mb-3">
+                <span>In primo piano</span>
+                <img
+                  src={infoHome}
+                  alt="Premium Icon"
+                  width="15"
+                  height="15"
+                  className="ms-auto"
+                />
+              </Card.Title>
+
+              <Card.Subtitle className="mb-3 text-muted">
+                a cura di LinkedinNews
+              </Card.Subtitle>
+              {news.length > 0 ? (
+                news.slice(0, visibleCount).map((article, index) => (
+                  <Card key={index} className="mb-3">
+                    <Card.Body>
+                      <Card.Title>{article.title}</Card.Title>
+                      <Card.Text>
+                        <small className="text-muted">
+                          {new Date(article.publishedAt).toLocaleTimeString()} •{" "}
+                          {article.source?.name || "Sconosciuto"}
+                        </small>
+                      </Card.Text>
+                      {article.urlToImage && (
+                        <Card.Img
+                          variant="top"
+                          src={article.urlToImage}
+                          alt="News"
+                          className="mb-2"
+                          style={{ borderRadius: "5px" }}
+                        />
+                      )}
+                    </Card.Body>
+                  </Card>
+                ))
+              ) : (
+                <Card.Text>Caricamento notizie...</Card.Text>
+              )}
+              <Button
+                variant="link"
+                onClick={toggleNews}
+                className="text-decoration-none text-dark fw-bold"
+              >
+                {expanded ? "Mostra meno" : "Vedi altro"}
+                {expanded ? (
+                  <ChevronCompactUp className="ms-2" />
+                ) : (
+                  <ChevronCompactDown className="ms-2" />
+                )}
+              </Button>
+            </Card.Body>
+          </Card>
+          <Card className="mb-3">
+            <Card.Body>
+              <Card.Title>I giochi di oggi</Card.Title>
+              <div className="d-flex justify-content-between mb-2">
+                <span>Tango</span>
+                <i className="bi bi-chevron-right"></i>
+              </div>
+              <div className="d-flex justify-content-between">
+                <span>Queens</span>
+                <i className="bi bi-chevron-right"></i>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </Col>
   );
 };
