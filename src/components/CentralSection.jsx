@@ -1,5 +1,4 @@
 import { Button, Card, Form, Modal, Container } from "react-bootstrap";
-/* eslint-disable react-hooks/exhaustive-deps */
 import * as Icon from "react-bootstrap-icons";
 import ExperienceSection from "./ExperienceSection";
 import { useDispatch, useSelector } from "react-redux";
@@ -152,748 +151,538 @@ function CentralSection() {
   }, [myProfile]);
 
   return (
-    <>
-      <Container className="mt-3 my-3 ">
-        <div className="container-fluid p-0">
-          <Card
-            className="border-0 shadow-sm rounded-3"
-            style={{ minHeight: "400px" }}
-          >
-            <Card.Img
-              className="card-img-top"
+    <Container className="mt-3 my-3 ">
+      <div className="container-fluid p-0">
+        <Card
+          className="border-0 shadow-sm rounded-3"
+          style={{ minHeight: "400px" }}
+        >
+          <Card.Img
+            className="card-img-top"
+            style={{
+              height: "200px",
+              objectFit: "cover",
+              backgroundImage: "url(https://placecats.com/700/700)",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "110% 110%",
+              borderTopLeftRadius: "12px",
+              borderTopRightRadius: "12px",
+            }}
+          />
+          <div className="position-relative">
+            <Button
+              onClick={handleShow}
+              className="position-absolute translate-middle-y rounded-circle p-0 border-2 border-white"
               style={{
-                height: "200px",
-                objectFit: "cover",
-                backgroundImage: "url(https://placecats.com/700/700)",
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "110% 110%",
-                borderTopLeftRadius: "12px",
-                borderTopRightRadius: "12px",
-              }}
-            />
-            <div className="position-relative">
-              <Button
-                onClick={handleShow}
-                className="position-absolute translate-middle-y rounded-circle p-0 border-2 border-white"
-                style={{
-                  width: "85px",
-                  height: "85px",
-                  top: "20%",
-                  left: "5%",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                }}
-              >
-                <img
-                  src={myProfile.image || "https://placecats.com/300/300"}
-                  alt="Profile"
-                  className="w-100 h-100 rounded-circle"
-                  style={{ objectFit: "cover" }}
-                />
-              </Button>
-            </div>
-
-            <div
-              className="position-absolute d-flex justify-content-center align-items-center rounded-circle bg-white"
-              style={{
-                top: "4%",
-                right: "5%",
-                width: "40px",
-                height: "40px",
+                width: "85px",
+                height: "85px",
+                top: "20%",
+                left: "5%",
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               }}
             >
-              <Icon.Pencil style={{ color: "#0B66C2", fontSize: "20px" }} />
-            </div>
-
-            <Card.Body className="pt-5">
-              <div className="d-flex justify-content-between flex-wrap mb-2">
-                <div className="d-flex flex-column flex-sm-row align-items-sm-center gap-2">
-                  <Card.Title className="m-0">
-                    {myProfile.name} {myProfile.surname}
-                  </Card.Title>
-                  <div
-                    className="d-flex align-items-center px-2 py-1 border rounded-3"
-                    style={{
-                      borderColor: "#0B66C2",
-                      color: "#0B66C2",
-                      fontSize: "12px",
-                    }}
-                  >
-                    <Icon.ShieldCheck
-                      className="me-1"
-                      style={{ fontSize: "12px" }}
-                    />
-                    <span>Aggiungi badge di verifica</span>
-                  </div>
-                </div>
-                <button className="btn" onClick={() => setShowProfilePut(true)}>
-                  <Icon.Pencil className="align-self-center" />
-                </button>
-              </div>
-
-              <Card.Text
-                className="text-muted mt-1"
-                style={{ fontSize: "14px" }}
-              >
-                {myProfile.title}
-              </Card.Text>
-
-              <div className="d-flex flex-wrap gap-1 mb-1">
-                <p className="m-0 text-muted" style={{ fontSize: "12px" }}>
-                  {myProfile.area}
-                </p>
-                <p className="m-0" style={{ fontSize: "12px" }}>
-                  &middot;
-                </p>
-                <a
-                  href="#"
-                  className="text-decoration-none"
-                  style={{ color: "#0B66C2", fontSize: "12px" }}
-                >
-                  Informazioni di contatto
-                </a>
-              </div>
-
-              <a
-                href="#"
-                className="text-decoration-none d-block mb-2"
-                style={{ color: "#0B66C2", fontSize: "12px" }}
-              >
-                14 collegamenti
-              </a>
-
-              <div className="d-flex flex-wrap gap-2 mb-3">
-                <p
-                  className="m-0 bg-primary text-white rounded-3 px-3 py-1"
-                  style={{ fontSize: "12px" }}
-                >
-                  Disponibile per
-                </p>
-                <p
-                  className="m-0 border rounded-3 px-3 py-1 text-primary"
-                  style={{
-                    fontSize: "12px",
-                    borderColor: "#0B66C2",
-                    cursor: "pointer",
-                  }}
-                >
-                  Aggiungi sezione del profilo
-                </p>
-                <p
-                  className="m-0 border rounded-3 px-3 py-1 text-primary"
-                  style={{
-                    fontSize: "12px",
-                    borderColor: "#0B66C2",
-                    cursor: "pointer",
-                  }}
-                >
-                  Migliora profilo
-                </p>
-                <p
-                  className="m-0 border rounded-3 px-3 py-1 text-muted"
-                  style={{
-                    fontSize: "12px",
-                    borderColor: "gray",
-                    cursor: "pointer",
-                  }}
-                >
-                  Altro
-                </p>
-              </div>
-
-              <div
-                className="w-100 rounded-3 p-3"
-                style={{ backgroundColor: "#DDE7F1" }}
-              >
-                <div className="d-flex justify-content-between align-items-center mb-2">
-                  <p className="m-0 fw-bold" style={{ fontSize: "14px" }}>
-                    Disponibile a lavorare
-                  </p>
-                  <Icon.Pencil />
-                </div>
-                <p className="m-0" style={{ fontSize: "12px" }}>
-                  Altra descrizione...
-                </p>
-                <a
-                  href="#"
-                  className="text-decoration-none"
-                  style={{ color: "#0B66C2", fontSize: "12px" }}
-                >
-                  Mostra dettagli
-                </a>
-              </div>
-            </Card.Body>
-          </Card>
-        </div>
-
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Scegli un Immagine profilo</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <input type="file" name="proPicInput" onChange={handlePropic} />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Chiudi
+              <img
+                src={myProfile.image || "https://placecats.com/300/300"}
+                alt="Profile"
+                className="w-100 h-100 rounded-circle"
+                style={{ objectFit: "cover" }}
+              />
             </Button>
-          </Modal.Footer>
-        </Modal>
-
-        <div
-          style={{
-            width: "100%",
-            backgroundColor: "white",
-            marginTop: "10px",
-            border: "1px solid #ddd",
-            borderRadius: "10px",
-            padding: "16px",
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-          }}
-        >
-          <div className="d-flex justify-content-between align-items-center">
-            <p
-              className="ms-3"
-              style={{ fontWeight: "bold", fontSize: "14px" }}
-            >
-              Consigliato per te
-            </p>
-            <Icon.X
-              className="text-black"
-              style={{ cursor: "pointer", fontSize: "16px" }}
-            />
           </div>
-
-          <p className="ms-3 text-secondary" style={{ fontSize: "12px" }}>
-            <Icon.EyeFill /> Solo per te
-          </p>
 
           <div
+            className="position-absolute d-flex justify-content-center align-items-center rounded-circle bg-white"
             style={{
-              width: "90%",
-              borderRadius: "12px",
-              margin: "10px auto 0 auto",
-              padding: "12px",
-              backgroundColor: "#f8f9fa",
-              boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
+              top: "4%",
+              right: "5%",
+              width: "40px",
+              height: "40px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <div className="d-flex align-items-center">
-              <img
-                src="https://placecats.com/50/50"
-                alt="User"
-                style={{
-                  borderRadius: "10px",
-                  width: "50px",
-                  height: "50px",
-                  objectFit: "cover",
-                }}
-              />
-              <p className="m-2" style={{ fontSize: "12px", color: "#333" }}>
-                Entra in contatto con una persona che ricopre il ruolo di
-                ingegnere Full Stack per raggiungere i tuoi obiettivi
-                professionali
-              </p>
-            </div>
-
-            <p
-              className="mb-5 text-secondary"
-              style={{ fontSize: "10px", marginTop: "10px" }}
-            >
-              Trova persone che possono fornire indicazioni e aiutarti a trovare
-              potenziali opportunità.
-            </p>
-
-            <p
-              style={{
-                marginBottom: "0px",
-                border: "1px solid #ddd",
-                width: "fit-content",
-                borderRadius: "20px",
-                color: "#007bff",
-                cursor: "pointer",
-                fontSize: "12px",
-                padding: "6px 12px",
-                textAlign: "center",
-                transition: "background-color 0.3s ease, color 0.3s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.backgroundColor = "#007bff";
-                e.target.style.color = "white";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.backgroundColor = "transparent";
-                e.target.style.color = "#007bff";
-              }}
-            >
-              Cerca persone
-            </p>
-          </div>
-        </div>
-
-        <div
-          style={{
-            width: "100%",
-            backgroundColor: "#fff",
-            marginTop: "20px",
-            border: "1px solid #ddd",
-            borderRadius: "15px",
-            padding: "20px",
-          }}
-        >
-          <div className="d-flex justify-content-between align-items-center">
-            <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-              Analisi
-            </p>
-            <Icon.X
-              className="text-black"
-              style={{ cursor: "pointer", fontSize: "18px" }}
-            />
+            <Icon.Pencil style={{ color: "#0B66C2", fontSize: "20px" }} />
           </div>
 
-          <p
-            className="m-0 text-secondary"
-            style={{ fontSize: "12px", marginTop: "5px" }}
-          >
-            <Icon.EyeFill style={{ fontSize: "12px" }} /> Solo per te
-          </p>
-
-          <div className="d-flex gap-3 mt-3 justify-content-center">
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#f8f9fa",
-                borderRadius: "12px",
-                padding: "10px",
-                width: "130px",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                cursor: "pointer",
-              }}
-              className="cardAnalisi"
-            >
-              <Icon.PeopleFill style={{ fontSize: "30px", color: "#0B66C2" }} />
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                7 visualizzazioni del profilo
-              </p>
-              <p
-                className="m-0 text-center"
-                style={{ fontSize: "12px", color: "#6c757d" }}
-              >
-                Scopri chi ha visitato il tuo profilo.
-              </p>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#f8f9fa",
-                borderRadius: "12px",
-                padding: "10px",
-                width: "130px",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                cursor: "pointer",
-              }}
-              className="cardAnalisi"
-            >
-              <Icon.BarChartFill
-                style={{ fontSize: "30px", color: "#0B66C2" }}
-              />
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                2 impressioni dei post
-              </p>
-              <p
-                className="m-0 text-center"
-                style={{ fontSize: "12px", color: "#6c757d" }}
-              >
-                Scopri chi sta interagendo con i tuoi post.
-              </p>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#f8f9fa",
-                borderRadius: "12px",
-                padding: "10px",
-                width: "130px",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                cursor: "pointer",
-              }}
-              className="cardAnalisi"
-            >
-              <Icon.Search style={{ fontSize: "30px", color: "#0B66C2" }} />
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                3 comparse nei motori di ricerca
-              </p>
-              <p
-                className="m-0 text-center"
-                style={{ fontSize: "12px", color: "#6c757d" }}
-              >
-                Vedi quante volte compari nei risultati di ricerca.
-              </p>
-            </div>
-          </div>
-
-          <hr style={{ marginTop: "20px", borderColor: "#ddd" }} />
-
-          <p
-            className="m-0 text-center"
-            style={{
-              fontSize: "14px",
-              fontWeight: "bold",
-              color: "#0B66C2",
-              cursor: "pointer",
-            }}
-          >
-            Mostra tutte le analisi
-            <Icon.ArrowRight className="ms-1" />
-          </p>
-        </div>
-
-        <div
-          style={{
-            width: "100%",
-            backgroundColor: "white",
-            marginTop: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "12px",
-            padding: "12px",
-            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-          }}
-        >
-          <div className="d-flex justify-content-between align-items-center">
-            <p className="m-0 fw-bold fs-5">Attività</p>
-            <div className="d-flex gap-2">
-              <Link
-                to="/"
-                className="m-0"
-                style={{
-                  color: "#0B66C2",
-                  fontWeight: "bold",
-                  border: "2px solid #0B66C2",
-                  borderRadius: "10px",
-                  padding: "6px 12px",
-                  cursor: "pointer",
-                  transition: "background 0.3s",
-                  textDecoration: "none",
-                  display: "inline-block",
-                }}
-                onMouseOver={(e) =>
-                  (e.target.style.background = "rgba(122, 181, 240, 0.54)")
-                }
-                onMouseOut={(e) => (e.target.style.background = "white")}
-              >
-                Crea un post
-              </Link>
-            </div>
-          </div>
-
-          <a
-            href="#"
-            className="d-block mt-2 text-decoration-none fw-bold"
-            style={{ color: "#0B66C2", fontSize: "16px" }}
-          >
-            0 follower
-          </a>
-
-          <p
-            className="m-0 fw-bold text-secondary mt-2"
-            style={{ fontSize: "14px" }}
-          >
-            Non hai ancora pubblicato nulla
-          </p>
-          <p className="m-0 text-secondary" style={{ fontSize: "14px" }}>
-            I post che condividi appariranno qui.
-          </p>
-
-          <hr className="my-3" />
-
-          <p
-            className="m-0 text-center fw-bold"
-            style={{
-              fontSize: "14px",
-              fontWeight: "bold",
-              color: "#0B66C2",
-              cursor: "pointer",
-            }}
-          >
-            Mostra tutte le attività
-            <Icon.ArrowRight className="ms-2" style={{ color: "#0B66C2" }} />
-          </p>
-        </div>
-
-        <div
-          style={{
-            width: "100%",
-            backgroundColor: "white",
-            marginTop: "10px",
-            border: "1px solid #ddd",
-            borderRadius: "12px",
-            padding: "16px",
-            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-          }}
-        >
-          <ExperienceSection />
-
-          <div className="text-center">
-            <Button
-              onClick={handleShowExperience}
-              className="btn rounded-pill fw-bold mt-3 d-flex align-items-center justify-content-center"
-              style={{
-                backgroundColor: "transparent",
-                color: "#0B66C2",
-                border: "2px solid #0B66C2",
-                padding: "10px 20px",
-                fontSize: "14px",
-                transition: "all 0.3s ease",
-                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                width: "200px",
-                margin: "0 auto",
-              }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = "#0B66C2";
-                e.target.style.color = "white";
-                e.target.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = "transparent";
-                e.target.style.color = "#0B66C2";
-                e.target.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
-              }}
-            >
-              Aggiungi Esperienza
-            </Button>
-          </div>
-
-          <Modal show={showExperience} onHide={handleCloseExperience} centered>
-            <Modal.Header closeButton>
-              <Modal.Title className="fw-bold">
-                Aggiungi un Esperienza
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form onSubmit={handleNewExperience}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-semibold">Ruolo</Form.Label>
-                  <Form.Control
-                    type="text"
-                    required
-                    value={newExperience.role}
-                    onChange={(e) =>
-                      setNewExperience({
-                        ...newExperience,
-                        role: e.target.value,
-                      })
-                    }
+          <Card.Body className="pt-5">
+            <div className="d-flex justify-content-between flex-wrap mb-2">
+              <div className="d-flex flex-column flex-sm-row align-items-sm-center gap-2">
+                <Card.Title className="m-0">
+                  {myProfile.name} {myProfile.surname}
+                </Card.Title>
+                <div
+                  className="d-flex align-items-center px-2 py-1 border rounded-3"
+                  style={{
+                    borderColor: "#0B66C2",
+                    color: "#0B66C2",
+                    fontSize: "12px",
+                  }}
+                >
+                  <Icon.ShieldCheck
+                    className="me-1"
+                    style={{ fontSize: "12px" }}
                   />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-semibold">Azienda</Form.Label>
-                  <Form.Control
-                    type="text"
-                    required
-                    value={newExperience.company}
-                    onChange={(e) =>
-                      setNewExperience({
-                        ...newExperience,
-                        company: e.target.value,
-                      })
-                    }
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-semibold">
-                    Descrivici la tua esperienza lavorativa
-                  </Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    required
-                    value={newExperience.description}
-                    onChange={(e) =>
-                      setNewExperience({
-                        ...newExperience,
-                        description: e.target.value,
-                      })
-                    }
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-semibold">
-                    Data di inizio
-                  </Form.Label>
-                  <Form.Control
-                    type="date"
-                    required
-                    value={newExperience.startDate}
-                    onChange={(e) =>
-                      setNewExperience({
-                        ...newExperience,
-                        startDate: e.target.value,
-                      })
-                    }
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Check
-                    type="checkbox"
-                    label="Questa esperienza di lavoro si è terminata"
-                    className="fw-semibold"
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-semibold">Data di fine</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={newExperience.endDate}
-                    onChange={(e) =>
-                      setNewExperience({
-                        ...newExperience,
-                        endDate: e.target.value,
-                      })
-                    }
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-semibold">
-                    Zona di lavoro
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={newExperience.area}
-                    onChange={(e) =>
-                      setNewExperience({
-                        ...newExperience,
-                        area: e.target.value,
-                      })
-                    }
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-semibold">
-                    Immagine Azienda
-                  </Form.Label>
-                  <Form.Control type="file" onChange={handleExpPic} />
-                </Form.Group>
-
-                <div className="text-end">
-                  <Button
-                    type="submit"
-                    className="btn rounded-pill border text-white px-4 py-2 fw-medium"
-                    style={{
-                      background: "#0B66C2",
-                      transition: "all 0.3s",
-                    }}
-                    onMouseOver={(e) => (e.target.style.background = "#084B9C")}
-                    onMouseOut={(e) => (e.target.style.background = "#0B66C2")}
-                  >
-                    Salva
-                  </Button>
+                  <span>Aggiungi badge di verifica</span>
                 </div>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseExperience}>
-                Chiudi
-              </Button>
-            </Modal.Footer>
-          </Modal>
+              </div>
+              <button className="btn" onClick={() => setShowProfilePut(true)}>
+                <Icon.Pencil className="align-self-center" />
+              </button>
+            </div>
+
+            <Card.Text className="text-muted mt-1" style={{ fontSize: "14px" }}>
+              {myProfile.title}
+            </Card.Text>
+
+            <div className="d-flex flex-wrap gap-1 mb-1">
+              <p className="m-0 text-muted" style={{ fontSize: "12px" }}>
+                {myProfile.area}
+              </p>
+              <p className="m-0" style={{ fontSize: "12px" }}>
+                &middot;
+              </p>
+              <a
+                href="#"
+                className="text-decoration-none"
+                style={{ color: "#0B66C2", fontSize: "12px" }}
+              >
+                Informazioni di contatto
+              </a>
+            </div>
+
+            <a
+              href="#"
+              className="text-decoration-none d-block mb-2"
+              style={{ color: "#0B66C2", fontSize: "12px" }}
+            >
+              14 collegamenti
+            </a>
+
+            <div className="d-flex flex-wrap gap-2 mb-3">
+              <p
+                className="m-0 bg-primary text-white rounded-3 px-3 py-1"
+                style={{ fontSize: "12px" }}
+              >
+                Disponibile per
+              </p>
+              <p
+                className="m-0 border rounded-3 px-3 py-1 text-primary"
+                style={{
+                  fontSize: "12px",
+                  borderColor: "#0B66C2",
+                  cursor: "pointer",
+                }}
+              >
+                Aggiungi sezione del profilo
+              </p>
+              <p
+                className="m-0 border rounded-3 px-3 py-1 text-primary"
+                style={{
+                  fontSize: "12px",
+                  borderColor: "#0B66C2",
+                  cursor: "pointer",
+                }}
+              >
+                Migliora profilo
+              </p>
+              <p
+                className="m-0 border rounded-3 px-3 py-1 text-muted"
+                style={{
+                  fontSize: "12px",
+                  borderColor: "gray",
+                  cursor: "pointer",
+                }}
+              >
+                Altro
+              </p>
+            </div>
+
+            <div
+              className="w-100 rounded-3 p-3"
+              style={{ backgroundColor: "#DDE7F1" }}
+            >
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <p className="m-0 fw-bold" style={{ fontSize: "14px" }}>
+                  Disponibile a lavorare
+                </p>
+                <Icon.Pencil />
+              </div>
+              <p className="m-0" style={{ fontSize: "12px" }}>
+                Altra descrizione...
+              </p>
+              <a
+                href="#"
+                className="text-decoration-none"
+                style={{ color: "#0B66C2", fontSize: "12px" }}
+              >
+                Mostra dettagli
+              </a>
+            </div>
+          </Card.Body>
+        </Card>
+      </div>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Scegli un Immagine profilo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <input type="file" name="proPicInput" onChange={handlePropic} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Chiudi
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <div
+        style={{
+          width: "100%",
+          backgroundColor: "white",
+          marginTop: "10px",
+          border: "1px solid #ddd",
+          borderRadius: "10px",
+          padding: "16px",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <div className="d-flex justify-content-between align-items-center">
+          <p className="ms-3" style={{ fontWeight: "bold", fontSize: "14px" }}>
+            Consigliato per te
+          </p>
+          <Icon.X
+            className="text-black"
+            style={{ cursor: "pointer", fontSize: "16px" }}
+          />
         </div>
+
+        <p className="ms-3 text-secondary" style={{ fontSize: "12px" }}>
+          <Icon.EyeFill /> Solo per te
+        </p>
 
         <div
           style={{
-            width: "100%",
-            backgroundColor: "white",
-            marginTop: "10px",
-            border: "1px solid #ddd",
+            width: "90%",
             borderRadius: "12px",
-            padding: "16px",
-            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+            margin: "10px auto 0 auto",
+            padding: "12px",
+            backgroundColor: "#f8f9fa",
+            boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <div className="d-flex justify-content-between align-items-center">
-            <p
-              className="m-0 fw-bold"
-              style={{ fontSize: "18px", color: "#333" }}
-            >
-              Competenze
-            </p>
-            <div className="d-flex gap-3">
-              <Icon.Plus
-                className="align-self-center"
-                style={{
-                  fontSize: "22px",
-                  color: "#007bff",
-                  cursor: "pointer",
-                }}
-              />
-              <Icon.Pencil
-                className="align-self-center"
-                style={{
-                  fontSize: "22px",
-                  color: "#007bff",
-                  cursor: "pointer",
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="d-flex mt-3 gap-3 align-items-start">
+          <div className="d-flex align-items-center">
             <img
               src="https://placecats.com/50/50"
-              alt="Logo università"
+              alt="User"
               style={{
+                borderRadius: "10px",
                 width: "50px",
                 height: "50px",
-                borderRadius: "50%",
                 objectFit: "cover",
               }}
             />
-            <div className="d-flex flex-column">
-              <p className="fw-bold m-0" style={{ fontSize: "16px" }}>
-                Tor Vergata
-              </p>
-              <p className="m-0">Laurea in Informatica</p>
-              <p className="text-secondary m-0" style={{ fontSize: "12px" }}>
-                Da 2019 a 2023
-              </p>
-              <p className="m-0">Votazione: 110/110</p>
-            </div>
+            <p className="m-2" style={{ fontSize: "12px", color: "#333" }}>
+              Entra in contatto con una persona che ricopre il ruolo di
+              ingegnere Full Stack per raggiungere i tuoi obiettivi
+              professionali
+            </p>
           </div>
 
-          <hr className="my-3" style={{ borderColor: "#ddd" }} />
+          <p
+            className="mb-5 text-secondary"
+            style={{ fontSize: "10px", marginTop: "10px" }}
+          >
+            Trova persone che possono fornire indicazioni e aiutarti a trovare
+            potenziali opportunità.
+          </p>
 
           <p
-            className="fw-bold m-0"
-            style={{ fontSize: "16px", color: "#333" }}
+            style={{
+              marginBottom: "0px",
+              border: "1px solid #ddd",
+              width: "fit-content",
+              borderRadius: "20px",
+              color: "#007bff",
+              cursor: "pointer",
+              fontSize: "12px",
+              padding: "6px 12px",
+              textAlign: "center",
+              transition: "background-color 0.3s ease, color 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "#007bff";
+              e.target.style.color = "white";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "transparent";
+              e.target.style.color = "#007bff";
+            }}
+          >
+            Cerca persone
+          </p>
+        </div>
+      </div>
+
+      <div
+        style={{
+          width: "100%",
+          backgroundColor: "#fff",
+          marginTop: "20px",
+          border: "1px solid #ddd",
+          borderRadius: "15px",
+          padding: "20px",
+        }}
+      >
+        <div className="d-flex justify-content-between align-items-center">
+          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
+            Analisi
+          </p>
+          <Icon.X
+            className="text-black"
+            style={{ cursor: "pointer", fontSize: "18px" }}
+          />
+        </div>
+
+        <p
+          className="m-0 text-secondary"
+          style={{ fontSize: "12px", marginTop: "5px" }}
+        >
+          <Icon.EyeFill style={{ fontSize: "12px" }} /> Solo per te
+        </p>
+
+        <div className="d-flex gap-3 mt-3 justify-content-center">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#f8f9fa",
+              borderRadius: "12px",
+              padding: "10px",
+              width: "130px",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+              cursor: "pointer",
+            }}
+            className="cardAnalisi"
+          >
+            <Icon.PeopleFill style={{ fontSize: "30px", color: "#0B66C2" }} />
+            <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
+              7 visualizzazioni del profilo
+            </p>
+            <p
+              className="m-0 text-center"
+              style={{ fontSize: "12px", color: "#6c757d" }}
+            >
+              Scopri chi ha visitato il tuo profilo.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#f8f9fa",
+              borderRadius: "12px",
+              padding: "10px",
+              width: "130px",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+              cursor: "pointer",
+            }}
+            className="cardAnalisi"
+          >
+            <Icon.BarChartFill style={{ fontSize: "30px", color: "#0B66C2" }} />
+            <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
+              2 impressioni dei post
+            </p>
+            <p
+              className="m-0 text-center"
+              style={{ fontSize: "12px", color: "#6c757d" }}
+            >
+              Scopri chi sta interagendo con i tuoi post.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#f8f9fa",
+              borderRadius: "12px",
+              padding: "10px",
+              width: "130px",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+              cursor: "pointer",
+            }}
+            className="cardAnalisi"
+          >
+            <Icon.Search style={{ fontSize: "30px", color: "#0B66C2" }} />
+            <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
+              3 comparse nei motori di ricerca
+            </p>
+            <p
+              className="m-0 text-center"
+              style={{ fontSize: "12px", color: "#6c757d" }}
+            >
+              Vedi quante volte compari nei risultati di ricerca.
+            </p>
+          </div>
+        </div>
+
+        <hr style={{ marginTop: "20px", borderColor: "#ddd" }} />
+
+        <p
+          className="m-0 text-center"
+          style={{
+            fontSize: "14px",
+            fontWeight: "bold",
+            color: "#0B66C2",
+            cursor: "pointer",
+          }}
+        >
+          Mostra tutte le analisi
+          <Icon.ArrowRight className="ms-1" />
+        </p>
+      </div>
+
+      <div
+        style={{
+          width: "100%",
+          backgroundColor: "white",
+          marginTop: "10px",
+          border: "1px solid #ccc",
+          borderRadius: "12px",
+          padding: "12px",
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <div className="d-flex justify-content-between align-items-center">
+          <p className="m-0 fw-bold fs-5">Attività</p>
+          <div className="d-flex gap-2">
+            <Link
+              to="/"
+              className="m-0"
+              style={{
+                color: "#0B66C2",
+                fontWeight: "bold",
+                border: "2px solid #0B66C2",
+                borderRadius: "10px",
+                padding: "6px 12px",
+                cursor: "pointer",
+                transition: "background 0.3s",
+                textDecoration: "none",
+                display: "inline-block",
+              }}
+              onMouseOver={(e) =>
+                (e.target.style.background = "rgba(122, 181, 240, 0.54)")
+              }
+              onMouseOut={(e) => (e.target.style.background = "white")}
+            >
+              Crea un post
+            </Link>
+          </div>
+        </div>
+
+        <a
+          href="#"
+          className="d-block mt-2 text-decoration-none fw-bold"
+          style={{ color: "#0B66C2", fontSize: "16px" }}
+        >
+          0 follower
+        </a>
+
+        <p
+          className="m-0 fw-bold text-secondary mt-2"
+          style={{ fontSize: "14px" }}
+        >
+          Non hai ancora pubblicato nulla
+        </p>
+        <p className="m-0 text-secondary" style={{ fontSize: "14px" }}>
+          I post che condividi appariranno qui.
+        </p>
+
+        <hr className="my-3" />
+
+        <p
+          className="m-0 text-center fw-bold"
+          style={{
+            fontSize: "14px",
+            fontWeight: "bold",
+            color: "#0B66C2",
+            cursor: "pointer",
+          }}
+        >
+          Mostra tutte le attività
+          <Icon.ArrowRight className="ms-2" style={{ color: "#0B66C2" }} />
+        </p>
+      </div>
+
+      <div
+        style={{
+          width: "100%",
+          backgroundColor: "white",
+          marginTop: "10px",
+          border: "1px solid #ddd",
+          borderRadius: "12px",
+          padding: "16px",
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <ExperienceSection />
+
+        <div className="text-center">
+          <Button
+            onClick={handleShowExperience}
+            className="btn rounded-pill fw-bold mt-3 d-flex align-items-center justify-content-center"
+            style={{
+              backgroundColor: "transparent",
+              color: "#0B66C2",
+              border: "2px solid #0B66C2",
+              padding: "10px 20px",
+              fontSize: "14px",
+              transition: "all 0.3s ease",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              width: "200px",
+              margin: "0 auto",
+            }}
+            onMouseOver={(e) => {
+              e.target.style.backgroundColor = "#0B66C2";
+              e.target.style.color = "white";
+              e.target.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+            }}
+            onMouseOut={(e) => {
+              e.target.style.backgroundColor = "transparent";
+              e.target.style.color = "#0B66C2";
+              e.target.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
+            }}
+          >
+            Aggiungi Esperienza
+          </Button>
+        </div>
+      </div>
+
+      <div
+        style={{
+          width: "100%",
+          backgroundColor: "white",
+          marginTop: "10px",
+          border: "1px solid #ddd",
+          borderRadius: "12px",
+          padding: "16px",
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <div className="d-flex justify-content-between align-items-center">
+          <p
+            className="m-0 fw-bold"
+            style={{ fontSize: "18px", color: "#333" }}
           >
             Competenze
           </p>
@@ -1037,120 +826,115 @@ function CentralSection() {
             <Icon.ArrowRight className="ms-1" />
           </p>
         </div>
-        <InterestsSections />
+      </div>
 
-        {/* MODALE PER PUT */}
-        <Modal show={showExperiencePut} onHide={handleCloseExperiencePut}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modifica Esperienza!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={handlePutExperience}>
-              <Form.Label className="mt-2 fw-lighter">Ruolo</Form.Label>
-              <Form.Control
-                type="text"
-                required
-                value={expForPutState.role}
-                onChange={(e) => {
-                  setExpForPutState({
-                    ...expForPutState,
-                    role: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label className="mt-2 fw-lighter">Azienda</Form.Label>
-              <Form.Control
-                type="text"
-                required
-                value={expForPutState.company}
-                onChange={(e) => {
-                  setExpForPutState({
-                    ...expForPutState,
-                    company: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label className="mt-2 fw-lighter">
-                Descrivici la tua esperienza lavorativa
-              </Form.Label>
-              <Form.Control
-                type="text"
-                required
-                value={expForPutState.description}
-                onChange={(e) => {
-                  setExpForPutState({
-                    ...expForPutState,
-                    description: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label className="mt-2 fw-lighter">
-                Data di inizio
-              </Form.Label>
-              <Form.Control
-                type="date"
-                required
-                value={newExperience.startDate.split("T")[0]}
-                onChange={(e) => {
-                  setExpForPutState({
-                    ...expForPutState,
-                    startDate: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label>
-                Questa esperienza di lavoro si è terminata
-              </Form.Label>
-              <Form.Check className="ms-2" />
-              <Form.Label className="mt-2 fw-lighter">Data di fine</Form.Label>
-              <Form.Control
-                type="date"
-                value={newExperience.endDate.split("T")[0]}
-                onChange={(e) => {
-                  setExpForPutState({
-                    ...expForPutState,
-                    endDate: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label className="mt-2 fw-lighter">
-                Zona di lavoro
-              </Form.Label>
-              <Form.Control
-                type="text"
-                value={expForPutState.area}
-                onChange={(e) => {
-                  setExpForPutState({
-                    ...expForPutState,
-                    area: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label className="mt-2 fw-lighter">
-                Immagine Azienda
-              </Form.Label>
-              <input
-                type="file"
-                name="proPicInput"
-                onChange={(e) => {
-                  handleExpPic(e);
-                }}
-              />
-              <Button
-                type="submit"
-                className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"
-              >
-                Salva
-              </Button>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseExperiencePut}>
-              Chiudi
+      <InterestsSections />
+
+      {/* MODALE PER POST EXP */}
+      <Modal show={showExperience} onHide={handleCloseExperience}>
+        <Modal.Header closeButton>
+          <Modal.Title>Aggiungi un Esperienza!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleNewExperience}>
+            <Form.Label className="mt-2 fw-lighter">Ruolo</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={newExperience.role}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  role: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Azienda</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={newExperience.company}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  company: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">
+              Descrivici la tua esperienza lavorativa
+            </Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={newExperience.description}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  description: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Data di inizio</Form.Label>
+            <Form.Control
+              type="date"
+              required
+              value={newExperience.startDate.split("T")[0]}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  startDate: e.target.value,
+                });
+              }}
+            />
+            <Form.Label>Questa esperienza di lavoro si è terminata</Form.Label>
+            <Form.Check className="ms-2" />
+            <Form.Label className="mt-2 fw-lighter">Data di fine</Form.Label>
+            <Form.Control
+              type="date"
+              value={newExperience.endDate.split("T")[0]}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  endDate: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Zona di lavoro</Form.Label>
+            <Form.Control
+              type="text"
+              value={newExperience.area}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  area: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">
+              Immagine Azienda
+            </Form.Label>
+            <input
+              type="file"
+              name="proPicInput"
+              onChange={(e) => {
+                handleExpPic(e);
+              }}
+            />
+            <Button
+              type="submit"
+              className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"
+            >
+              Salva
             </Button>
-          </Modal.Footer>
-        </Modal>
-      </Container>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseExperience}>
+            Chiudi
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       {/* MODALE PER PUT */}
       <Modal
@@ -1415,7 +1199,7 @@ function CentralSection() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </Container>
   );
 }
 
