@@ -36,7 +36,13 @@ function CentralSection() {
   const handleShow = () => setShow(true);
   const handleShowExperience = () => setShowExperience(true);
   const handleCloseExperience = () => setShowExperience(false);
-  const handleCloseExperiencePut = () => setShowExperiencePut(false);
+  const handleCloseExperiencePut = () => {
+    setShowExperiencePut(false);
+    dispatch({
+      type: "GET_EXPFORPUT",
+      payload: {},
+    });
+  };
   const handleCloseProfilePut = () => setShowProfilePut(false);
 
   const handleCloseExperienceDel = () => {
