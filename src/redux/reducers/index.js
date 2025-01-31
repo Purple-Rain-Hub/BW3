@@ -7,13 +7,13 @@ const initialState = {
   postedPostId: "",
   showExperienceDel: {
     show: false,
-    id: ""
+    id: "",
   },
   comments: [],
   authorComment: "",
+  favorites: [],
   hasExpPicPut: false,
   hasExpPicPost: false,
-  favorites: [],
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -51,8 +51,8 @@ const mainReducer = (state = initialState, action) => {
     case "SHOW_EXPERIENCE_DEL":
       return {
         ...state,
-        showExperienceDel: action.payload
-      }
+        showExperienceDel: action.payload,
+      };
     case "GET_COMMENTS":
       return {
         ...state,
@@ -63,16 +63,6 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         authorComment: action.payload,
       };
-    case "HAS_EXP_PIC_PUT":
-      return {
-        ...state,
-        hasExpPicPut: action.payload
-      };
-    case "HAS_EXP_PIC_POST":
-      return {
-        ...state,
-        hasExpPicPost: action.payload
-      }
     case "ADD_TO_FAVORITES":
       return {
         ...state,
@@ -82,6 +72,16 @@ const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         favorites: state.favorites.filter((job) => job._id !== action.payload),
+      };
+    case "HAS_EXP_PIC_PUT":
+      return {
+        ...state,
+        hasExpPicPut: action.payload,
+      };
+    case "HAS_EXP_PIC_POST":
+      return {
+        ...state,
+        hasExpPicPost: action.payload,
       };
     default:
       return state;
