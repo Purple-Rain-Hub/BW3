@@ -1,4 +1,4 @@
-import { Button, Card, Form, Modal, Container } from "react-bootstrap";
+import { Button, Card, Form, Modal, Container, Spinner } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import ExperienceSection from "./ExperienceSection";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +19,28 @@ function CentralSection() {
   const [showExperience, setShowExperience] = useState(false);
   const [showExperiencePut, setShowExperiencePut] = useState(false);
   const [showProfilePut, setShowProfilePut] = useState(false);
+  const [randomImage, setRandomImage] = useState(null);
+  const API_KEY = "48545245-df42dd6ae1b58ed4617a974db";
+
+  useEffect(() => {
+    fetchRandomImage();
+  }, []);
+
+  const fetchRandomImage = async () => {
+    try {
+      const response = await fetch(
+        `https://pixabay.com/api/?key=${API_KEY}&q=coding&image_type=photo&per_page=50`
+      );
+      const data = await response.json();
+
+      if (data.hits.length > 0) {
+        const randomIndex = Math.floor(Math.random() * data.hits.length);
+        setRandomImage(data.hits[randomIndex].largeImageURL);
+      }
+    } catch (error) {
+      console.error("Errore nel fetch delle immagini:", error);
+    }
+  };
 
   const [newExperience, setNewExperience] = useState({
     role: "",
@@ -75,6 +97,12 @@ function CentralSection() {
   });
   const hasExpPicPost = useSelector((state) => {
     return state.hasExpPicPost;
+  });
+  const hasPropicLoaded = useSelector((state) => {
+    return state.hasPropicLoaded;
+  });
+  const hasExpLoaded = useSelector((state) => {
+    return state.hasExpLoaded;
   });
 
   const [myProfileInfo, setMyProfileInfo] = useState({});
@@ -168,9 +196,9 @@ function CentralSection() {
             style={{
               height: "200px",
               objectFit: "cover",
-              backgroundImage: "url(https://placecats.com/700/700)",
+              backgroundImage: `url(${randomImage})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "110% 110%",
+              backgroundSize: "cover",
               borderTopLeftRadius: "12px",
               borderTopRightRadius: "12px",
             }}
@@ -187,12 +215,18 @@ function CentralSection() {
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               }}
             >
-              <img
-                src={myProfile.image || "https://placecats.com/300/300"}
-                alt="Profile"
-                className="w-100 h-100 rounded-circle"
-                style={{ objectFit: "cover" }}
-              />
+              {hasPropicLoaded ? (
+                <img
+                  src={myProfile.image || "https://placecats.com/300/300"}
+                  alt="Profile"
+                  className="w-100 h-100 rounded-circle"
+                  style={{ objectFit: "cover" }}
+                />
+              ) : (
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              )}
             </Button>
           </div>
 
@@ -641,7 +675,13 @@ function CentralSection() {
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <ExperienceSection />
+        {hasExpLoaded ? (
+          <ExperienceSection />
+        ) : (
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        )}
 
         <div className="text-center">
           <Button

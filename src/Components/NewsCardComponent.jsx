@@ -8,7 +8,7 @@ const NewsCardComponent = ({ infoHome }) => {
   const [visibleCount, setVisibleCount] = useState(5);
   const [expanded, setExpanded] = useState(false);
   const API_KEY = "1121e117f9f647919c31cb873e8210c8";
-  const API_URL = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`;
+  const API_URL = `https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=${API_KEY}`;
 
   useEffect(() => {
     const fetchNews = async () => {

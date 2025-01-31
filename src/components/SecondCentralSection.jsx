@@ -85,14 +85,7 @@ const SecondCentralSection = () => {
   };
 
   if (loading) {
-    return (
-      <div className="text-center mt-4">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Caricamento...</span>
-        </Spinner>
-        <p>Caricamento profilo...</p>
-      </div>
-    );
+    return null;
   }
 
   if (error) {
