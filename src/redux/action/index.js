@@ -1,4 +1,3 @@
-
 export const myID = "6797508916f6350015fecb84";
 const myToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzk3NTA4OTE2ZjYzNTAwMTVmZWNiODQiLCJpYXQiOjE3Mzc5Njk4MDEsImV4cCI6MTczOTE3OTQwMX0.gV22i7NwH_DHYfKE81N9UEY1Up6WHrH2EPIoPu8OD9w";
@@ -38,8 +37,8 @@ export const getExperience = () => {
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/" +
-          myID +
-          "/experiences",
+        myID +
+        "/experiences",
         {
           headers: {
             Authorization: "Bearer " + myToken,
@@ -61,14 +60,14 @@ export const getExperience = () => {
 };
 
 export const postPropic = (propicData) => {
-  return async () => {
+  return async (dispatch) => {
     console.log(propicData);
 
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/" +
-          myID +
-          "/picture",
+        myID +
+        "/picture",
         {
           method: "POST",
           body: propicData,
@@ -78,7 +77,7 @@ export const postPropic = (propicData) => {
         }
       );
       if (response.ok) {
-        console.log(response);
+        dispatch(getMyProfile());
       } else throw new Error("errore nel POST della propic");
     } catch (error) {
       console.error(error);
@@ -86,13 +85,13 @@ export const postPropic = (propicData) => {
   };
 };
 
-export const postExperience = (experienceData) => {
+export const postExperience = (experienceData, expPic, newExpId, hasExpPicPost) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/" +
-          myID +
-          "/experiences",
+        myID +
+        "/experiences",
         {
           method: "POST",
           body: JSON.stringify(experienceData),
@@ -104,10 +103,13 @@ export const postExperience = (experienceData) => {
       );
       if (response.ok) {
         const data = await response.json();
-        dispatch({
-          type: "NEWEXPERIENCE_ID",
-          payload: data._id,
-        });
+        if (hasExpPicPost) {
+          dispatch(postExpPic(expPic, data._id));
+          dispatch({
+            type: "HAS_EXP_PIC_POST",
+            payload: false
+          })
+        }
         dispatch(getExperience());
       } else throw new Error("errore nel POST della experience");
     } catch (error) {
@@ -121,10 +123,10 @@ export const postExpPic = (expPicData, expId) => {
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/" +
-          myID +
-          "/experiences/" +
-          expId +
-          "/picture",
+        myID +
+        "/experiences/" +
+        expId +
+        "/picture",
         {
           method: "POST",
           body: expPicData,
@@ -148,9 +150,9 @@ export const getExpForPut = (id) => {
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/" +
-          myID +
-          "/experiences/" +
-          id,
+        myID +
+        "/experiences/" +
+        id,
         {
           headers: {
             Authorization: "Bearer " + myToken,
@@ -171,14 +173,14 @@ export const getExpForPut = (id) => {
   };
 };
 
-export const putExperience = (exp, id) => {
-  return async () => {
+export const putExperience = (exp, id, hasExpPicPut, expPic) => {
+  return async (dispatch) => {
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/profile/" +
-          myID +
-          "/experiences/" +
-          id._id,
+        myID +
+        "/experiences/" +
+        id._id,
         {
           method: "PUT",
           body: JSON.stringify(exp),
@@ -189,7 +191,14 @@ export const putExperience = (exp, id) => {
         }
       );
       if (response.ok) {
-        console.log("PUTEXP RESPONSE" + response);
+        if (hasExpPicPut) {
+          dispatch(postExpPic(expPic, id._id));
+          dispatch({
+            type: "HAS_EXP_PIC_PUT",
+            payload: false
+          })
+        }
+        dispatch(getExperience());
       } else throw new Error("errore nella PUT dell'experience");
     } catch (error) {
       console.error("ERRORE:", error);
@@ -219,7 +228,7 @@ export const deleteExp = (id) => {
 }
 
 export const putProfile = (profile) => {
-  return async () => {
+  return async (dispatch) => {
     try {
       const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/", {
         method: "PUT",
@@ -230,7 +239,7 @@ export const putProfile = (profile) => {
         }
       })
       if (response.ok) {
-        console.log("PUT PROFILE RESPONSE" + response)
+        dispatch(getMyProfile());
       }
       else throw new Error("errore nella PUT dell'profile");
     } catch (error) {

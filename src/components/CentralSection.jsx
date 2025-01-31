@@ -5,10 +5,7 @@ import ExperienceSection from "./ExperienceSection";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteExp,
-  getExperience,
-  getMyProfile,
   postExperience,
-  postExpPic,
   postPropic,
   putExperience,
   putProfile,
@@ -31,10 +28,6 @@ function CentralSection() {
   });
   const [expForPutState, setExpForPutState] = useState({});
   const [expPic, setExpPic] = useState();
-  const [hasPut, setHasPut] = useState(false);
-  const [hasPutProfile, setHasPutProfile] = useState(false);
-  const [hasExpPicPost, setHasExpPicPost] = useState(false);
-  const [hasExpPicPut, setHasExpPicPut] = useState(false);
   const [hasDelPut, setHasDelPut] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -69,6 +62,12 @@ function CentralSection() {
   const delId = useSelector((state) => {
     return state.showExperienceDel.id;
   });
+  const hasExpPicPut = useSelector((state) => {
+    return state.hasExpPicPut;
+  });
+  const hasExpPicPost = useSelector((state) => {
+    return state.hasExpPicPost;
+  });
 
   const [myProfileInfo, setMyProfileInfo] = useState({});
 
@@ -76,7 +75,6 @@ function CentralSection() {
     const propicData = new FormData();
     propicData.append("profile", e.target.files[0]);
     dispatch(postPropic(propicData));
-    dispatch(getMyProfile());
   };
 
   const handleExpPic = (e) => {
@@ -84,7 +82,10 @@ function CentralSection() {
     const expPicData = new FormData();
     expPicData.append("experience", e.target.files[0]);
     setExpPic(expPicData);
-    setHasExpPicPost(true);
+    dispatch({
+      type: "HAS_EXP_PIC_POST",
+      payload: true,
+    });
   };
 
   const handleExpPicPut = (e) => {
@@ -92,12 +93,15 @@ function CentralSection() {
     const expPicData = new FormData();
     expPicData.append("experience", e.target.files[0]);
     setExpPic(expPicData);
-    setHasExpPicPut(true);
+    dispatch({
+      type: "HAS_EXP_PIC_PUT",
+      payload: true,
+    });
   };
 
   const handleNewExperience = (e) => {
     e.preventDefault();
-    dispatch(postExperience(newExperience));
+    dispatch(postExperience(newExperience, expPic, newExpId, hasExpPicPost));
 
     setNewExperience({
       role: "",
@@ -111,44 +115,13 @@ function CentralSection() {
 
   const handlePutExperience = (e) => {
     e.preventDefault();
-    dispatch(putExperience(expForPutState, expForPut));
-    setHasPut(true);
+    dispatch(putExperience(expForPutState, expForPut, hasExpPicPut, expPic));
   };
 
   const handlePutProfile = (e) => {
     e.preventDefault();
     dispatch(putProfile(myProfileInfo));
-    setHasPutProfile(true);
   };
-
-  // USE EFFECT
-  useEffect(() => {
-    if (hasPutProfile) {
-      dispatch(getMyProfile());
-      setHasPutProfile(false);
-    }
-  }, [hasPutProfile]);
-
-  useEffect(() => {
-    if (hasPut) {
-      dispatch(getExperience());
-      setHasPut(false);
-    }
-  }, [hasPut]);
-
-  useEffect(() => {
-    if (hasExpPicPost) {
-      dispatch(postExpPic(expPic, newExpId));
-      setHasExpPicPost(false);
-    }
-  }, [newExpId]);
-
-  useEffect(() => {
-    if (hasExpPicPut) {
-      dispatch(postExpPic(expPic, expForPut._id));
-      setHasExpPicPut(false);
-    }
-  }, [hasPut]);
 
   useEffect(() => {
     if (expForPut.role) {
@@ -630,116 +603,6 @@ function CentralSection() {
         >
           Aggiungi Esperienza
         </Button>
-        <Modal show={showExperience} onHide={handleCloseExperience}>
-          <Modal.Header closeButton>
-            <Modal.Title>Aggiungi un Esperienza!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={handleNewExperience}>
-              <Form.Label className="mt-2 fw-lighter">Ruolo</Form.Label>
-              <Form.Control
-                type="text"
-                required
-                value={newExperience.role}
-                onChange={(e) => {
-                  setNewExperience({
-                    ...newExperience,
-                    role: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label className="mt-2 fw-lighter">Azienda</Form.Label>
-              <Form.Control
-                type="text"
-                required
-                value={newExperience.company}
-                onChange={(e) => {
-                  setNewExperience({
-                    ...newExperience,
-                    company: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label className="mt-2 fw-lighter">
-                Descrivici la tua esperienza lavorativa
-              </Form.Label>
-              <Form.Control
-                type="text"
-                required
-                value={newExperience.description}
-                onChange={(e) => {
-                  setNewExperience({
-                    ...newExperience,
-                    description: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label className="mt-2 fw-lighter">
-                Data di inizio
-              </Form.Label>
-              <Form.Control
-                type="date"
-                required
-                value={newExperience.startDate.split("T")[0]}
-                onChange={(e) => {
-                  setNewExperience({
-                    ...newExperience,
-                    startDate: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label>
-                Questa esperienza di lavoro si è terminata
-              </Form.Label>
-              <Form.Check className="ms-2" />
-              <Form.Label className="mt-2 fw-lighter">Data di fine</Form.Label>
-              <Form.Control
-                type="date"
-                value={newExperience.endDate.split("T")[0]}
-                onChange={(e) => {
-                  setNewExperience({
-                    ...newExperience,
-                    endDate: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label className="mt-2 fw-lighter">
-                Zona di lavoro
-              </Form.Label>
-              <Form.Control
-                type="text"
-                value={newExperience.area}
-                onChange={(e) => {
-                  setNewExperience({
-                    ...newExperience,
-                    area: e.target.value,
-                  });
-                }}
-              />
-              <Form.Label className="mt-2 fw-lighter">
-                Immagine Azienda
-              </Form.Label>
-              <input
-                type="file"
-                name="proPicInput"
-                onChange={(e) => {
-                  handleExpPic(e);
-                }}
-              />
-              <Button
-                type="submit"
-                className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"
-              >
-                Salva
-              </Button>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseExperience}>
-              Chiudi
-            </Button>
-          </Modal.Footer>
-        </Modal>
       </div>
 
       <div
@@ -879,6 +742,113 @@ function CentralSection() {
           <Icon.ArrowRight className="ms-1" />
         </p>
       </div>
+
+      {/* MODALE PER POST EXP */}
+      <Modal show={showExperience} onHide={handleCloseExperience}>
+        <Modal.Header closeButton>
+          <Modal.Title>Aggiungi un Esperienza!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleNewExperience}>
+            <Form.Label className="mt-2 fw-lighter">Ruolo</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={newExperience.role}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  role: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Azienda</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={newExperience.company}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  company: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">
+              Descrivici la tua esperienza lavorativa
+            </Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={newExperience.description}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  description: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Data di inizio</Form.Label>
+            <Form.Control
+              type="date"
+              required
+              value={newExperience.startDate.split("T")[0]}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  startDate: e.target.value,
+                });
+              }}
+            />
+            <Form.Label>Questa esperienza di lavoro si è terminata</Form.Label>
+            <Form.Check className="ms-2" />
+            <Form.Label className="mt-2 fw-lighter">Data di fine</Form.Label>
+            <Form.Control
+              type="date"
+              value={newExperience.endDate.split("T")[0]}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  endDate: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Zona di lavoro</Form.Label>
+            <Form.Control
+              type="text"
+              value={newExperience.area}
+              onChange={(e) => {
+                setNewExperience({
+                  ...newExperience,
+                  area: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">
+              Immagine Azienda
+            </Form.Label>
+            <input
+              type="file"
+              name="proPicInput"
+              onChange={(e) => {
+                handleExpPic(e);
+              }}
+            />
+            <Button
+              type="submit"
+              className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"
+            >
+              Salva
+            </Button>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseExperience}>
+            Chiudi
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       {/* MODALE PER PUT */}
       <Modal
         show={showExperiencePut}

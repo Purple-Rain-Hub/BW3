@@ -11,6 +11,8 @@ const initialState = {
   },
   comments: [],
   authorComment: "",
+  hasExpPicPut: false,
+  hasExpPicPost: false,
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -60,6 +62,16 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         authorComment: action.payload,
       };
+    case "HAS_EXP_PIC_PUT":
+      return {
+        ...state,
+        hasExpPicPut: action.payload
+      };
+    case "HAS_EXP_PIC_POST":
+      return {
+        ...state,
+        hasExpPicPost: action.payload
+      }
     default:
       return state;
   }
