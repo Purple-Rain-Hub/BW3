@@ -317,7 +317,7 @@ const NavBar = () => {
                             "0 2px 4px rgba(0, 0, 0, 0.1)";
                         }}
                       >
-                        visualizza il profilo
+                        Visualizza il Profilo
                       </Link>
                     </li>
 

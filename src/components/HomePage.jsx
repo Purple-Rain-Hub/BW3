@@ -15,8 +15,6 @@ import {
   CardImage,
 } from "react-bootstrap-icons";
 import HomePagePremium from "../assets/HomePagePremium.svg";
-//import Calendar from "../assets/Calendar.svg";
-//import send from "../assets/send.svg";
 import infoHome from "../assets/infoHome.svg";
 import SinglePost from "./SinglePost";
 import { useDispatch } from "react-redux";
@@ -26,7 +24,6 @@ import { useSelector } from "react-redux";
 import * as Icon from "react-bootstrap-icons";
 import { useState } from "react";
 import { sendPost } from "../redux/action";
-//import { setPostPic } from "../redux/action";
 import { getComments } from "../redux/action";
 import { Link } from "react-router-dom";
 import NewsCardComponent from "./NewsCardComponent";
@@ -38,6 +35,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const myProfile = useSelector((state) => state.myProfile);
   const [fileName, setFileName] = useState("");
+  // const [showCard, setShowCard] = useState(true);
 
   useEffect(() => {
     dispatch(getAllPosts());
@@ -48,13 +46,13 @@ const HomePage = () => {
   const posts = useSelector((state) => {
     return state.posts;
   });
+  const showCard = useSelector((state) => {
+    return state.showCard;
+  });
 
   const hasPostsLoaded = useSelector((state) => {
     return state.hasPostsLoaded;
   });
-  // const postedPostId = useSelector((state) => {
-  //   return state.postedPostId;
-  // });
 
   const handleSubmit = function () {
     setWrittenPost("");
@@ -62,19 +60,11 @@ const HomePage = () => {
       dispatch(sendPost(writtenPost));
     } else {
       dispatch(sendPost(writtenPost, pic));
-      //document.getElementById("image-upload").value = "";
       setFileName(null);
       setPic(null);
       setIsPostPic(false);
     }
-
-    // console.log(postedPostId);
-    // if (isPostPic) {
-    //   dispatch(setPostPic(pic, postedPostId));
-    //   console.log(isPostPic);
-    // }
   };
-  // let pic;
   const handlePostPic = (e) => {
     e.preventDefault();
     console.log(e.target.files[0]);
@@ -82,31 +72,7 @@ const HomePage = () => {
     newPic.append("post", e.target.files[0]);
     setPic(newPic);
     setIsPostPic(true);
-    // console.log(isPostPic);
-    // setIsPostPic(true, () => {
-    //   console.log("isPostPic aggiornato:", isPostPic);
-    // });
-    // for (let [key, value] of pic.entries()) {
-    //   console.log(key, value);
-    // }
   };
-
-  // useEffect(() => {
-  //   console.log(isPostPic);
-  //   if (isPostPic) {
-  //   }
-  // }, [isPostPic]);
-
-  // useEffect(() => {
-  //   if (isPostPic && pic) {
-  //     // for (let [key, value] of pic.entries()) {
-  //     //   console.log(key, value);
-  //     // }
-  //     dispatch(setPostPic(pic, postedPostId));
-  //     //setIsPostPic(false);
-  //     //setPic(null);
-  //   }
-  // }, [postedPostId]);
 
   return (
     <Container fluid className="py-3" style={{ backgroundColor: "#F4F2EE" }}>
@@ -208,39 +174,53 @@ const HomePage = () => {
 
           {/* Main Content */}
           <Col md={6}>
-            <Card className="mb-3">
-              <Card.Body>
-                <img
-                  className="mx-auto d-block"
-                  src="src\assets\img\AAYQAgSuAAgAAQAAAAAAABlvNp5yzndgSdCsu3q6Pw22qA.png"
-                  alt=""
-                  style={{ width: "30%", height: "30%" }}
-                />
-                <h5 className="text-center">
-                  Ciao {myProfile.name}, in questo momento stai cercando un
-                  lavoro?
-                </h5>
+            {showCard && (
+              <Card className="mb-3">
+                <Card.Body>
+                  <img
+                    className="mx-auto d-block"
+                    src="src\assets\img\AAYQAgSuAAgAAQAAAAAAABlvNp5yzndgSdCsu3q6Pw22qA.png"
+                    alt=""
+                    style={{ width: "30%", height: "30%" }}
+                  />
+                  <h5 className="text-center">
+                    Ciao {myProfile.name}, in questo momento stai cercando un
+                    lavoro?
+                  </h5>
 
-                <p className="text-secondary text-center">
-                  Solo tu puoi vedere la tua risposta
-                </p>
-                <div>
-                  <Button
-                    variant="outline-primary"
-                    className="me-2 jobButton"
-                    style={{ width: "50%", borderRadius: "25px" }}
-                  >
-                    Sì
-                  </Button>
-                  <Button
-                    variant="outline-primary"
-                    style={{ width: "48%", borderRadius: "25px" }}
-                  >
-                    No, ma sono disponibile
-                  </Button>
-                </div>
-              </Card.Body>
-            </Card>
+                  <p className="text-secondary text-center">
+                    Solo tu puoi vedere la tua risposta
+                  </p>
+                  <div>
+                    <Button
+                      variant="outline-primary"
+                      className="me-2 jobButton"
+                      style={{ width: "50%", borderRadius: "25px" }}
+                      onClick={() => {
+                        dispatch({
+                          type: "SHOW_CARD",
+                          payload: false,
+                        });
+                      }}
+                    >
+                      Sì
+                    </Button>
+                    <Button
+                      variant="outline-primary"
+                      style={{ width: "48%", borderRadius: "25px" }}
+                      onClick={() => {
+                        dispatch({
+                          type: "SHOW_CARD",
+                          payload: false,
+                        });
+                      }}
+                    >
+                      No, ma sono disponibile
+                    </Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            )}
 
             <Card className="mb-3">
               <Card.Body>

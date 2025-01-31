@@ -18,6 +18,7 @@ const initialState = {
   hasExpLoaded: false,
   hasPostsLoaded: false,
   hasCommentsLoaded: false,
+  showCard: true,
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -106,6 +107,11 @@ const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         hasCommentsLoaded: action.payload
+      }
+    case "SHOW_CARD":
+      return {
+        ...state,
+        showCard: action.payload
       }
     default:
       return state;
