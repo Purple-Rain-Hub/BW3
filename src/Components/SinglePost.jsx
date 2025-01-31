@@ -198,6 +198,7 @@ function SinglePost(props) {
             </>
           ) : (
             <Button
+              id="btnPost"
               onClick={() => {
                 if (modifiedPost) {
                   setShowModify(false);
@@ -216,6 +217,7 @@ function SinglePost(props) {
 
           {myID === props.post.user._id ? (
             <Button
+              id="btnPost"
               onClick={() => {
                 setModifiedPost(props.post.text);
                 setShowModify(!showModify);
@@ -238,6 +240,7 @@ function SinglePost(props) {
           )}
           {myID === props.post.user._id ? (
             <Button
+              id="btnPost"
               onClick={() => {
                 handleDelete(props.post._id);
               }}
