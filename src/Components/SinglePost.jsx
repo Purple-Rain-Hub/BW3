@@ -163,6 +163,7 @@ function SinglePost(props) {
           {!showModify ? (
             <>
               <Button
+                id="btnPost"
                 variant="light"
                 className={`commentButton ${liked ? "active" : ""}`}
                 onClick={() => setLiked(!liked)}
@@ -170,6 +171,7 @@ function SinglePost(props) {
                 <HandThumbsUp /> Consiglia
               </Button>
               <Button
+                id="btnPost"
                 variant="light"
                 className="commentButton"
                 onClick={() => {
@@ -230,7 +232,7 @@ function SinglePost(props) {
               {showModify ? "Annulla..." : "Modifica"}
             </Button>
           ) : (
-            <Button variant="light" className="commentButton">
+            <Button variant="light" className="commentButton" id="btnPost">
               <Icon.ArrowRepeat /> Diffondi post
             </Button>
           )}
@@ -253,7 +255,7 @@ function SinglePost(props) {
               Elimina
             </Button>
           ) : (
-            <Button variant="light" className="commentButton">
+            <Button variant="light" className="commentButton" id="btnPost">
               {/* <img
               src={send}
               alt="Premium Icon"
@@ -261,7 +263,7 @@ function SinglePost(props) {
               height="15"
               className="me-2"
             /> */}
-              <Icon.Share />
+              <Icon.Share className="me-1" />
               Condividi
             </Button>
           )}

@@ -229,3 +229,13 @@ body {
   background-color: transparent !important;
   border-color: #ccc;
 }
+
+#btnPost {
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+}
+
+#btnPost:hover {
+  background-color: #f4f2ee !important;
+  border: 1px solid gray !important;
+}
