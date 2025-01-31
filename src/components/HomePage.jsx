@@ -51,6 +51,8 @@ const HomePage = () => {
       dispatch(sendPost(writtenPost));
     } else {
       dispatch(sendPost(writtenPost, pic));
+      setPic(null);
+      setIsPostPic(false);
     }
 
     // console.log(postedPostId);
