@@ -14,12 +14,14 @@ import { BsGrid3X3Gap } from "react-icons/bs";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 const NavBar = () => {
   // Stato per gestire il valore di ricerca
   const [searchValue, setSearchValue] = useState("");
   // Hook per la navigazione
   const navigate = useNavigate();
+  const myProfile = useSelector((state) => state.myProfile);
 
   // Funzione per gestire la ricerca
   const handleSearch = (e) => {
@@ -146,9 +148,15 @@ const NavBar = () => {
                     >
                       <div className="d-flex flex-column align-items-center">
                         <img
-                          src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                          src={
+                            myProfile.image ||
+                            "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                          }
                           alt=""
-                          style={{ width: "17px", borderRadius: "50%" }}
+                          style={{
+                            width: "24px",
+                            borderRadius: "50%",
+                          }}
                         />
                         <div>
                           Me <FaChevronDown style={{ fontSize: "15px" }} />
@@ -271,14 +279,19 @@ const NavBar = () => {
                   >
                     <div className="d-flex flex-column align-items-center">
                       <img
-                        src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                        src={
+                          myProfile.image ||
+                          "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                        }
                         alt=""
                         style={{
-                          width: "17px",
+                          width: "24px",
+                          height: "24px",
                           borderRadius: "50%",
-                          margin: "0",
+                          objectFit: "cover",
                         }}
                       />
+
                       <div>
                         Me <FaChevronDown style={{ fontSize: "15px" }} />{" "}
                       </div>
