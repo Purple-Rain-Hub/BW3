@@ -25,7 +25,24 @@
     width: 48% !important;
   }
 }
+.linkedin-style-button {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  color: #333;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+.linkedin-style-button:hover {
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.linkedin-style-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombra più leggera */
+}
 .newPostButton,
 .commentButton {
   background: none;
@@ -52,21 +69,6 @@ body {
   text-decoration: underline;
 }
 
-.jobsButton1 {
-  border: 0;
-  color: #343a40;
-  background-color: transparent;
-  transition: background-color 0.3s ease, opacity 0.3s ease;
-}
-
-/*jobspage */
-
-.jobsButton1:hover {
-  background-color: #c5c4c4;
-  opacity: 0.8;
-  color: #343a40;
-}
-
 .newOfferButton:hover {
   background-color: #9fc5ee9d;
   opacity: 0.8;
@@ -74,6 +76,32 @@ body {
   transition: ease 0.3s;
 }
 
+.linkedin-style-button {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  color: #333;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.linkedin-style-button:hover {
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.linkedin-style-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.list-icon {
+  color: #0a66c2;
+}
+
+.list-icon:hover {
+  transform: scale(1.1);
+}
 /*footer css */
 
 .footerText:hover {

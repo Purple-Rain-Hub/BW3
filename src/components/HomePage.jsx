@@ -143,9 +143,19 @@ const HomePage = () => {
                   <br />
                 </Card.Text>
                 <hr />
-                <Card.Text className="text-start">
-                  <BookmarkFill className=" me-2" size={24} /> Elementi salvati
-                </Card.Text>
+                <Link to="/jobs" className="text-decoration-none">
+                  <button className="btn btn-light d-flex align-items-center justify-content-center w-100 rounded-pill fw-bold py-2 my-2 position-relative overflow-hidden linkedin-style-button">
+                    <span className="d-flex align-items-center z-2 position-relative">
+                      <BookmarkFill
+                        className="me-2"
+                        size={20}
+                        color="#0A66C2"
+                      />{" "}
+                      {/* Blu LinkedIn */}
+                      <span className="text-dark">Elementi salvati</span>
+                    </span>
+                  </button>
+                </Link>
               </Card.Body>
             </Card>
 

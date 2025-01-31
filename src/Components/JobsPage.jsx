@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import NewOfferJob from "../assets/NewOfferJob.svg";
 import { BookmarkFill, ListUl } from "react-bootstrap-icons";
 //  seLocation per accedere ai parametri dell'URL
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -83,14 +83,84 @@ const JobsPage = () => {
           <Col md={3}>
             <Card>
               <Card.Body>
-                <Button className="jobsButton1 d-flex align-items-center py-3 w-100">
-                  <ListUl className="me-2" size={32} />
-                  <strong>Preferenze</strong>
-                </Button>
-                <Button className="jobsButton1 d-flex align-items-center my-3 py-3 w-100">
-                  <BookmarkFill className="me-2" size={32} />
-                  <strong>Le mie offerte di lavoro</strong>
-                </Button>
+                <Link
+                  to="#"
+                  className="jobsButton2 p-2 d-flex align-items-center py-3 w-100 text-decoration-none bg-transparent border-0 rounded-3 transition-all position-relative overflow-hidden linkedin-style-button"
+                  style={{
+                    backgroundColor: "white",
+                    border: "1px solid #e0e0e0",
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <ListUl
+                    className="me-2 list-icon"
+                    size={32}
+                    style={{
+                      color: "#0A66C2",
+                      transition: "transform 0.3s ease, color 0.3s ease",
+                    }}
+                  />
+                  <strong
+                    style={{
+                      color: "#333",
+                      fontSize: "1.1rem",
+                      transition: "color 0.3s ease",
+                    }}
+                  >
+                    Preferenze
+                  </strong>
+
+                  <div
+                    className="position-absolute top-0 left-0 w-100 h-100 bg-primary opacity-0 transition-all"
+                    style={{
+                      zIndex: -1,
+                      background: "linear-gradient(45deg, #0A66C2, #74b9ff)",
+                      transform: "scaleX(0)",
+                      transformOrigin: "left",
+                      transition: "transform 0.3s ease, opacity 0.3s ease",
+                    }}
+                  ></div>
+                </Link>
+                <Link
+                  to="/favourites"
+                  className="jobsButton1 p-2 d-flex align-items-center my-3 py-3 w-100 text-decoration-none bg-transparent border-0 rounded-3 transition-all position-relative overflow-hidden linkedin-style-button"
+                  style={{
+                    backgroundColor: "white",
+                    border: "1px solid #e0e0e0",
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <BookmarkFill
+                    className="bookmark-icon me-2"
+                    size={32}
+                    style={{
+                      color: "#0A66C2",
+                      transition: "transform 0.3s ease, color 0.3s ease",
+                    }}
+                  />
+                  <strong
+                    style={{
+                      color: "#333",
+                      fontSize: "1.1rem",
+                      transition: "color 0.3s ease",
+                    }}
+                  >
+                    Le mie offerte di lavoro
+                  </strong>
+
+                  <div
+                    className="position-absolute top-0 left-0 w-100 h-100 bg-primary opacity-0 transition-all"
+                    style={{
+                      zIndex: -1,
+                      background: "linear-gradient(45deg, #0A66C2, #74b9ff)",
+                      transform: "scaleX(0)",
+                      transformOrigin: "left",
+                      transition: "transform 0.3s ease, opacity 0.3s ease",
+                    }}
+                  ></div>
+                </Link>
               </Card.Body>
             </Card>
             <div className="py-3">
