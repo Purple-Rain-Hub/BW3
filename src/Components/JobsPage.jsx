@@ -2,32 +2,33 @@ import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import BorsaLavoro from "../assets/BorsaLavoro.svg";
 import { useState, useEffect } from "react";
 import NewOfferJob from "../assets/NewOfferJob.svg";
-import { BookmarkFill, ListUl } from "react-bootstrap-icons";
-//  seLocation per accedere ai parametri dell'URL
+import { BookmarkFill, Bookmark, ListUl } from "react-bootstrap-icons";
 import { useLocation, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addToFavorites, removeFromFavorites } from "../redux/action";
 
 const JobsPage = () => {
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.favorites || []);
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 5;
 
-  // Usa useLocation per ottenere l'oggetto location corrente
   const location = useLocation();
+
+  // Fetch dei lavori
   useEffect(() => {
-    // Estrai i parametri di ricerca dall'URL
     const searchParams = new URLSearchParams(location.search);
     const initialSearch = searchParams.get("search");
     if (initialSearch) {
-      // Se c'è un parametro di ricerca nell'URL, impostalo come valore di ricerca iniziale
       setSearch(initialSearch);
       fetchJobs(initialSearch);
     } else {
-      // Altrimenti, carica tutti i lavori
       fetchJobs();
     }
-  }, [location]); // Esegui l'effetto quando cambia la location
+  }, [location]);
 
   const fetchJobs = async (query = "") => {
     setLoading(true);
@@ -53,6 +54,14 @@ const JobsPage = () => {
     e.preventDefault();
     setCurrentPage(1);
     fetchJobs(search);
+  };
+
+  const toggleFavorite = (job) => {
+    if (favorites.some((fav) => fav._id === job._id)) {
+      dispatch(removeFromFavorites(job._id));
+    } else {
+      dispatch(addToFavorites(job));
+    }
   };
 
   const indexOfLastJob = currentPage * jobsPerPage;
@@ -212,7 +221,18 @@ const JobsPage = () => {
                   </div>
                 ) : currentJobs.length > 0 ? (
                   currentJobs.map((job) => (
-                    <div key={job._id} className="card mb-3">
+                    <div key={job._id} className="card mb-3 position-relative">
+                      <div
+                        className="position-absolute top-0 end-0 m-3"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => toggleFavorite(job)}
+                      >
+                        {favorites.some((fav) => fav._id === job._id) ? (
+                          <BookmarkFill size={24} color="#0A66C2" />
+                        ) : (
+                          <Bookmark size={24} color="#333" />
+                        )}
+                      </div>
                       <div className="card-body">
                         <h5 className="card-title">{job.title}</h5>
                         <p className="card-text">
@@ -246,25 +266,17 @@ const JobsPage = () => {
               </Card.Body>
             </Card>
 
-            {/* bottoni avanti e indietro */}
-            <div className="d-flex justify-content-center align-items-center my-4">
-              <button
-                className={`btn ${
-                  currentPage === 1 ? "btn-secondary" : "btn-primary"
-                } me-3`}
-                onClick={handlePreviousPage}
-                disabled={currentPage === 1}
-              >
-                Indietro
-              </button>
-              <span>Pagina {currentPage}</span>
-              <button
-                className="btn btn-primary ms-3"
+            {/* Pagination controls */}
+            <div className="d-flex justify-content-between mt-3">
+              <Button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                Precedente
+              </Button>
+              <Button
                 onClick={handleNextPage}
                 disabled={indexOfLastJob >= jobs.length}
               >
-                Avanti
-              </button>
+                Successivo
+              </Button>
             </div>
           </Col>
         </Row>
