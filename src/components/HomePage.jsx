@@ -143,7 +143,7 @@ const HomePage = () => {
                   <br />
                 </Card.Text>
                 <hr />
-                <Link to="/jobs" className="text-decoration-none">
+                <Link to="/favourites" className="text-decoration-none">
                   <button className="btn btn-light d-flex align-items-center justify-content-center w-100 rounded-pill fw-bold py-2 my-2 position-relative overflow-hidden linkedin-style-button">
                     <span className="d-flex align-items-center z-2 position-relative">
                       <BookmarkFill
@@ -151,7 +151,6 @@ const HomePage = () => {
                         size={20}
                         color="#0A66C2"
                       />{" "}
-                      {/* Blu LinkedIn */}
                       <span className="text-dark">Elementi salvati</span>
                     </span>
                   </button>
