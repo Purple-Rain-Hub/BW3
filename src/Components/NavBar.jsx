@@ -100,12 +100,12 @@ const NavBar = () => {
                 </div>
                 <div className="row w-100">
                   <li className="nav-item col-6">
-                    <a className="nav-link" href="#">
+                    <Link className="nav-link" to="/notfound">
                       <div className="d-flex flex-column align-items-center">
                         <FaUserFriends />
                         <div>Rete</div>
                       </div>
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item col-6">
                     <Link className="nav-link" to="/jobs">
@@ -118,20 +118,20 @@ const NavBar = () => {
                 </div>
                 <div className="row w-100">
                   <li className="nav-item col-6">
-                    <a className="nav-link" href="#">
+                    <Link className="nav-link" to="/notfound">
                       <div className="d-flex flex-column align-items-center">
                         <FaEnvelope />
                         <div>Messaggistica</div>
                       </div>
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item col-6">
-                    <a className="nav-link" href="#">
+                    <Link className="nav-link" to="/notfound">
                       <div className="d-flex flex-column align-items-center">
                         <FaBell />
                         <div>Notifiche</div>
                       </div>
-                    </a>
+                    </Link>
                   </li>
                 </div>
                 <div className="row w-100">
@@ -165,14 +165,14 @@ const NavBar = () => {
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <Link className="dropdown-item" to="/notfound">
                           Impostazioni
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <Link className="dropdown-item" to="/notfound">
                           Logout
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </li>
@@ -198,19 +198,19 @@ const NavBar = () => {
                       aria-labelledby="navbarDropdown"
                     >
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <Link className="dropdown-item" to="/notfound">
                           Posta Lavoro
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <Link className="dropdown-item" to="/notfound">
                           Controlla lavori
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <Link className="dropdown-item" to="/notfound">
                           Pagina Compagnia
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </li>
@@ -228,12 +228,12 @@ const NavBar = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" to="/notfound">
                     <div className="d-flex flex-column align-items-center">
                       <FaUserFriends />
                       <div>Rete</div>
                     </div>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/jobs">
@@ -244,20 +244,20 @@ const NavBar = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" to="/notfound">
                     <div className="d-flex flex-column align-items-center">
                       <FaEnvelope />
                       <div>Messaggistica</div>
                     </div>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" to="/notfound">
                     <div className="d-flex flex-column align-items-center">
                       <FaBell />
                       <div>Notifiche</div>
                     </div>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown">
                   <a
@@ -322,14 +322,14 @@ const NavBar = () => {
                     </li>
 
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link className="dropdown-item" to="/notfound">
                         Impostazioni
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link className="dropdown-item" to="/notfound">
                         Logout
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
@@ -358,19 +358,19 @@ const NavBar = () => {
                       aria-labelledby="navbarDropdownCompanies"
                     >
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <Link className="dropdown-item" to="/notfound">
                           Posta Lavoro
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <Link className="dropdown-item" to="/notfound">
                           Controlla lavori
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <Link className="dropdown-item" to="/notfound">
                           Pagina Compagnia
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </li>
