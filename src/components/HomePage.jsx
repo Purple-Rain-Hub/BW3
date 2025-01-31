@@ -13,7 +13,7 @@ import infoHome from "../assets/infoHome.svg";
 import SinglePost from "./SinglePost";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { getAllPosts } from "../redux/action";
+import { getAllPosts, getMyProfile } from "../redux/action";
 import { useSelector } from "react-redux";
 import * as Icon from "react-bootstrap-icons";
 import { useState } from "react";
@@ -28,9 +28,12 @@ const HomePage = () => {
   const [isPostPic, setIsPostPic] = useState(false);
   const [pic, setPic] = useState(null);
   const dispatch = useDispatch();
+  const myProfile = useSelector((state) => state.myProfile);
+  const [fileName, setFileName] = useState("");
 
   useEffect(() => {
     dispatch(getAllPosts());
+    dispatch(getMyProfile());
     dispatch(getComments());
   }, []);
 
@@ -95,10 +98,14 @@ const HomePage = () => {
               <Card.Body className="text-center position-relative">
                 <Link to="/profile">
                   <img
-                    src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                    src={
+                      myProfile.image ||
+                      "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                    }
                     alt="Profile Avatar"
                     style={{
-                      width: "30%",
+                      width: "80px",
+                      height: "80px",
                       borderRadius: "50%",
                       cursor: "pointer",
                     }}
@@ -110,11 +117,11 @@ const HomePage = () => {
                     to="/profile"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    Nome.Cognome
+                    {myProfile.name} {myProfile.surname}
                   </Link>
                 </Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">
-                  Cosa fa nella vita
+                  {myProfile.title || "Cosa fa nella vita"}
                 </Card.Subtitle>
                 <hr />
                 <div className="d-flex justify-content-between align-items-center">
@@ -143,9 +150,18 @@ const HomePage = () => {
                   <br />
                 </Card.Text>
                 <hr />
-                <Card.Text className="text-start">
-                  <BookmarkFill className=" me-2" size={24} /> Elementi salvati
-                </Card.Text>
+                <Link to="/favourites" className="text-decoration-none">
+                  <button className="btn btn-light d-flex align-items-center justify-content-center w-100 rounded-pill fw-bold py-2 my-2 position-relative overflow-hidden linkedin-style-button">
+                    <span className="d-flex align-items-center z-2 position-relative">
+                      <BookmarkFill
+                        className="me-2"
+                        size={20}
+                        color="#0A66C2"
+                      />{" "}
+                      <span className="text-dark">Elementi salvati</span>
+                    </span>
+                  </button>
+                </Link>
               </Card.Body>
             </Card>
 
@@ -181,8 +197,10 @@ const HomePage = () => {
                   style={{ width: "30%", height: "30%" }}
                 />
                 <h5 className="text-center">
-                  Ciao Nome utente, in questo momento stai cercando un lavoro?
+                  Ciao {myProfile.name}, in questo momento stai cercando un
+                  lavoro?
                 </h5>
+
                 <p className="text-secondary text-center">
                   Solo tu puoi vedere la tua risposta
                 </p>
@@ -218,10 +236,17 @@ const HomePage = () => {
                 >
                   <Form.Group className="d-flex">
                     <img
-                      className="me-2"
-                      src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                      alt=""
-                      style={{ width: "10%", borderRadius: "50%" }}
+                      src={
+                        myProfile.image ||
+                        "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                      }
+                      alt="Profile Avatar"
+                      style={{
+                        width: "10%",
+                        borderRadius: "50%",
+                        cursor: "pointer",
+                        marginRight: "10px",
+                      }}
                     />
                     <Form.Control
                       value={writtenPost}
@@ -234,35 +259,93 @@ const HomePage = () => {
                     />
                   </Form.Group>
                 </Form>
-                <div className="d-flex flex-column justify-content-between mt-3">
-                  <div className="d-flex align-self-center mb-3">
-                    <CardImage
-                      className="me-2 text-primary align-self-center"
-                      style={{ fontSize: "20px" }}
-                    />
+                <div className="d-flex flex-column align-items-center justify-content-between mt-3">
+                  <div className="d-flex flex-column align-items-center mb-3">
+                    <label
+                      htmlFor="image-upload"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        cursor: "pointer",
+                        padding: "8px 16px",
+                        borderRadius: "20px",
+                        backgroundColor: "#f0f0f0",
+                        border: "1px solid #ddd",
+                        transition: "background-color 0.3s ease",
+                        marginBottom: "8px",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#e0e0e0")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#f0f0f0")
+                      }
+                    >
+                      <CardImage
+                        className="me-2 text-primary"
+                        style={{ fontSize: "20px", color: "#0a66c2" }}
+                      />
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: "500",
+                          color: "#333",
+                        }}
+                      >
+                        Carica un&apos;immagine
+                      </span>
+                    </label>
+
                     <input
+                      id="image-upload"
                       accept="image/*"
                       type="file"
                       onChange={(e) => {
                         handlePostPic(e);
+                        if (e.target.files && e.target.files[0]) {
+                          setFileName(e.target.files[0].name);
+                        } else {
+                          setFileName(null);
+                        }
                       }}
+                      style={{ display: "none" }}
                     />
+
+                    <div
+                      style={{
+                        fontSize: "12px",
+                        color: "#666",
+                        textAlign: "center",
+                      }}
+                    >
+                      {fileName ? fileName : "Nessun file caricato"}
+                    </div>
                   </div>
 
-                  {/* <Button variant="light newPostButton">
-                    <img
-                      src={Calendar}
-                      alt="Premium Icon"
-                      width="24"
-                      height="24"
-                      className="me-2"
-                    />
-                    Evento
-                  </Button> */}
                   <Button
-                    className="align-self-center"
-                    variant="light newPostButton"
-                    style={{ width: "fit-content" }}
+                    className="align-self-center postButton23"
+                    variant="light"
+                    style={{
+                      width: "fit-content",
+                      padding: "8px 16px",
+                      borderRadius: "20px",
+                      backgroundColor: "#fff",
+                      color: "#0a66c2",
+                      border: "2px solid #0a66c2",
+                      fontWeight: "600",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      transition: "all 0.3s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#0a66c2";
+                      e.currentTarget.style.color = "#fff";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "#fff";
+                      e.currentTarget.style.color = "#0a66c2";
+                    }}
                     onClick={(e) => {
                       e.preventDefault();
                       if (writtenPost) {
@@ -272,16 +355,8 @@ const HomePage = () => {
                       }
                     }}
                   >
-                    {/* <img
-                      src={Article}
-                      alt="Premium Icon"
-                      width="24"
-                      height="24"
-                      className="me-2"
-                    /> */}
                     <Icon.Check
-                      className="text-success"
-                      style={{ fontSize: "36px" }}
+                      style={{ fontSize: "24px", color: "inherit" }}
                     />
                     Pubblica post
                   </Button>
