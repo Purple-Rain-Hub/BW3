@@ -1,247 +1,216 @@
 import * as Icon from "react-bootstrap-icons";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Container } from "react-bootstrap";
 
-function SideBar() {
+const SideBar = () => {
+  const [profiles, setProfiles] = useState([]);
+  const [suggestedProfiles, setSuggestedProfiles] = useState([]);
+  const [peopleYouMayKnow, setPeopleYouMayKnow] = useState([]);
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        const response = await fetch(
+          "https://striveschool-api.herokuapp.com/api/profile",
+          {
+            headers: {
+              Authorization:
+                "Bearer " +
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzk3NTA4OTE2ZjYzNTAwMTVmZWNiODQiLCJpYXQiOjE3Mzc5Njk4MDEsImV4cCI6MTczOTE3OTQwMX0.gV22i7NwH_DHYfKE81N9UEY1Up6WHrH2EPIoPu8OD9w",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          const shuffledProfiles = [...data].sort(() => Math.random() - 0.5);
+
+          // 5 profili random per 3 diverse sezioni
+          setProfiles(shuffledProfiles.slice(0, 5));
+          setSuggestedProfiles(shuffledProfiles.slice(5, 10));
+          setPeopleYouMayKnow(shuffledProfiles.slice(10, 15));
+        } else {
+          throw new Error("Errore nel recupero dei profili");
+        }
+      } catch (error) {
+        console.error("ERRORE FETCH:", error);
+      }
+    };
+
+    fetchProfiles();
+  }, []);
+
   return (
-    <div>
-      <img
-        src="https://placecats.com/310/200"
-        style={{ width: "100%" }}
-        alt="placeholder"
-        className=" rounded-3 border-1 border"
-      />
-      {/* prima sezione */}
-      <div className="p-4 pb-1 bg-body-secondary w-100 rounded-3 border border-1">
-        <h4 className="fs-6 m-0">Altri profili per te</h4>
-        <div className=" d-flex border-bottom border-1 py-3">
-          <img
-            src="https://placecats.com/50/50"
-            alt="placeholder propic"
-            height={"100%"}
-            className=" rounded-circle"
-          />
-          <div className="ms-2">
-            <h6 className="m-0">
-              Dario del Giudice <span className="fw-lighter">· 3°+</span>
-            </h6>
-            <p className="mb-2">Docente front-end presso Epicode</p>
-            <button
-              type="button"
-              className="btn rounded-pill border border-1 border-info text-info px-3 py-1 fw-medium"
+    <Container className="mt-3 my-3 ">
+      <div className="d-flex flex-column align-items-center">
+        <img
+          src="/banner.png"
+          style={{ width: "320px" }}
+          alt="placeholder"
+          className="rounded-3 border-1 border"
+        />
+
+        <div
+          className="p-4 pb-1 mt-1 bg-white rounded-3 border border-1 d-flex flex-column align-items-center"
+          style={{ minWidth: "320px", maxWidth: "320px" }}
+        >
+          <h4 className="fs-6 m-0 text-start w-100 fw-bold">
+            Altri profili per te
+          </h4>
+
+          {profiles.map((profile) => (
+            <div
+              key={profile._id}
+              className="d-flex align-items-center border-bottom border-1 py-3 w-100"
             >
-              Messaggio
-            </button>
-          </div>
+              <Link
+                to={`/user/${profile._id}`}
+                className="text-decoration-none"
+              >
+                <img
+                  src={profile.image || "https://placecats.com/700/700"}
+                  alt="Profile pic"
+                  className="rounded-circle"
+                  width="50"
+                  height="50"
+                />
+              </Link>
+
+              <div className="ms-2">
+                <h6 className="m-0">
+                  <Link
+                    to={`/user/${profile._id}`}
+                    className="text-decoration-none text-dark"
+                  >
+                    {profile.name} {profile.surname}
+                  </Link>
+                  <span className="fw-lighter"> · 3°+</span>
+                </h6>
+                <p className="mb-2">{profile.title}</p>
+
+                <button
+                  type="button"
+                  className="btn d-flex align-items-center justify-content-center rounded-pill border border-1 px-3 py-1 fw-medium"
+                  style={{ color: "#404040", borderColor: "#404040" }}
+                >
+                  <Icon.PersonFillAdd className="me-2" />
+                  Collegati
+                </button>
+              </div>
+            </div>
+          ))}
+
+          <h6 className="text-center mt-3">Mostra tutto</h6>
         </div>
-        <div className=" d-flex border-bottom border-1 py-3">
-          <img
-            src="https://placecats.com/50/50"
-            alt="placeholder propic"
-            height={"100%"}
-            className=" rounded-circle"
-          />
-          <div className="ms-2">
-            <h6 className="m-0">
-              Dario del Giudice <span className="fw-lighter">· 3°+</span>
-            </h6>
-            <p className="mb-2">Docente front-end presso Epicode</p>
-            <button
-              type="button"
-              className="btn rounded-pill border border-1 border-info text-info px-3 py-1 fw-medium"
+
+        <div
+          className="p-4 pb-1 mt-1 bg-white rounded-3 border border-1 d-flex flex-column align-items-center"
+          style={{ minWidth: "320px", maxWidth: "320px" }}
+        >
+          <h4 className="fs-6 m-0 text-start w-100 fw-bold">
+            Esplora i profili Premium
+          </h4>
+          {suggestedProfiles.map((profile) => (
+            <div
+              key={profile._id}
+              className="d-flex align-items-center border-bottom border-1 py-3 w-100"
             >
-              Messaggio
-            </button>
-          </div>
+              <Link
+                to={`/user/${profile._id}`}
+                className="text-decoration-none"
+              >
+                <img
+                  src={profile.image || "https://placecats.com/700/700"}
+                  alt="Profile pic"
+                  className="rounded-circle"
+                  width="50"
+                  height="50"
+                />
+              </Link>
+              <div className="ms-2">
+                <h6 className="m-0">
+                  <Link
+                    to={`/user/${profile._id}`}
+                    className="text-decoration-none text-dark"
+                  >
+                    {profile.name} {profile.surname}
+                  </Link>
+                </h6>
+                <p className="mb-2">{profile.title}</p>
+
+                <button
+                  type="button"
+                  className="btn rounded-pill d-flex align-items-center justify-content-center border border-1 border-secondary text-secondary px-3 py-1 fw-medium"
+                >
+                  <Icon.Plus className="me-1" />
+                  Segui
+                </button>
+              </div>
+            </div>
+          ))}
+
+          <h6 className="text-center mt-3">Mostra tutto</h6>
         </div>
-        <div className=" d-flex border-bottom border-1 py-3">
-          <img
-            src="https://placecats.com/50/50"
-            alt="placeholder propic"
-            height={"100%"}
-            className=" rounded-circle"
-          />
-          <div className="ms-2">
-            <h6 className="m-0">
-              Dario del Giudice <span className="fw-lighter">· 3°+</span>
-            </h6>
-            <p className="mb-2">Docente front-end presso Epicode</p>
-            <button
-              type="button"
-              className="btn rounded-pill border border-1 border-info text-info px-3 py-1 fw-medium"
+
+        <div
+          className="p-4 pb-1 mt-1 bg-white rounded-3 border border-1 d-flex flex-column align-items-center"
+          style={{ minWidth: "320px", maxWidth: "320px" }}
+        >
+          <h4 className="fs-6 m-0 text-start w-100 fw-bold">
+            Persone che potresti conoscere
+          </h4>
+          {peopleYouMayKnow.map((profile) => (
+            <div
+              key={profile._id}
+              className="d-flex align-items-center border-bottom border-1 py-3 w-100"
             >
-              Messaggio
-            </button>
-          </div>
+              <Link
+                to={`/user/${profile._id}`}
+                className="text-decoration-none"
+              >
+                <img
+                  src={profile.image || "https://placecats.com/700/700"}
+                  alt="Profile pic"
+                  className="rounded-circle"
+                  width="50"
+                  height="50"
+                />
+              </Link>
+              <div className="ms-2">
+                <h6 className="m-0">
+                  <Link
+                    to={`/user/${profile._id}`}
+                    className="text-decoration-none text-dark"
+                  >
+                    {profile.name} {profile.surname}
+                  </Link>
+                </h6>
+                <p className="mb-2">{profile.title}</p>
+
+                <button
+                  type="button"
+                  className="btn rounded-pill d-flex align-items-center justify-content-center border border-1 border-secondary text-secondary px-3 py-1 fw-medium"
+                >
+                  <Icon.PersonFillAdd className="me-2" />
+                  Collegati
+                </button>
+              </div>
+            </div>
+          ))}
+
+          <h6 className="text-center mt-3">Mostra tutto</h6>
         </div>
-        <div className=" d-flex border-bottom border-1 py-3">
-          <img
-            src="https://placecats.com/50/50"
-            alt="placeholder propic"
-            height={"100%"}
-            className=" rounded-circle"
-          />
-          <div className="ms-2">
-            <h6 className="m-0">
-              Dario del Giudice <span className="fw-lighter">· 3°+</span>
-            </h6>
-            <p className="mb-2">Docente front-end presso Epicode</p>
-            <button
-              type="button"
-              className="btn rounded-pill border border-1 border-info text-info px-3 py-1 fw-medium"
-            >
-              Messaggio
-            </button>
-          </div>
-        </div>
-        <div className=" d-flex border-bottom border-1 py-3">
-          <img
-            src="https://placecats.com/50/50"
-            alt="placeholder propic"
-            height={"100%"}
-            className=" rounded-circle"
-          />
-          <div className="ms-2">
-            <h6 className="m-0">
-              Dario del Giudice <span className="fw-lighter">· 3°+</span>
-            </h6>
-            <p className="mb-2">Docente front-end presso Epicode</p>
-            <button
-              type="button"
-              className="btn rounded-pill border border-1 border-info text-info px-3 py-1 fw-medium"
-            >
-              Messaggio
-            </button>
-          </div>
-        </div>
-        <h6 className=" text-center mt-3">Mostra tutto</h6>
+
+        <img
+          src="/banner.png"
+          style={{ width: "320px", marginTop: "10px" }}
+          alt="placeholder"
+          className="rounded-3 border-1 border"
+        />
       </div>
-      {/* seconda sezione */}
-      <div className="p-4 pb-1 bg-body-secondary w-100 rounded-3 border border-1 mt-2">
-        <h4 className="fs-6 m-0">Persone che potresti conoscere</h4>
-        <p className="fw-lighter m-0">Dalla scuola o università di Epicode</p>
-        <div className=" d-flex border-bottom border-1 py-3">
-          <img
-            src="https://placecats.com/50/50"
-            alt="placeholder propic"
-            height={"100%"}
-            className=" rounded-circle"
-          />
-          <div className="ms-2">
-            <h6 className="m-0">Stefano Casasola</h6>
-            <p className="mb-2">Docente front-end presso Epicode</p>
-            <button
-              type="button"
-              className="btn rounded-pill border border-1 border-secondary text-secondary px-3 py-1 fw-medium"
-            >
-              <Icon.PersonPlusFill /> Collegati
-            </button>
-          </div>
-        </div>
-        <div className=" d-flex border-bottom border-1 py-3">
-          <img
-            src="https://placecats.com/50/50"
-            alt="placeholder propic"
-            height={"100%"}
-            className=" rounded-circle"
-          />
-          <div className="ms-2">
-            <h6 className="m-0">Stefano Casasola</h6>
-            <p className="mb-2">Docente front-end presso Epicode</p>
-            <button
-              type="button"
-              className="btn rounded-pill border border-1 border-secondary text-secondary px-3 py-1 fw-medium"
-            >
-              <Icon.PersonPlusFill /> Collegati
-            </button>
-          </div>
-        </div>
-        <div className=" d-flex border-bottom border-1 py-3">
-          <img
-            src="https://placecats.com/50/50"
-            alt="placeholder propic"
-            height={"100%"}
-            className=" rounded-circle"
-          />
-          <div className="ms-2">
-            <h6 className="m-0">Stefano Casasola</h6>
-            <p className="mb-2">Docente front-end presso Epicode</p>
-            <button
-              type="button"
-              className="btn rounded-pill border border-1 border-secondary text-secondary px-3 py-1 fw-medium"
-            >
-              <Icon.PersonPlusFill /> Collegati
-            </button>
-          </div>
-        </div>
-        <div className=" d-flex border-bottom border-1 py-3">
-          <img
-            src="https://placecats.com/50/50"
-            alt="placeholder propic"
-            height={"100%"}
-            className=" rounded-circle"
-          />
-          <div className="ms-2">
-            <h6 className="m-0">Stefano Casasola</h6>
-            <p className="mb-2">Docente front-end presso Epicode</p>
-            <button
-              type="button"
-              className="btn rounded-pill border border-1 border-secondary text-secondary px-3 py-1 fw-medium"
-            >
-              <Icon.PersonPlusFill /> Collegati
-            </button>
-          </div>
-        </div>
-        <h6 className=" text-center mt-3">Mostra tutto</h6>
-      </div>
-      {/* terza sezione */}
-      <div className="p-4 pb-1 bg-body-secondary w-100 rounded-3 border border-1 mt-2">
-        <h4 className="fs-6 m-0">Potrebbe interessarti</h4>
-        <p className="m-0">Pagine per te</p>
-        <div className=" d-flex border-bottom border-1 py-3">
-          <img
-            src="https://placecats.com/50/50"
-            alt="placeholder propic"
-            height={"100%"}
-          />
-          <div className="ms-2">
-            <h6 className="m-0">Epicode School</h6>
-            <p className="m-0">become a full-stack Epicoder</p>
-            <p className=" fw-lighter mb-2">650.000 follower</p>
-            <button
-              type="button"
-              className="btn rounded-pill border border-1 border-black px-3 py-1 fw-medium"
-            >
-              <Icon.PlusLg /> Segui
-            </button>
-          </div>
-        </div>
-        <div className=" d-flex border-bottom border-1 py-3">
-          <img
-            src="https://placecats.com/50/50"
-            alt="placeholder propic"
-            height={"100%"}
-          />
-          <div className="ms-2">
-            <h6 className="m-0">Epicode School</h6>
-            <p className="m-0">become a full-stack Epicoder</p>
-            <p className=" fw-lighter mb-2">650.000 follower</p>
-            <button
-              type="button"
-              className="btn rounded-pill border border-1 border-black px-3 py-1 fw-medium"
-            >
-              <Icon.PlusLg /> Segui
-            </button>
-          </div>
-        </div>
-        <h6 className=" text-center mt-3">Mostra tutto</h6>
-      </div>
-      <img
-        src="https://placecats.com/310/200"
-        style={{ width: "100%" }}
-        alt="placeholder"
-        className=" rounded-3 border-1 border mt-2 sticky-top"
-      />
-    </div>
+    </Container>
   );
-}
+};
 
 export default SideBar;

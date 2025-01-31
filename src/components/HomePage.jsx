@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Container,
   Row,
@@ -5,25 +6,108 @@ import {
   Card,
   Button,
   Form,
-  Image,
+  Spinner,
 } from "react-bootstrap";
 import {
   PersonFillAdd,
   BookmarkFill,
   Plus,
   CardImage,
-  HandThumbsUp,
-  ChatDots,
-  ArrowRepeat,
-  ChevronCompactDown,
 } from "react-bootstrap-icons";
 import HomePagePremium from "../assets/HomePagePremium.svg";
-import Article from "../assets/Article.svg";
-import Calendar from "../assets/Calendar.svg";
-import send from "../assets/send.svg";
+//import Calendar from "../assets/Calendar.svg";
+//import send from "../assets/send.svg";
 import infoHome from "../assets/infoHome.svg";
+import SinglePost from "./SinglePost";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getAllPosts, getMyProfile } from "../redux/action";
+import { useSelector } from "react-redux";
+import * as Icon from "react-bootstrap-icons";
+import { useState } from "react";
+import { sendPost } from "../redux/action";
+//import { setPostPic } from "../redux/action";
+import { getComments } from "../redux/action";
+import { Link } from "react-router-dom";
+import NewsCardComponent from "./NewsCardComponent";
 
 const HomePage = () => {
+  const [writtenPost, setWrittenPost] = useState("");
+  const [isPostPic, setIsPostPic] = useState(false);
+  const [pic, setPic] = useState(null);
+  const dispatch = useDispatch();
+  const myProfile = useSelector((state) => state.myProfile);
+  const [fileName, setFileName] = useState("");
+
+  useEffect(() => {
+    dispatch(getAllPosts());
+    dispatch(getMyProfile());
+    dispatch(getComments());
+  }, []);
+
+  const posts = useSelector((state) => {
+    return state.posts;
+  });
+
+  const hasPostsLoaded = useSelector((state) => {
+    return state.hasPostsLoaded;
+  });
+  // const postedPostId = useSelector((state) => {
+  //   return state.postedPostId;
+  // });
+
+  const handleSubmit = function () {
+    setWrittenPost("");
+    if (!pic && !isPostPic) {
+      dispatch(sendPost(writtenPost));
+    } else {
+      dispatch(sendPost(writtenPost, pic));
+      //document.getElementById("image-upload").value = "";
+      setFileName(null);
+      setPic(null);
+      setIsPostPic(false);
+    }
+
+    // console.log(postedPostId);
+    // if (isPostPic) {
+    //   dispatch(setPostPic(pic, postedPostId));
+    //   console.log(isPostPic);
+    // }
+  };
+  // let pic;
+  const handlePostPic = (e) => {
+    e.preventDefault();
+    console.log(e.target.files[0]);
+    const newPic = new FormData();
+    newPic.append("post", e.target.files[0]);
+    setPic(newPic);
+    setIsPostPic(true);
+    // console.log(isPostPic);
+    // setIsPostPic(true, () => {
+    //   console.log("isPostPic aggiornato:", isPostPic);
+    // });
+    // for (let [key, value] of pic.entries()) {
+    //   console.log(key, value);
+    // }
+  };
+
+  // useEffect(() => {
+  //   console.log(isPostPic);
+  //   if (isPostPic) {
+  //   }
+  // }, [isPostPic]);
+
+  // useEffect(() => {
+  //   if (isPostPic && pic) {
+  //     // for (let [key, value] of pic.entries()) {
+  //     //   console.log(key, value);
+  //     // }
+  //     dispatch(setPostPic(pic, postedPostId));
+  //     //setIsPostPic(false);
+  //     //setPic(null);
+  //   }
+  // }, [postedPostId]);
+
   return (
     <Container fluid className="py-3" style={{ backgroundColor: "#F4F2EE" }}>
       <Container className="home-container">
@@ -32,15 +116,32 @@ const HomePage = () => {
           <Col md={3}>
             <Card className="mb-3">
               <Card.Body className="text-center position-relative">
-                <img
-                  src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                  alt=""
-                  style={{ width: "30%", borderRadius: "50%" }}
-                />
+                <Link to="/profile">
+                  <img
+                    src={
+                      myProfile.image ||
+                      "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                    }
+                    alt="Profile Avatar"
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      borderRadius: "50%",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Link>
 
-                <Card.Title>Nome.Cognome</Card.Title>
+                <Card.Title>
+                  <Link
+                    to="/profile"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {myProfile.name} {myProfile.surname}
+                  </Link>
+                </Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">
-                  Cosa fa nella vita
+                  {myProfile.title || "Cosa fa nella vita"}
                 </Card.Subtitle>
                 <hr />
                 <div className="d-flex justify-content-between align-items-center">
@@ -69,9 +170,18 @@ const HomePage = () => {
                   <br />
                 </Card.Text>
                 <hr />
-                <Card.Text className="text-start">
-                  <BookmarkFill className=" me-2" size={24} /> Elementi salvati
-                </Card.Text>
+                <Link to="/favourites" className="text-decoration-none">
+                  <button className="btn btn-light d-flex align-items-center justify-content-center w-100 rounded-pill fw-bold py-2 my-2 position-relative overflow-hidden linkedin-style-button">
+                    <span className="d-flex align-items-center z-2 position-relative">
+                      <BookmarkFill
+                        className="me-2"
+                        size={20}
+                        color="#0A66C2"
+                      />{" "}
+                      <span className="text-dark">Elementi salvati</span>
+                    </span>
+                  </button>
+                </Link>
               </Card.Body>
             </Card>
 
@@ -107,8 +217,10 @@ const HomePage = () => {
                   style={{ width: "30%", height: "30%" }}
                 />
                 <h5 className="text-center">
-                  Ciao Nome utente, in questo momento stai cercando un lavoro?
+                  Ciao {myProfile.name}, in questo momento stai cercando un
+                  lavoro?
                 </h5>
+
                 <p className="text-secondary text-center">
                   Solo tu puoi vedere la tua risposta
                 </p>
@@ -132,54 +244,162 @@ const HomePage = () => {
 
             <Card className="mb-3">
               <Card.Body>
-                <Form>
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (writtenPost) {
+                      handleSubmit();
+                    } else {
+                      alert("Scrivi qualcosa.");
+                    }
+                  }}
+                >
                   <Form.Group className="d-flex">
                     <img
-                      className="me-2"
-                      src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                      alt=""
-                      style={{ width: "10%", borderRadius: "50%" }}
+                      src={
+                        myProfile.image ||
+                        "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                      }
+                      alt="Profile Avatar"
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "50%",
+                        cursor: "pointer",
+                      }}
                     />
                     <Form.Control
+                      value={writtenPost}
+                      onChange={(e) => {
+                        setWrittenPost(e.target.value);
+                      }}
                       type="text"
-                      placeholder="Crea un post"
+                      placeholder="Scrivi qualcosa..."
                       style={{ borderRadius: "25px", fontWeight: "600" }}
+                      className="ms-1"
                     />
                   </Form.Group>
                 </Form>
-                <div className="d-flex justify-content-between mt-3">
-                  <Button variant="light newPostButton">
-                    <CardImage
-                      className="me-2 text-primary"
-                      style={{ fontSize: "20px" }}
+                <div className="d-flex flex-column align-items-center justify-content-between mt-3">
+                  <div className="d-flex flex-column align-items-center mb-3">
+                    <label
+                      htmlFor="image-upload"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        cursor: "pointer",
+                        padding: "8px 16px",
+                        borderRadius: "20px",
+                        backgroundColor: "#f0f0f0",
+                        border: "1px solid #ddd",
+                        transition: "background-color 0.3s ease",
+                        marginBottom: "8px",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#e0e0e0")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#f0f0f0")
+                      }
+                    >
+                      <CardImage
+                        className="me-2 text-primary"
+                        style={{ fontSize: "20px", color: "#0a66c2" }}
+                      />
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: "500",
+                          color: "#333",
+                        }}
+                      >
+                        Carica un&apos;immagine
+                      </span>
+                    </label>
+
+                    <input
+                      id="image-upload"
+                      accept="image/*"
+                      type="file"
+                      onChange={(e) => {
+                        handlePostPic(e);
+                        if (e.target.files && e.target.files[0]) {
+                          setFileName(e.target.files[0].name);
+                        } else {
+                          setFileName(null);
+                        }
+                      }}
+                      style={{ display: "none" }}
                     />
-                    Contenuti multimediali
-                  </Button>
-                  <Button variant="light newPostButton">
-                    <img
-                      src={Calendar}
-                      alt="Premium Icon"
-                      width="24"
-                      height="24"
-                      className="me-2"
+
+                    <div
+                      style={{
+                        fontSize: "12px",
+                        color: "#666",
+                        textAlign: "center",
+                      }}
+                    >
+                      {fileName ? fileName : "Nessun file caricato"}
+                    </div>
+                  </div>
+
+                  <Button
+                    className="align-self-center postButton23"
+                    variant="light"
+                    style={{
+                      width: "fit-content",
+                      padding: "8px 16px",
+                      borderRadius: "20px",
+                      backgroundColor: "#fff",
+                      color: "#0a66c2",
+                      border: "2px solid #0a66c2",
+                      fontWeight: "600",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      transition: "all 0.3s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#0a66c2";
+                      e.currentTarget.style.color = "#fff";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "#fff";
+                      e.currentTarget.style.color = "#0a66c2";
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (writtenPost) {
+                        handleSubmit();
+                      } else {
+                        alert("Scrivi qualcosa.");
+                      }
+                    }}
+                  >
+                    <Icon.Check
+                      style={{ fontSize: "24px", color: "inherit" }}
                     />
-                    Evento
-                  </Button>
-                  <Button variant="light newPostButton">
-                    <img
-                      src={Article}
-                      alt="Premium Icon"
-                      width="24"
-                      height="24"
-                      className="me-2"
-                    />
-                    Scrivi un articolo
+                    Pubblica post
                   </Button>
                 </div>
               </Card.Body>
             </Card>
-
-            <Card>
+            {hasPostsLoaded ? (
+              <div>
+                {posts &&
+                  posts
+                    .slice(posts.length - 25, posts.length)
+                    .reverse()
+                    .map((post) => {
+                      return <SinglePost key={post._id} post={post} />;
+                    })}
+              </div>
+            ) : (
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            )}
+            {/* <Card>
               <Card.Body>
                 <div className="d-flex align-items-center mb-3">
                   <Image
@@ -223,92 +443,12 @@ const HomePage = () => {
                   </Button>
                 </div>
               </Card.Body>
-            </Card>
+            </Card> */}
           </Col>
 
           {/* Right Sidebar */}
-          <Col md={3}>
-            <Card className="mb-3">
-              <Card.Body>
-                <Container>
-                  <Card.Title className="d-flex justify-content-between align-items-center">
-                    <span style={{ marginLeft: "-12px" }}>In primo piano</span>
-                    <img
-                      src={infoHome}
-                      alt="Premium Icon"
-                      width="15"
-                      height="15"
-                      className="ms-auto"
-                    />
-                  </Card.Title>
-                </Container>
-
-                <Card.Subtitle className="mb-2 text-muted">
-                  a cura di LinkedIn Notizie
-                </Card.Subtitle>
-                <ul className="list-unstyled">
-                  <li>
-                    <strong> Come sta cambiando il lavoro... </strong> <br />
-                    <small className="text-muted">
-                      7 ore fa • 6.557 lettori
-                    </small>
-                  </li>
-                  <li>
-                    <strong>Torna il Frecciarossa Milano-Parigi </strong> <br />
-                    <small className="text-muted">
-                      7 ore fa • 6.557 lettori
-                    </small>
-                  </li>
-                  <li>
-                    <strong>Mps vuole acquisire Mediobanca </strong> <br />
-                    <small className="text-muted">
-                      7 ore fa • 6.557 lettori
-                    </small>
-                  </li>
-                  <li>
-                    <strong>Lavoro: l impatto del referendum amer... </strong>{" "}
-                    <br />
-                    <small className="text-muted">
-                      7 ore fa • 6.557 lettori
-                    </small>
-                  </li>
-                  <li>
-                    <strong>Generali Natale: è il razzismo </strong> <br />
-                    <small className="text-muted">
-                      7 ore fa • 6.557 lettori
-                    </small>
-                  </li>
-                </ul>
-                <Card.Link
-                  href="#"
-                  style={{
-                    textDecoration: "none",
-                    color: "black",
-                    fontWeight: "600",
-                  }}
-                >
-                  Vedi altro
-                  <ChevronCompactDown
-                    className="mx-2"
-                    style={{ fontSize: "20px" }}
-                  />
-                </Card.Link>
-              </Card.Body>
-            </Card>
-
-            <Card>
-              <Card.Body>
-                <Card.Title>I giochi di oggi</Card.Title>
-                <div className="d-flex justify-content-between mb-2">
-                  <span>Tango</span>
-                  <i className="bi bi-chevron-right"></i>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <span>Queens</span>
-                  <i className="bi bi-chevron-right"></i>
-                </div>
-              </Card.Body>
-            </Card>
+          <Col md={3} className="d-flex justify-content-center">
+            <NewsCardComponent infoHome={infoHome} />
           </Col>
         </Row>
       </Container>

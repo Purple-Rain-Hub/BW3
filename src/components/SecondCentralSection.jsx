@@ -1,64 +1,189 @@
-import { Card } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Card, Spinner } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
+import { useParams } from "react-router-dom";
 
-function SecondCentralSection() {
+const SecondCentralSection = () => {
+  const { id: userId } = useParams();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [experiences, setExperiences] = useState([]);
+  const [randomImage, setRandomImage] = useState(null);
+
+  const TOKEN =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzk3NTA4OTE2ZjYzNTAwMTVmZWNiODQiLCJpYXQiOjE3Mzc5Njk4MDEsImV4cCI6MTczOTE3OTQwMX0.gV22i7NwH_DHYfKE81N9UEY1Up6WHrH2EPIoPu8OD9w";
+
+  const API_KEY = "48545245-df42dd6ae1b58ed4617a974db";
+
+  const [selectedSection, setSelectedSection] = useState("Aziende");
+  useEffect(() => {
+    if (!userId) {
+      setError("Nessun ID utente fornito.");
+      setLoading(false);
+      return;
+    }
+
+    const API_URL = `https://striveschool-api.herokuapp.com/api/profile/${userId}`;
+    const EXPERIENCE_URL = `https://striveschool-api.herokuapp.com/api/profile/${userId}/experiences`;
+
+    const fetchData = async () => {
+      try {
+        console.log("🚀 Fetching user from:", API_URL);
+        const userResponse = await fetch(API_URL, {
+          headers: { Authorization: `Bearer ${TOKEN}` },
+        });
+
+        if (!userResponse.ok)
+          throw new Error(
+            `Errore ${userResponse.status}: ${userResponse.statusText}`
+          );
+
+        const userData = await userResponse.json();
+        setUser(userData);
+
+        console.log(" Fetching experiences from:", EXPERIENCE_URL);
+        const expResponse = await fetch(EXPERIENCE_URL, {
+          headers: { Authorization: `Bearer ${TOKEN}` },
+        });
+
+        if (!expResponse.ok)
+          throw new Error(
+            `Errore ${expResponse.status}: ${expResponse.statusText}`
+          );
+
+        const expData = await expResponse.json();
+        setExperiences(expData);
+        fetchRandomImage();
+      } catch (error) {
+        console.error("❌ Errore nel fetch:", error);
+        setError("Impossibile caricare il profilo utente o le esperienze.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [userId]);
+
+  const fetchRandomImage = async () => {
+    try {
+      const response = await fetch(
+        `https://pixabay.com/api/?key=${API_KEY}&q=coding&image_type=photo&per_page=50`
+      );
+      const data = await response.json();
+
+      if (data.hits.length > 0) {
+        const randomIndex = Math.floor(Math.random() * data.hits.length);
+        setRandomImage(data.hits[randomIndex].largeImageURL);
+      } else {
+        console.log("Nessuna immagine trovata.");
+      }
+    } catch (error) {
+      console.error("Errore nel fetch delle immagini:", error);
+    }
+  };
+
+  if (loading) {
+    return null;
+  }
+
+  if (error) {
+    return <p className="text-center text-danger">{error}</p>;
+  }
+
   return (
     <>
-      <div style={{ width: "100%", height: "400px" }}>
+      <div style={{ width: "100%", height: "500px" }}>
         <Card style={{ width: "100%", height: "100%", position: "relative" }}>
           <Card.Img
             style={{
               width: "100%",
               height: "50%",
-              backgroundImage: "url(https://placecats.com/700/700)",
+              backgroundImage: `url(${
+                randomImage || user?.image || "https://placecats.com/700/700"
+              })`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 100%",
             }}
             variant="top"
           />
           <img
-            src="https://placecats.com/100/100"
+            src={user.image || "https://placecats.com/100/100"}
             style={{
               width: "120px",
               height: "120px",
               position: "absolute",
-              top: "10%",
+              top: "30%",
               borderRadius: "50%",
-              border: "2px solid white",
+              border: "3px solid white",
               marginLeft: "20px",
+              zIndex: 2,
             }}
             alt="Profilo utente"
           />
-          <Card.Body>
+          <Card.Body
+            style={{
+              paddingTop: "60px",
+              minHeight: "150px",
+            }}
+          >
             <div className="d-flex justify-content-between">
               <div className="d-flex gap-1">
-                <Card.Title className="m-0">Nome Utente</Card.Title>
+                <Card.Title className="m-0">
+                  {user.name} {user.surname}
+                </Card.Title>
                 <Icon.VolumeUpFill className="align-self-center" />
               </div>
             </div>
-            <Card.Text className="m-0">Studente presso Epicode.</Card.Text>
-            <div className="d-flex gap-1">
-              <p className="m-0 text-secondary" style={{ fontSize: "10px" }}>
-                Racalmuto, Sicilia, Italia
+            <Card.Text className="m-0">
+              {user.title || "Titolo non disponibile"}
+            </Card.Text>
+            <div className="d-flex align-items-center gap-1">
+              <p
+                className="m-0 text-secondary"
+                style={{ fontSize: "15px", lineHeight: "1.5" }}
+              >
+                {user.area || "Località non disponibile"}
               </p>
-              <p className="m-0" style={{ fontSize: "10px" }}>
+              <p
+                className="m-0 text-secondary"
+                style={{ fontSize: "15px", lineHeight: "1.5" }}
+              >
+                - Italia
+              </p>
+              <p
+                className="m-0"
+                style={{ fontSize: "15px", lineHeight: "1.5" }}
+              >
                 &middot;
               </p>
               <a
                 href="#"
                 className="text-decoration-none"
-                style={{ color: "#0B66C2", fontSize: "10px" }}
+                style={{
+                  color: "#0B66C2",
+                  fontSize: "15px",
+                  lineHeight: "1.5",
+                }}
               >
                 Informazioni di contatto
               </a>
             </div>
+
             <a
               href="#"
               className="text-decoration-none"
-              style={{ color: "#0B66C2", fontSize: "10px" }}
+              style={{
+                color: "#0B66C2",
+                fontSize: "15px",
+                display: "block",
+                marginTop: "5px",
+              }}
             >
               14 collegamenti
             </a>
+
             <div
               className="d-flex align-items-center"
               style={{
@@ -92,12 +217,12 @@ function SecondCentralSection() {
                 />
               </div>
               <p
-                className="hoverable-text"
+                className="hoverable-text m-0"
                 style={{
-                  margin: "0",
                   fontSize: "12px",
                   color: "gray",
                   marginLeft: "10px",
+                  lineHeight: "1.5",
                 }}
               >
                 <strong>Michela Vivacqua</strong>,{" "}
@@ -107,16 +232,15 @@ function SecondCentralSection() {
             </div>
             <div className="d-flex gap-1">
               <p
-                className="m-0"
+                className="m-0, fw-bold"
                 style={{
                   backgroundColor: "#0B66C2",
                   color: "white",
-                  width: "100px",
-                  height: "25px",
-                  borderRadius: "15px",
+                  width: "110px",
+                  height: "35px",
+                  borderRadius: "20px",
                   padding: "2px",
                   cursor: "pointer",
-                  fontSize: "14px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -127,12 +251,12 @@ function SecondCentralSection() {
                 {"Collegati"}
               </p>
               <p
-                className="m-0"
+                className="m-0, fw-bold"
                 style={{
                   color: "#0B66C2",
-                  width: "100px",
-                  height: "25px",
-                  borderRadius: "15px",
+                  width: "110px",
+                  height: "35px",
+                  borderRadius: "20px",
                   padding: "2px",
                   cursor: "pointer",
                   border: "1px solid #0B66C2",
@@ -142,14 +266,15 @@ function SecondCentralSection() {
                   justifyContent: "center",
                 }}
               >
+                {" "}
                 Messaggio
               </p>
               <p
-                className="m-0"
+                className="m-0, fw-bold"
                 style={{
-                  color: "gray",
-                  width: "60px",
-                  borderRadius: "15px",
+                  color: "black",
+                  width: "70px",
+                  borderRadius: "20px",
                   padding: "2px",
                   cursor: "pointer",
                   border: "1px solid gray",
@@ -165,898 +290,564 @@ function SecondCentralSection() {
           </Card.Body>
         </Card>
       </div>
-      {/*prima card*/}
-      <div style={{ width: "100%", marginTop: "10px" }}>
-        <div
-          style={{
-            width: "100%",
-            border: "1px solid #d3d3d3",
-            borderRadius: "10px",
-            padding: "15px",
-            backgroundColor: "white",
-            marginBottom: "10px",
-          }}
-        >
-          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-            Informazioni
-          </p>
-          <p className="m-0" style={{ fontSize: "14px" }}>
-            ciao raga
-          </p>
-        </div>
-        {/*seconda card*/}
-        <div
-          style={{
-            width: "100%",
-            border: "1px solid #d3d3d3",
-            borderRadius: "10px",
-            padding: "15px",
-            backgroundColor: "white",
-            marginBottom: "20px",
-          }}
-        >
-          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-            Attività
-          </p>
-          <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-            644 follower
-          </p>
-          <p className="m-0" style={{ fontSize: "14px" }}>
-            Stefano non ha ancora pubblicato nulla.
-            <br />I post recenti che Stefano condivide appariranno qui.
-          </p>
-          <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
-          <p
-            className="m-0"
-            style={{
-              fontSize: "14px",
-              fontWeight: "bold",
-              color: "#181818",
-              textAlign: "center",
-              padding: "10px 0",
-              borderRadius: "10px",
-              cursor: "pointer",
-            }}
-          >
-            Mostra tutte le attività →
-          </p>
-        </div>
-        {/*terza card*/}
-        <div
-          style={{
-            width: "100%",
-            border: "1px solid #d3d3d3",
-            borderRadius: "10px",
-            padding: "15px",
-            backgroundColor: "white",
-            marginBottom: "10px",
-          }}
-        >
-          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-            Esperienza
-          </p>
-          <div className="d-flex" style={{ marginTop: "15px" }}>
-            <img
-              src="https://placecats.com/100/100"
-              alt="logo"
-              style={{ width: "40px", height: "40px", borderRadius: "5px" }}
-            />
-            <div style={{ marginLeft: "10px" }}>
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                Teacher
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                EPICODE · Autonomo
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                giu 2019 - Presente · 5 anni 8 mesi
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Roma, Italia
-              </p>
-            </div>
-          </div>
-          <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
 
-          <div className="d-flex" style={{ marginTop: "15px" }}>
-            <img
-              src="https://placecats.com/100/100"
-              alt="logo"
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "5px",
-                marginRight: "15px",
-              }}
-            />
-            <div style={{ flex: 1 }}>
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                Founder & Software Developer
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Nuclecode SRL
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                mar 2017 - Presente · 7 anni 11 mesi
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Gorizia, Italia
-              </p>
-              <p
-                className="m-0"
-                style={{
-                  fontSize: "12px",
-                  marginBottom: "10px",
-                  marginTop: "10px",
-                }}
-              >
-                Innovative start-up specialized in the development of highly
-                innovative computer-medical solutions, using cloud potential and
-                mobile computing, machine learning and Mixed Reality.
-              </p>
-              <div
-                style={{
-                  backgroundColor: "#f9f9f9",
-                  border: "1px solid #d3d3d3",
-                  borderRadius: "10px",
-                  padding: "10px",
-                  marginTop: "10px",
-                }}
-              >
-                <p
-                  className="m-0"
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "12px",
-                    marginBottom: "5px",
-                  }}
-                >
-                  Nuclecode | Biohealth Innovation
-                </p>
-                <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                  Nuclecode SRL is a newborn healthcare startup based in Italy.
-                  We develop HIPAA and GDPR compliant solutions dedicated to
-                  healthcare companies and organizations.
-                </p>
-                <div
-                  className="d-flex align-items-center"
-                  style={{ marginTop: "10px" }}
-                >
-                  <div
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      backgroundColor: "#f0f0f0",
-                      borderRadius: "5px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginRight: "10px",
-                    }}
+      <div
+        style={{
+          width: "100%",
+          border: "1px solid #d3d3d3",
+          borderRadius: "10px",
+          padding: "15px",
+          backgroundColor: "white",
+          marginBottom: "10px",
+          marginTop: "10px",
+        }}
+      >
+        {/*prima card*/}
+        <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
+          Informazioni
+        </p>
+        <p className="m-0" style={{ fontSize: "14px" }}>
+          {user.bio || "Nessuna informazione disponibile"}
+        </p>
+      </div>
+
+      {/*seconda card*/}
+      <div
+        style={{
+          width: "100%",
+          border: "1px solid #d3d3d3",
+          borderRadius: "10px",
+          padding: "15px",
+          backgroundColor: "white",
+          marginBottom: "20px",
+        }}
+      >
+        <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
+          Attività
+        </p>
+        <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+          644 follower
+        </p>
+        <p className="m-0" style={{ fontSize: "14px" }}>
+          {user.name} non ha ancora pubblicato nulla.
+          <br />I post recenti che {user.name} condivide appariranno qui.
+        </p>
+        <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
+        <p
+          className="m-0"
+          style={{
+            fontSize: "17px",
+            fontWeight: "bold",
+            color: "#181817",
+            textAlign: "center",
+            borderRadius: "10px",
+            cursor: "pointer",
+          }}
+        >
+          {" "}
+          Mostra tutte le attività →
+        </p>
+      </div>
+      {/*terza card*/}
+      <div
+        style={{
+          width: "100%",
+          border: "1px solid #d3d3d3",
+          borderRadius: "10px",
+          padding: "15px",
+          backgroundColor: "white",
+          marginBottom: "10px",
+        }}
+      >
+        <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
+          Esperienza
+        </p>
+
+        {experiences.length > 0 ? (
+          experiences.map((exp, index) => (
+            <div key={index} className="w-100">
+              <div className="d-flex align-items-center mt-3">
+                <img
+                  src={exp.image || "https://placehold.co/50x50"}
+                  alt={exp.company}
+                  style={{ width: "50px", height: "50px", borderRadius: "5px" }}
+                />
+                <div style={{ marginLeft: "10px" }}>
+                  <p className="m-0 fw-bold" style={{ fontSize: "14px" }}>
+                    {exp.role}
+                  </p>
+                  <p
+                    className="m-0 text-secondary"
+                    style={{ fontSize: "12px" }}
                   >
-                    <Icon.Image style={{ fontSize: "20px", color: "gray" }} />
-                  </div>
-                  <p className="m-0" style={{ fontSize: "12px" }}>
-                    Nuclecode | Biohealth Innovation.
+                    {exp.company} · {exp.contractType || "N/A"}
+                  </p>
+                  <p
+                    className="m-0 text-secondary"
+                    style={{ fontSize: "12px" }}
+                  >
+                    {exp.startDate
+                      ? `${new Date(exp.startDate).toLocaleDateString()} - ${
+                          exp.endDate
+                            ? new Date(exp.endDate).toLocaleDateString()
+                            : "Presente"
+                        }`
+                      : "Data non disponibile"}
+                  </p>
+                  <p
+                    className="m-0 text-secondary"
+                    style={{ fontSize: "12px" }}
+                  >
+                    {exp.area || "Località non disponibile"}
                   </p>
                 </div>
               </div>
+
+              {index !== experiences.length - 1 && (
+                <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
+              )}
             </div>
+          ))
+        ) : (
+          <p className="text-secondary mt-2">Nessuna esperienza disponibile</p>
+        )}
+      </div>
+
+      {/*quarta card*/}
+      <div
+        style={{
+          width: "100%",
+          border: "1px solid #d3d3d3",
+          borderRadius: "10px",
+          padding: "15px",
+          backgroundColor: "white",
+          marginTop: "10px",
+        }}
+      >
+        <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
+          Formazione
+        </p>
+        <div className="d-flex" style={{ marginTop: "15px" }}>
+          <img
+            src="/uni.jpeg"
+            alt="Logo università"
+            style={{ width: "50px", height: "50px" }}
+          />
+          <div style={{ marginLeft: "10px" }}>
+            <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
+              Università degli Studi di Udine
+            </p>
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              Laurea Triennale in Scienze e Tecnologie Multimediali,
+              Dipartimento di Scienze matematiche, informatiche e multimediali
+            </p>
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              2010 - 2013
+            </p>
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              Votazione: 108/110
+            </p>
           </div>
-          <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
-          <div className="d-flex" style={{ marginTop: "15px" }}>
+        </div>
+      </div>
+      {/*quinta card*/}
+      <div
+        style={{
+          width: "100%",
+          border: "1px solid #d3d3d3",
+          borderRadius: "10px",
+          padding: "15px",
+          backgroundColor: "white",
+          marginTop: "10px",
+        }}
+      >
+        <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
+          Licenze e certificazioni
+        </p>
+        <div className="d-flex" style={{ marginTop: "15px" }}>
+          <img
+            src="/inglese.jpeg"
+            alt="Logo Cambridge"
+            style={{ width: "50px", height: "50px" }}
+          />
+          <div style={{ marginLeft: "10px" }}>
+            <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
+              Cambridge English Level 2 Certificate in ESOL International
+              (First) - Grade A Level C1
+            </p>
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              Cambridge University Press & Assessment
+            </p>
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              Data di rilascio: lug 2014
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/*sestacard*/}
+      <div
+        style={{
+          width: "100%",
+          border: "1px solid #d3d3d3",
+          borderRadius: "10px",
+          padding: "15px",
+          backgroundColor: "white",
+          marginTop: "10px",
+        }}
+      >
+        <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
+          Volontariato
+        </p>
+
+        <div className="d-flex" style={{ marginTop: "15px" }}>
+          <img
+            src="/volontario.jpeg"
+            alt="Logo Core Maintainer"
+            style={{ width: "50px", height: "50px" }}
+          />
+          <div style={{ marginLeft: "10px" }}>
+            <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
+              Core Maintainer
+            </p>
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              HospitalRun
+            </p>
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              ago 2019 - dic 2019 · 5 mesi
+            </p>
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              Scienza e tecnologia
+            </p>
+          </div>
+        </div>
+
+        <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
+
+        <div className="d-flex" style={{ marginTop: "15px" }}>
+          <img
+            src="/donatori.png"
+            alt="Logo Donatore di Sangue"
+            style={{ width: "50px", height: "50px" }}
+          />
+          <div style={{ marginLeft: "10px" }}>
+            <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
+              Donatore di sangue
+            </p>
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              Advsg Fidas Gorizia
+            </p>
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              set 2013 - presente · 11 anni 5 mesi
+            </p>
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              Salute
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/*settima card*/}
+      <div
+        style={{
+          width: "100%",
+          border: "1px solid #d3d3d3",
+          borderRadius: "10px",
+          padding: "15px",
+          backgroundColor: "white",
+          marginTop: "10px",
+        }}
+      >
+        <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
+          Competenze
+        </p>
+
+        <div style={{ marginTop: "10px" }}>
+          <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
+            JavaScript
+          </p>
+          <div
+            className="d-flex"
+            style={{ marginTop: "5px", alignItems: "center" }}
+          >
             <img
-              src="https://placecats.com/100/100"
-              alt="logo"
+              src="/js.png"
+              alt="Icona JavaScript"
               style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "5px",
-                marginRight: "15px",
+                width: "30px",
+                height: "30px",
+                marginRight: "10px",
+                borderRadius: "50px",
               }}
             />
-            <div style={{ flex: 1 }}>
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                Founder & IT Consultant
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                TecnoStart
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                gen 2015 - Presente · 10 anni 1 mese
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Gorizia, Italia
-              </p>
-              <p
-                className="m-0"
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              Competenze confermate da Maksim Sinik, che ha una grande
+              competenza in questo ambito
+            </p>
+          </div>
+          <div
+            className="d-flex"
+            style={{ marginTop: "5px", alignItems: "center" }}
+          >
+            <img
+              src="/c.jpg"
+              alt="Icona collegamento"
+              style={{
+                width: "30px",
+                height: "30px",
+                marginRight: "10px",
+                borderRadius: "50px",
+              }}
+            />
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              Confermata da 3 colleghi presso Nuclecode S.R.L
+            </p>
+          </div>
+          <div
+            className="d-flex"
+            style={{ marginTop: "5px", alignItems: "center" }}
+          >
+            <Icon.PeopleFill
+              style={{ fontSize: "20px", color: "gray", marginRight: "10px" }}
+            />
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              21 conferme
+            </p>
+          </div>
+        </div>
+
+        <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
+
+        <div style={{ marginTop: "15px" }}>
+          <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
+            React.js
+          </p>
+
+          <div
+            className="d-flex"
+            style={{ marginTop: "5px", alignItems: "center" }}
+          >
+            <Icon.PeopleFill
+              style={{ fontSize: "20px", color: "gray", marginRight: "10px" }}
+            />
+            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+              11 conferme
+            </p>
+          </div>
+        </div>
+
+        <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
+
+        <p
+          className="m-0"
+          style={{
+            fontSize: "14px",
+            fontWeight: "bold",
+            color: "#181818",
+            textAlign: "center",
+            padding: "10px 0",
+            borderRadius: "10px",
+            cursor: "pointer",
+          }}
+        >
+          Mostra tutte le competenze (17) →
+        </p>
+      </div>
+
+      {/*settima card*/}
+      <div
+        style={{
+          width: "100%",
+          border: "1px solid #d3d3d3",
+          borderRadius: "10px",
+          padding: "15px",
+          backgroundColor: "white",
+          marginTop: "10px",
+        }}
+      >
+        <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
+          Lingue
+        </p>
+
+        <div style={{ marginTop: "15px" }}>
+          <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
+            Inglese
+          </p>
+          <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+            Conoscenza professionale
+          </p>
+        </div>
+
+        <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
+
+        <div>
+          <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
+            Italiano
+          </p>
+          <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
+            Conoscenza madrelingua o bilingue
+          </p>
+        </div>
+      </div>
+
+      {/*undicesima card*/}
+      <div
+        style={{
+          width: "100%",
+          border: "1px solid #d3d3d3",
+          borderRadius: "10px",
+          padding: "15px",
+          backgroundColor: "white",
+          marginTop: "10px",
+        }}
+      >
+        <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
+          Interessi
+        </p>
+
+        <div className="button-container">
+          <button
+            className={`custom-button ${
+              selectedSection === "Aziende" ? "active" : ""
+            }`}
+            onClick={() => setSelectedSection("Aziende")}
+          >
+            Aziende
+          </button>
+          <button
+            className={`custom-button ${
+              selectedSection === "Gruppi" ? "active" : ""
+            }`}
+            onClick={() => setSelectedSection("Gruppi")}
+          >
+            Gruppi
+          </button>
+          <button
+            className={`custom-button ${
+              selectedSection === "Scuole" ? "active" : ""
+            }`}
+            onClick={() => setSelectedSection("Scuole")}
+          >
+            Scuole o università
+          </button>
+        </div>
+
+        <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
+
+        {selectedSection === "Aziende" && (
+          <div className="interests-content d-flex flex-row align-items-start gap-4">
+            <div className="interest-card d-flex align-items-center w-50">
+              <img
+                src="/tesla.png"
+                alt="Icona collegamento"
                 style={{
-                  fontSize: "12px",
-                  marginBottom: "10px",
-                  marginTop: "10px",
+                  width: "50px",
+                  height: "50px",
+                  marginRight: "10px",
                 }}
-              >
-                TecnoStart nasce per offrire consulenze e servizi informatici a
-                privati, aziende, enti professionali e scuole, oltre che
-                formazione a tutti i livelli per il corretto utilizzo degli
-                stessi.
-              </p>
-              <div
+              />
+              <div className="d-flex flex-column">
+                <p className="fw-bold mb-0">Tesla</p>
+                <p className="text-secondary mb-2">12.177.275 follower</p>
+                <button className="styled-button">+ Segui</button>
+              </div>
+            </div>
+
+            <div className="interest-card d-flex align-items-center w-50">
+              <img
+                src="/spacex.jpg"
+                alt="Icona collegamento"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "10px",
-                  marginTop: "10px",
+                  width: "50px",
+                  height: "50px",
+                  marginRight: "10px",
                 }}
-              >
+              />
+              <div className="d-flex flex-column">
+                <p className="fw-bold mb-0">SpaceX</p>
+                <p className="text-secondary mb-2">3.343.651 follower</p>
+                <button className="styled-button">+ Segui</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {selectedSection === "Gruppi" && (
+          <div className="interests-content d-flex flex-column align-items-start gap-3">
+            <div className="interest-card d-flex align-items-center justify-content-between w-100">
+              <div className="d-flex align-items-center gap-3">
                 <img
-                  src="https://placecats.com/50/50"
-                  alt="TecnoStart Logo"
+                  src="/js.png"
+                  alt="Icona collegamento"
                   style={{
-                    width: "80px",
+                    width: "50px",
                     height: "50px",
-                    borderRadius: "5px",
                     marginRight: "10px",
                   }}
                 />
-                <div>
-                  <p
-                    className="m-0"
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "12px",
-                      marginBottom: "5px",
-                    }}
-                  >
-                    TecnoStart Logo
-                  </p>
+                <div className="d-flex flex-column">
+                  <p className="fw-bold mb-0">JavaScript Community</p>
+                  <p className="text-secondary mb-2">800.000 membri</p>
+                  <button className="styled-button">Iscriviti</button>
                 </div>
               </div>
             </div>
           </div>
-          <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
-          <div className="d-flex" style={{ marginTop: "15px" }}>
-            <img
-              src="https://placecats.com/100/100"
-              alt="Tecnest Logo"
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "5px",
-                marginRight: "15px",
-              }}
-            />
-            <div style={{ flex: 1 }}>
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                Frontend Developer
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Tecnest Srl - Supply Chain: Cultura e Soluzioni · Autonomo
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                feb 2020 - ott 2020 · 9 mesi
-              </p>
-            </div>
-          </div>
-          <hr style={{ border: "1px solid #e5e5e5", margin: "15px 0" }} />
-          <div className="d-flex" style={{ marginTop: "15px" }}>
-            <img
-              src="https://placecats.com/100/100"
-              alt="MV Labs Logo"
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "5px",
-                marginRight: "15px",
-              }}
-            />
-            <div style={{ flex: 1 }}>
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                Frontend Developer
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                MV Labs · Freelance
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                giu 2019 - mag 2020 · 1 anno
-              </p>
-            </div>
-          </div>
-        </div>
-        {/*quarta card*/}
-        <div
-          style={{
-            width: "100%",
-            border: "1px solid #d3d3d3",
-            borderRadius: "10px",
-            padding: "15px",
-            backgroundColor: "white",
-            marginTop: "10px",
-          }}
-        >
-          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-            Formazione
-          </p>
-          <div className="d-flex" style={{ marginTop: "15px" }}>
-            <img
-              src="https://placecats.com/100/100"
-              alt="Logo università"
-              style={{ width: "50px", height: "50px", borderRadius: "5px" }}
-            />
-            <div style={{ marginLeft: "10px" }}>
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                Università degli Studi di Udine
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Laurea Triennale in Scienze e Tecnologie Multimediali,
-                Dipartimento di Scienze matematiche, informatiche e multimediali
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                2010 - 2013
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Votazione: 108/110
-              </p>
-            </div>
-          </div>
-        </div>
-        {/*quinta card*/}
-        <div
-          style={{
-            width: "100%",
-            border: "1px solid #d3d3d3",
-            borderRadius: "10px",
-            padding: "15px",
-            backgroundColor: "white",
-            marginTop: "10px",
-          }}
-        >
-          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-            Licenze e certificazioni
-          </p>
-          <div className="d-flex" style={{ marginTop: "15px" }}>
-            <img
-              src="https://placecats.com/100/100"
-              alt="Logo Cambridge"
-              style={{ width: "50px", height: "50px", borderRadius: "5px" }}
-            />
-            <div style={{ marginLeft: "10px" }}>
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                Cambridge English Level 2 Certificate in ESOL International
-                (First) - Grade A Level C1
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Cambridge University Press & Assessment
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Data di rilascio: lug 2014
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/*sesta card*/}
-        <div
-          style={{
-            width: "100%",
-            border: "1px solid #d3d3d3",
-            borderRadius: "10px",
-            padding: "15px",
-            backgroundColor: "white",
-            marginTop: "10px",
-          }}
-        >
-          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-            Volontariato
-          </p>
-
-          <div className="d-flex" style={{ marginTop: "15px" }}>
-            <img
-              src="https://placecats.com/100/100"
-              alt="Logo Core Maintainer"
-              style={{ width: "50px", height: "50px", borderRadius: "5px" }}
-            />
-            <div style={{ marginLeft: "10px" }}>
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                Core Maintainer
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                HospitalRun
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                ago 2019 - dic 2019 · 5 mesi
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Scienza e tecnologia
-              </p>
-            </div>
-          </div>
-
-          <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
-
-          <div className="d-flex" style={{ marginTop: "15px" }}>
-            <img
-              src="https://placecats.com/100/100"
-              alt="Logo Donatore di Sangue"
-              style={{ width: "50px", height: "50px", borderRadius: "5px" }}
-            />
-            <div style={{ marginLeft: "10px" }}>
-              <p
-                className="m-0"
-                style={{ fontWeight: "bold", fontSize: "14px" }}
-              >
-                Donatore di sangue
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Advsg Fidas Gorizia
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                set 2013 - presente · 11 anni 5 mesi
-              </p>
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Salute
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/*settima card*/}
-        <div
-          style={{
-            width: "100%",
-            border: "1px solid #d3d3d3",
-            borderRadius: "10px",
-            padding: "15px",
-            backgroundColor: "white",
-            marginTop: "10px",
-          }}
-        >
-          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-            Competenze
-          </p>
-
-          <div style={{ marginTop: "10px" }}>
-            <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
-              JavaScript
-            </p>
-            <div
-              className="d-flex"
-              style={{ marginTop: "5px", alignItems: "center" }}
-            >
+        )}
+        {selectedSection === "Scuole" && (
+          <div className="interests-content d-flex flex-row align-items-start gap-4">
+            <div className="interest-card d-flex align-items-center w-50">
               <img
-                src="https://placecats.com/100/100"
-                alt="Icona JavaScript"
-                style={{ width: "30px", height: "30px", marginRight: "10px" }}
-              />
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Competenze confermate da Maksim Sinik, che ha una grande
-                competenza in questo ambito
-              </p>
-            </div>
-            <div
-              className="d-flex"
-              style={{ marginTop: "5px", alignItems: "center" }}
-            >
-              <img
-                src="https://placecats.com/100/100"
+                src="/epicode.png"
                 alt="Icona collegamento"
-                style={{ width: "30px", height: "30px", marginRight: "10px" }}
-              />
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                Confermata da 3 colleghi presso Nuclecode S.R.L
-              </p>
-            </div>
-            <div
-              className="d-flex"
-              style={{ marginTop: "5px", alignItems: "center" }}
-            >
-              <Icon.PeopleFill
-                style={{ fontSize: "20px", color: "gray", marginRight: "10px" }}
-              />
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                21 conferme
-              </p>
-            </div>
-          </div>
-
-          <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
-
-          <div style={{ marginTop: "15px" }}>
-            <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
-              React.js
-            </p>
-            <div
-              className="d-flex"
-              style={{ marginTop: "5px", alignItems: "center" }}
-            >
-              <Icon.PeopleFill
-                style={{ fontSize: "20px", color: "gray", marginRight: "10px" }}
-              />
-              <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                11 conferme
-              </p>
-            </div>
-          </div>
-
-          <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
-
-          <p
-            className="m-0"
-            style={{
-              fontSize: "14px",
-              fontWeight: "bold",
-              color: "#181818",
-              textAlign: "center",
-              padding: "10px 0",
-              borderRadius: "10px",
-              cursor: "pointer",
-            }}
-          >
-            Mostra tutte le competenze (17) →
-          </p>
-        </div>
-
-        {/*ottava card*/}
-
-        <div
-          style={{
-            width: "100%",
-            border: "1px solid #d3d3d3",
-            borderRadius: "10px",
-            padding: "15px",
-            backgroundColor: "white",
-            marginTop: "10px",
-          }}
-        >
-          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-            Referenze
-          </p>
-          <div style={{ marginTop: "15px" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                marginBottom: "15px",
-              }}
-            >
-              <img
-                src="https://placecats.com/60/60"
-                alt="Profile"
                 style={{
-                  width: "60px",
-                  height: "60px",
-                  borderRadius: "50%",
-                  marginRight: "15px",
+                  width: "50px",
+                  height: "50px",
+                  marginRight: "10px",
                 }}
               />
-              <div>
-                <p
-                  className="m-0"
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "14px",
-                    color: "#181818",
-                  }}
-                >
-                  Roberta Matera · 2°
-                </p>
-                <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                  Front-end developer at Almaviva Digitaltec | Angular, React,
-                  Typescript
-                </p>
-                <p
-                  className="m-0"
-                  style={{
-                    fontSize: "12px",
-                    color: "gray",
-                    marginTop: "5px",
-                  }}
-                >
-                  11 dicembre 2024, Roberta e Stefano hanno studiato insieme
-                </p>
-                <p
-                  className="m-0"
-                  style={{ fontSize: "14px", marginTop: "10px" }}
-                >
-                  Ho avuto il privilegio di partecipare al bootcamp presso
-                  Strive School (EPICODE) sotto la guida del docente Stefano
-                  Casalosa e posso affermare che la sua competenza,
-                  professionalità e dedizione sono state determinanti per il mio
-                  percorso di apprendimento.
-                </p>
+              <div className="d-flex flex-column">
+                <p className="fw-bold mb-0">Epicode</p>
+                <p className="text-secondary mb-2">50.000 studenti</p>
+                <button className="styled-button">+ Segui</button>
               </div>
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                marginBottom: "15px",
-              }}
-            >
+            <div className="interest-card d-flex align-items-center w-50">
               <img
-                src="https://placecats.com/60/60"
-                alt="Profile"
+                src="/uni.jpeg"
+                alt="Icona collegamento"
                 style={{
-                  width: "60px",
-                  height: "60px",
-                  borderRadius: "50%",
-                  marginRight: "15px",
+                  width: "50px",
+                  height: "50px",
+                  marginRight: "10px",
                 }}
               />
-              <div>
-                <p
-                  className="m-0"
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "14px",
-                    color: "#181818",
-                  }}
-                >
-                  Vardan Galstyan · 3°
-                </p>
-                <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                  Web Developer
-                </p>
-                <p
-                  className="m-0"
-                  style={{
-                    fontSize: "12px",
-                    color: "gray",
-                    marginTop: "5px",
-                  }}
-                >
-                  8 ottobre 2021, Vardan e Stefano hanno studiato insieme
-                </p>
-                <p
-                  className="m-0"
-                  style={{ fontSize: "14px", marginTop: "10px" }}
-                >
-                  I strongly believe that despite the professional skills, human
-                  values are the most important. But when a person is both
-                  professional and has tons of other values, thats what makes
-                  him/her a unique asset in any team.
-                </p>
+              <div className="d-flex flex-column">
+                <p className="fw-bold mb-0">Università degli Studi</p>
+                <p className="text-secondary mb-2">150.000 studenti</p>
+                <button className="styled-button">+ Segui</button>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {/*none card*/}
-        <div
+        <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
+
+        <p
+          className="text-center fw-bold mt-3"
           style={{
-            width: "100%",
-            border: "1px solid #d3d3d3",
-            borderRadius: "10px",
-            padding: "15px",
-            backgroundColor: "white",
-            marginTop: "10px",
+            cursor: "pointer",
+            fontSize: "14px",
+            color: "#181818",
           }}
         >
-          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-            Pubblicazioni
-          </p>
-          <p
-            className="m-0"
-            style={{
-              fontWeight: "bold",
-              fontSize: "14px",
-              color: "#181818",
-              marginTop: "10px",
-            }}
-          >
-            &quot;Corti si nasce: linguaggi e tecniche del videoclip&quot;
-          </p>
-          <p
-            className="m-0"
-            style={{
-              fontSize: "12px",
-              color: "gray",
-              marginTop: "5px",
-            }}
-          >
-            Tesi di laurea triennale in Scienze e Tecnologie Multimediali presso
-            l&apos;Università degli Studi di Udine.
-          </p>
-        </div>
-
-        {/*decima card*/}
-        <div
-          style={{
-            width: "100%",
-            border: "1px solid #d3d3d3",
-            borderRadius: "10px",
-            padding: "15px",
-            backgroundColor: "white",
-            marginTop: "10px",
-          }}
-        >
-          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-            Lingue
-          </p>
-
-          <div style={{ marginTop: "15px" }}>
-            <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
-              Inglese
-            </p>
-            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-              Conoscenza professionale
-            </p>
-          </div>
-
-          <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
-
-          <div>
-            <p className="m-0" style={{ fontWeight: "bold", fontSize: "14px" }}>
-              Italiano
-            </p>
-            <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-              Conoscenza madrelingua o bilingue
-            </p>
-          </div>
-        </div>
-
-        {/*undicesima card*/}
-        <div
-          style={{
-            width: "100%",
-            border: "1px solid #d3d3d3",
-            borderRadius: "10px",
-            padding: "15px",
-            backgroundColor: "white",
-            marginTop: "10px",
-          }}
-        >
-          <p className="m-0" style={{ fontWeight: "bold", fontSize: "16px" }}>
-            Interessi
-          </p>
-          <div className="d-flex" style={{ marginTop: "15px" }}>
-            <p
-              className="m-0"
-              style={{
-                fontSize: "14px",
-                color: "gray",
-                marginRight: "20px",
-              }}
-            >
-              Aziende
-            </p>
-            <p
-              className="m-0"
-              style={{
-                fontSize: "14px",
-                color: "gray",
-                cursor: "pointer",
-                marginRight: "20px",
-              }}
-            >
-              Gruppi
-            </p>
-            <p
-              className="m-0"
-              style={{
-                fontSize: "14px",
-                color: "gray",
-                cursor: "pointer",
-              }}
-            >
-              Scuole o università
-            </p>
-          </div>
-
-          <hr style={{ border: "1px solid #e5e5e5", margin: "10px 0" }} />
-
-          <div className="d-flex justify-content-between">
-            <div
-              className="d-flex"
-              style={{ alignItems: "center", marginRight: "20px" }}
-            >
-              <img
-                src="https://placecats.com/60/60"
-                alt="Tesla Logo"
-                style={{ width: "50px", height: "50px", borderRadius: "5px" }}
-              />
-              <div style={{ marginLeft: "10px" }}>
-                <p
-                  className="m-0"
-                  style={{ fontWeight: "bold", fontSize: "14px" }}
-                >
-                  Tesla
-                </p>
-                <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                  12.177.275 follower
-                </p>
-                <button
-                  style={{
-                    border: "1px solid black",
-                    backgroundColor: "white",
-                    borderRadius: "20px",
-                    padding: "5px 15px",
-                    fontSize: "12px",
-                    marginTop: "5px",
-                  }}
-                >
-                  + Segui
-                </button>
-              </div>
-            </div>
-
-            <div className="d-flex" style={{ alignItems: "center" }}>
-              <img
-                src="https://placecats.com/60/60"
-                alt="SpaceX Logo"
-                style={{ width: "50px", height: "50px", borderRadius: "5px" }}
-              />
-              <div style={{ marginLeft: "10px" }}>
-                <p
-                  className="m-0"
-                  style={{ fontWeight: "bold", fontSize: "14px" }}
-                >
-                  SpaceX
-                </p>
-                <p className="m-0" style={{ fontSize: "12px", color: "gray" }}>
-                  3.342.579 follower
-                </p>
-                <button
-                  style={{
-                    border: "1px solid black",
-                    backgroundColor: "white",
-                    borderRadius: "20px",
-                    padding: "5px 15px",
-                    fontSize: "12px",
-                    marginTop: "5px",
-                  }}
-                >
-                  + Segui
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <p
-            className="m-0"
-            style={{
-              fontSize: "14px",
-              fontWeight: "bold",
-              color: "#181818",
-              textAlign: "center",
-              padding: "10px 0",
-              borderRadius: "10px",
-              cursor: "pointer",
-              marginTop: "10px",
-            }}
-          >
-            Mostra tutte le aziende →
-          </p>
-        </div>
-        <hr style={{ border: "1px solid #e5e5e5", margin: "15px 0" }} />
+          Mostra tutte le aziende →
+        </p>
       </div>
+      <hr style={{ border: "1px solid #e5e5e5", margin: "15px 0" }} />
     </>
   );
-}
+};
 
 export default SecondCentralSection;

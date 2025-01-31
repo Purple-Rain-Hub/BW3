@@ -1,22 +1,23 @@
 import { Col, Container, Row } from "react-bootstrap";
-//import CentralSection from "./CentralSection";
+import { useParams } from "react-router-dom";
 import SideBar from "./SideBar";
 import SecondCentralSection from "./SecondCentralSection";
 
 function UserPage() {
+  const { id } = useParams();
+
   return (
-    <>
-      <Container>
-        <Row>
-          <Col className="col-8">
-            <SecondCentralSection />
-          </Col>
-          <Col className="col-4">
-            <SideBar />
-          </Col>
-        </Row>
-      </Container>
-    </>
+    <Container>
+      <Row>
+        <Col md={8} xs={12} className="order-1">
+          <SecondCentralSection userId={id} />
+        </Col>
+
+        <Col md={4} xs={12} className="order-2">
+          <SideBar />
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
