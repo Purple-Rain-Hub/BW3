@@ -61,7 +61,13 @@ function SingleComment(props) {
   return (
     <>
       <Card style={{ width: "100%" }}>
-        <Card.Body>
+        <Card.Body
+          style={{
+            padding: "20px",
+            borderRadius: "10px",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+          }}
+        >
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -72,14 +78,16 @@ function SingleComment(props) {
               }
             }}
           >
-            <Form.Group className="d-flex">
+            <Form.Group className="d-flex align-items-center">
               <img
-                className="me-2"
+                className="me-3"
                 src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
                 alt=""
                 style={{
-                  width: "10%",
+                  width: "40px",
+                  height: "40px",
                   borderRadius: "50%",
+                  objectFit: "cover",
                 }}
               />
               <Form.Control
@@ -89,7 +97,12 @@ function SingleComment(props) {
                 }}
                 type="text"
                 placeholder="Commenta..."
-                style={{ borderRadius: "25px", fontWeight: "600" }}
+                style={{
+                  borderRadius: "20px",
+                  fontWeight: "500",
+                  padding: "10px 15px",
+                  border: "1px solid #ddd",
+                }}
               />
             </Form.Group>
             <Form.Select
@@ -97,6 +110,12 @@ function SingleComment(props) {
               value={rateStars}
               onChange={(e) => {
                 setRateStars(parseInt(e.target.value));
+              }}
+              style={{
+                borderRadius: "20px",
+                padding: "10px 15px",
+                border: "1px solid #ddd",
+                fontWeight: "500",
               }}
             >
               <option value="0">Valuta il post</option>
@@ -108,7 +127,7 @@ function SingleComment(props) {
             </Form.Select>
           </Form>
           <Button
-            className="mb-3"
+            className="mb-3 w-100"
             onClick={(e) => {
               e.preventDefault();
               if (writtenComment) {
@@ -117,11 +136,26 @@ function SingleComment(props) {
                 alert("Scrivi qualcosa.");
               }
             }}
+            style={{
+              borderRadius: "20px",
+              padding: "10px 15px",
+              backgroundColor: "#0a66c2",
+              border: "none",
+              fontWeight: "600",
+            }}
           >
             Pubblica commento
           </Button>
           <hr className="mt-0" />
-          <Card.Title>Commenti</Card.Title>
+          <Card.Title
+            style={{
+              fontSize: "18px",
+              fontWeight: "600",
+              marginBottom: "15px",
+            }}
+          >
+            Commenti
+          </Card.Title>
           {comments
             .filter((comment) => {
               return comment.elementId === postId;
@@ -134,19 +168,35 @@ function SingleComment(props) {
                   key={comment._id}
                   style={{
                     width: "100%",
-                    backgroundColor: "white",
+                    backgroundColor: "#f9f9f9",
                     marginTop: "10px",
-                    border: "1px solid gray",
+                    border: "1px solid #e0e0e0",
                     borderRadius: "10px",
-                    padding: "4px",
+                    padding: "12px",
                   }}
                 >
-                  <div className="d-flex justify-content-between">
-                    <Card.Text className="fw-bold mb-0">
-                      {comment.author}
-                    </Card.Text>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex align-items-center">
+                      <img
+                        src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+                        alt=""
+                        style={{
+                          width: "32px",
+                          height: "32px",
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                          marginRight: "10px",
+                        }}
+                      />
+                      <Card.Text
+                        className="fw-bold mb-0"
+                        style={{ fontSize: "14px", color: "#333" }}
+                      >
+                        {comment.author}
+                      </Card.Text>
+                    </div>
                     {authorComment === comment.author && (
-                      <div className="d-flex align-self-center gap-3">
+                      <div className="d-flex align-self-center gap-2">
                         {modifyCommentId === comment._id && (
                           <Icon.Check
                             onClick={(e) => {
@@ -158,7 +208,7 @@ function SingleComment(props) {
                               }
                             }}
                             className="align-self-center text-success"
-                            style={{ cursor: "pointer", fontSize: "24px" }}
+                            style={{ cursor: "pointer", fontSize: "20px" }}
                           />
                         )}
                         <Icon.Pencil
@@ -175,7 +225,7 @@ function SingleComment(props) {
                             }
                           }}
                           className="align-self-center text-warning"
-                          style={{ cursor: "pointer", fontSize: "18px" }}
+                          style={{ cursor: "pointer", fontSize: "16px" }}
                         />
                         <Icon.Trash
                           onClick={(e) => {
@@ -183,20 +233,32 @@ function SingleComment(props) {
                             handleDeleteComment(comment._id);
                           }}
                           className="align-self-center text-danger"
-                          style={{ cursor: "pointer", fontSize: "18px" }}
+                          style={{ cursor: "pointer", fontSize: "16px" }}
                         />
                       </div>
                     )}
                   </div>
 
-                  <hr className="m-0" />
+                  <hr className="m-0 my-2" />
                   {comment.rate &&
                     modifyCommentId !== comment._id &&
                     [...Array(comment.rate)].map((_, i) => (
-                      <Icon.StarFill key={i} className="text-info" />
+                      <Icon.StarFill
+                        key={i}
+                        className="text-warning"
+                        style={{ marginRight: "2px" }}
+                      />
                     ))}
                   {modifyCommentId !== comment._id && (
-                    <Card.Text>{comment.comment}</Card.Text>
+                    <Card.Text
+                      style={{
+                        fontSize: "14px",
+                        color: "#555",
+                        marginTop: "8px",
+                      }}
+                    >
+                      {comment.comment}
+                    </Card.Text>
                   )}
                   {modifyCommentId === comment._id && comment.rate && (
                     <Form.Select
@@ -204,6 +266,12 @@ function SingleComment(props) {
                       value={modifyingRateStars}
                       onChange={(e) => {
                         setModifyingRateStars(parseInt(e.target.value));
+                      }}
+                      style={{
+                        borderRadius: "20px",
+                        padding: "10px 15px",
+                        border: "1px solid #ddd",
+                        fontWeight: "500",
                       }}
                     >
                       <option value="0">Valuta il post</option>
@@ -232,7 +300,12 @@ function SingleComment(props) {
                         }}
                         type="text"
                         placeholder="Commenta..."
-                        style={{ borderRadius: "25px", fontWeight: "600" }}
+                        style={{
+                          borderRadius: "20px",
+                          fontWeight: "500",
+                          padding: "10px 15px",
+                          border: "1px solid #ddd",
+                        }}
                       />
                     </Form>
                   )}
