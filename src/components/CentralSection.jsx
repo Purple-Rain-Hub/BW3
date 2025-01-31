@@ -253,9 +253,9 @@ function CentralSection() {
                     <span>Aggiungi badge di verifica</span>
                   </div>
                 </div>
-               <button className="btn" onClick={() => setShowProfilePut(true)}>
-                <Icon.Pencil className="align-self-center" />
-              </button>
+                <button className="btn" onClick={() => setShowProfilePut(true)}>
+                  <Icon.Pencil className="align-self-center" />
+                </button>
               </div>
 
               <Card.Text
@@ -1179,143 +1179,6 @@ function CentralSection() {
         </Modal>
       </Container>
 
-      <div
-        style={{
-          width: "100%",
-          backgroundColor: "white",
-          marginTop: "10px",
-          border: "1px solid gray",
-          borderRadius: "10px",
-          padding: "4px",
-        }}
-      >
-        <div className="d-flex justify-content-between">
-          <p className="m-0 fw-bold align-self-center">Formazione</p>
-          <div className="d-flex gap-3">
-            <Icon.Plus
-              className="align-self-center"
-              style={{ fontSize: "22px" }}
-            />
-            <Icon.Pencil className="align-self-center" />
-          </div>
-        </div>
-        <div className="d-flex mt-3 gap-2">
-          <img
-            src="https://placecats.com/50/50"
-            style={{ width: "50px", height: "50px" }}
-          />
-          <div className="d-flex flex-column">
-            <p className="fw-bold m-0" style={{ fontSize: "14px" }}>
-              Tor Vergata
-            </p>
-            <p className="m-0">Laurea in...</p>
-            <p className="text-secondary m-0" style={{ fontSize: "12px" }}>
-              Da... A...
-            </p>
-            <p className="m-0">Votazione: 110</p>
-          </div>
-        </div>
-      </div>
-
-      <div
-        style={{
-          width: "100%",
-          backgroundColor: "white",
-          marginTop: "10px",
-          border: "1px solid gray",
-          borderRadius: "10px",
-          padding: "4px",
-        }}
-      >
-        <div className="d-flex justify-content-between mb-2">
-          <p className="m-0 fw-bold align-self-center">Competenze</p>
-          <div className="d-flex gap-3">
-            <Icon.Plus
-              className="align-self-center"
-              style={{ fontSize: "22px" }}
-            />
-            <Icon.Pencil className="align-self-center" />
-          </div>
-        </div>
-        <p className="m-0 fw-bold">Esperienza n.1</p>
-        <div className="d-flex">
-          <img
-            className="align-self-center"
-            src="https://placecats.com/20/20"
-            style={{ width: "20px", height: "20px" }}
-          />
-          <p className="m-0">Descrizione esperienza n.1...</p>
-        </div>
-        <hr />
-        <p className="m-0 fw-bold">Esperienza n.2</p>
-        <div className="d-flex">
-          <img
-            className="align-self-center"
-            src="https://placecats.com/20/20"
-            style={{ width: "20px", height: "20px" }}
-          />
-          <p className="m-0">Descrizione esperienza n.2...</p>
-        </div>
-        <hr className="mb-0" />
-        <p className="m-0 text-center">
-          Mostra tutte le competenze (5)
-          <Icon.ArrowRight className="ms-1" />
-        </p>
-      </div>
-
-      <div
-        style={{
-          width: "100%",
-          backgroundColor: "white",
-          marginTop: "10px",
-          border: "1px solid gray",
-          borderRadius: "10px",
-          padding: "4px",
-        }}
-      >
-        <p className="m-0 fw-bold align-self-center mb-2">Interessi</p>
-        <div className="d-flex gap-5">
-          <p style={{ color: "#004C33", fontWeight: "bold" }}>Aziende</p>
-          <p>Scuole o università</p>
-        </div>
-        <hr className="mt-1" />
-
-        <div className="d-flex justify-content-between">
-          <div className="d-flex gap-1">
-            <img
-              src="https://placecats.com/50/50"
-              style={{ width: "50px", height: "50px" }}
-            />
-            <div>
-              <p className="fw-bold m-0">Amazon</p>
-              <p>33mln di follower</p>
-              <p style={{ border: "2px solid gray", borderRadius: "10px" }}>
-                <Icon.Check style={{ fontSize: "24px" }} />
-                Già segui
-              </p>
-            </div>
-          </div>
-          <div className="d-flex gap-1">
-            <img
-              src="https://placecats.com/50/50"
-              style={{ width: "50px", height: "50px" }}
-            />
-            <div>
-              <p className="fw-bold m-0">Meta</p>
-              <p>888mln di follower</p>
-              <p style={{ border: "2px solid gray", borderRadius: "10px" }}>
-                <Icon.Check style={{ fontSize: "24px" }} />
-                Già segui
-              </p>
-            </div>
-          </div>
-        </div>
-        <hr className="mt-1 mb-0" />
-        <p className="m-0 text-center">
-          Mostra tutte le aziende
-          <Icon.ArrowRight className="ms-1" />
-        </p>
-      </div>
       {/* MODALE PER PUT */}
       <Modal
         show={showExperiencePut}
