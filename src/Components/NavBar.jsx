@@ -285,8 +285,8 @@ const NavBar = () => {
                         }
                         alt=""
                         style={{
-                          width: "24px",
-                          height: "24px",
+                          width: "15px",
+                          height: "15px",
                           borderRadius: "50%",
                           objectFit: "cover",
                         }}

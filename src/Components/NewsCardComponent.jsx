@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Card, Col, Container, Row, Button } from "react-bootstrap";
+import { Card, Col, Row, Button } from "react-bootstrap";
 import { ChevronCompactDown, ChevronCompactUp } from "react-bootstrap-icons";
 
 const NewsCardComponent = ({ infoHome }) => {
