@@ -262,10 +262,10 @@ const HomePage = () => {
                       }
                       alt="Profile Avatar"
                       style={{
-                        width: "10%",
+                        width: "50px",
+                        height: "50px",
                         borderRadius: "50%",
                         cursor: "pointer",
-                        marginRight: "10px",
                       }}
                     />
                     <Form.Control
@@ -276,6 +276,7 @@ const HomePage = () => {
                       type="text"
                       placeholder="Scrivi qualcosa..."
                       style={{ borderRadius: "25px", fontWeight: "600" }}
+                      className="ms-1"
                     />
                   </Form.Group>
                 </Form>

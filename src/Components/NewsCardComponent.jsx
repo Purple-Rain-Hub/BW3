@@ -46,9 +46,9 @@ const NewsCardComponent = ({ infoHome }) => {
         style={{ width: "100%", minWidth: "300px", marginLeft: "-70px" }}
       >
         <Card.Body>
-          <Container>
+          <Container className="p-0">
             <Card.Title className="d-flex justify-content-between align-items-center">
-              <span>In primo piano</span>
+              <h2>In primo piano</h2>
               <img
                 src={infoHome}
                 alt="Premium Icon"
@@ -58,7 +58,7 @@ const NewsCardComponent = ({ infoHome }) => {
               />
             </Card.Title>
           </Container>
-          <Card.Subtitle className="mb-2 text-muted">
+          <Card.Subtitle className="mb-2 text-muted border-bottom border-2 pb-1 border-light-subtle">
             a cura di LinkedinNews
           </Card.Subtitle>
           <ul className="list-unstyled">
