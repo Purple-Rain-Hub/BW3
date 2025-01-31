@@ -1,14 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Card, Form, Modal } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import ExperienceSection from "./ExperienceSection";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteExp,
   getExperience,
   getMyProfile,
   postExperience,
   postExpPic,
   postPropic,
   putExperience,
+  putProfile,
 } from "../redux/action";
 import { useEffect, useState } from "react";
 
@@ -16,6 +19,7 @@ function CentralSection() {
   const [show, setShow] = useState(false);
   const [showExperience, setShowExperience] = useState(false);
   const [showExperiencePut, setShowExperiencePut] = useState(false);
+  const [showProfilePut, setShowProfilePut] = useState(false);
 
   const [newExperience, setNewExperience] = useState({
     role: "",
@@ -28,15 +32,28 @@ function CentralSection() {
   const [expForPutState, setExpForPutState] = useState({});
   const [expPic, setExpPic] = useState();
   const [hasPut, setHasPut] = useState(false);
+  const [hasPutProfile, setHasPutProfile] = useState(false);
+  const [hasExpPicPost, setHasExpPicPost] = useState(false);
+  const [hasExpPicPut, setHasExpPicPut] = useState(false);
+  const [hasDelPut, setHasDelPut] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleShowExperience = () => setShowExperience(true);
   const handleCloseExperience = () => setShowExperience(false);
   const handleCloseExperiencePut = () => setShowExperiencePut(false);
+  const handleCloseProfilePut = () => setShowProfilePut(false);
+
+  const handleCloseExperienceDel = () => {
+    dispatch({
+      type: "SHOW_EXPERIENCE_DEL",
+      payload: false,
+    });
+  };
 
   const dispatch = useDispatch();
 
+  // USE SELECTOR
   const myProfile = useSelector((state) => {
     return state.myProfile;
   });
@@ -46,6 +63,14 @@ function CentralSection() {
   const expForPut = useSelector((state) => {
     return state.expForPut;
   });
+  const showExperienceDel = useSelector((state) => {
+    return state.showExperienceDel.show;
+  });
+  const delId = useSelector((state) => {
+    return state.showExperienceDel.id;
+  });
+
+  const [myProfileInfo, setMyProfileInfo] = useState({});
 
   const handlePropic = (e) => {
     const propicData = new FormData();
@@ -59,6 +84,15 @@ function CentralSection() {
     const expPicData = new FormData();
     expPicData.append("experience", e.target.files[0]);
     setExpPic(expPicData);
+    setHasExpPicPost(true);
+  };
+
+  const handleExpPicPut = (e) => {
+    e.preventDefault();
+    const expPicData = new FormData();
+    expPicData.append("experience", e.target.files[0]);
+    setExpPic(expPicData);
+    setHasExpPicPut(true);
   };
 
   const handleNewExperience = (e) => {
@@ -73,7 +107,6 @@ function CentralSection() {
       area: "",
       description: "",
     });
-    // dispatch(getExperience());
   };
 
   const handlePutExperience = (e) => {
@@ -81,6 +114,20 @@ function CentralSection() {
     dispatch(putExperience(expForPutState, expForPut));
     setHasPut(true);
   };
+
+  const handlePutProfile = (e) => {
+    e.preventDefault();
+    dispatch(putProfile(myProfileInfo));
+    setHasPutProfile(true);
+  };
+
+  // USE EFFECT
+  useEffect(() => {
+    if (hasPutProfile) {
+      dispatch(getMyProfile());
+      setHasPutProfile(false);
+    }
+  }, [hasPutProfile]);
 
   useEffect(() => {
     if (hasPut) {
@@ -90,24 +137,43 @@ function CentralSection() {
   }, [hasPut]);
 
   useEffect(() => {
-    if (expPic) {
+    if (hasExpPicPost) {
       dispatch(postExpPic(expPic, newExpId));
+      setHasExpPicPost(false);
     }
   }, [newExpId]);
+
+  useEffect(() => {
+    if (hasExpPicPut) {
+      dispatch(postExpPic(expPic, expForPut._id));
+      setHasExpPicPut(false);
+    }
+  }, [hasPut]);
 
   useEffect(() => {
     if (expForPut.role) {
       setShowExperiencePut(true);
       setExpForPutState({
-        role: `${expForPut.role}`,
-        company: `${expForPut.company}`,
-        startDate: `${expForPut.startDate}`,
-        endDate: `${expForPut.endDate}`,
-        area: `${expForPut.area}`,
-        description: `${expForPut.description}`,
+        role: expForPut.role,
+        company: expForPut.company,
+        startDate: expForPut.startDate,
+        endDate: expForPut.endDate,
+        area: expForPut.area,
+        description: expForPut.description,
       });
     }
   }, [expForPut]);
+
+  useEffect(() => {
+    setMyProfileInfo({
+      name: myProfile.name,
+      surname: myProfile.surname,
+      email: myProfile.email,
+      bio: myProfile.bio,
+      title: myProfile.title,
+      area: myProfile.area,
+    });
+  }, [myProfile]);
 
   return (
     <>
@@ -214,7 +280,9 @@ function CentralSection() {
                   </p>
                 </div>
               </div>
-              <Icon.Pencil className="align-self-center" />
+              <button className="btn" onClick={() => setShowProfilePut(true)}>
+                <Icon.Pencil className="align-self-center" />
+              </button>
             </div>
             <Card.Text className="m-0">{myProfile.title}</Card.Text>
             <div className="d-flex gap-1">
@@ -612,7 +680,7 @@ function CentralSection() {
               <Form.Control
                 type="date"
                 required
-                value={newExperience.startDate}
+                value={newExperience.startDate.split("T")[0]}
                 onChange={(e) => {
                   setNewExperience({
                     ...newExperience,
@@ -627,7 +695,7 @@ function CentralSection() {
               <Form.Label className="mt-2 fw-lighter">Data di fine</Form.Label>
               <Form.Control
                 type="date"
-                value={newExperience.endDate}
+                value={newExperience.endDate.split("T")[0]}
                 onChange={(e) => {
                   setNewExperience({
                     ...newExperience,
@@ -812,7 +880,13 @@ function CentralSection() {
         </p>
       </div>
       {/* MODALE PER PUT */}
-      <Modal show={showExperiencePut} onHide={handleCloseExperiencePut}>
+      <Modal
+        show={showExperiencePut}
+        onHide={handleCloseExperiencePut}
+        onShow={() => {
+          setHasDelPut(false);
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Modifica Esperienza!</Modal.Title>
         </Modal.Header>
@@ -860,7 +934,10 @@ function CentralSection() {
             <Form.Control
               type="date"
               required
-              value={expForPutState.startDate}
+              value={
+                expForPutState.startDate &&
+                expForPutState.startDate.split("T")[0]
+              }
               onChange={(e) => {
                 setExpForPutState({
                   ...expForPutState,
@@ -873,7 +950,9 @@ function CentralSection() {
             <Form.Label className="mt-2 fw-lighter">Data di fine</Form.Label>
             <Form.Control
               type="date"
-              value={expForPutState.endDate}
+              value={
+                expForPutState.endDate && expForPutState.endDate.split("T")[0]
+              }
               onChange={(e) => {
                 setExpForPutState({
                   ...expForPutState,
@@ -892,14 +971,161 @@ function CentralSection() {
                 });
               }}
             />
-            <Form.Label className="mt-2 fw-lighter">
-              Immagine Azienda
+            <Form.Label className="mt-3 fw-lighter">
+              Immagine Azienda:
             </Form.Label>
-            <input
-              type="file"
-              name="proPicInput"
+            <div>
+              {!hasDelPut && expForPut.image && (
+                <div>
+                  <img
+                    src={expForPut.image}
+                    alt="immagine azienda"
+                    style={{
+                      width: "60px",
+                      height: "60px",
+                    }}
+                  />
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      setExpForPutState({
+                        ...expForPutState,
+                        image: null,
+                      });
+                      setHasDelPut(true);
+                    }}
+                  >
+                    <Icon.XCircleFill className="text-danger" />
+                  </button>
+                </div>
+              )}
+              <input
+                className="mt-1"
+                type="file"
+                name="proPicInput"
+                onChange={(e) => {
+                  handleExpPicPut(e);
+                }}
+              />
+            </div>
+            <Button
+              type="submit"
+              className="btn rounded-pill border border-1 text-white px-3 py-1 fw-medium mt-3 ms-1"
+            >
+              Salva
+            </Button>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseExperiencePut}>
+            Chiudi
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* MODALE PER LA DELETE DI EXP */}
+      <Modal show={showExperienceDel} onHide={handleCloseExperienceDel}>
+        <Modal.Header closeButton>
+          <Modal.Title>ELIMINARE Esperienza?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Sei sicuro di voler eliminare questa esperienza?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={() => {
+              dispatch(deleteExp(delId));
+            }}
+          >
+            SI ELIMINA
+          </Button>
+          <Button variant="secondary" onClick={handleCloseExperienceDel}>
+            NO
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* MODALE PER LA PUT DEL PROFILO */}
+      <Modal size="lg" show={showProfilePut} onHide={handleCloseProfilePut}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modifica Profilo</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form onSubmit={handlePutProfile}>
+            <Form.Label className="mt-2 fw-lighter">Nome</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={myProfileInfo.name}
               onChange={(e) => {
-                handleExpPic(e);
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  name: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Cognome</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={myProfileInfo.surname}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  surname: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Email</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={myProfileInfo.email}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  email: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Biografia</Form.Label>
+            <Form.Control
+              as="textarea"
+              required
+              value={myProfileInfo.bio}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  bio: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">
+              Occupazione Attuale
+            </Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={myProfileInfo.title}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  title: e.target.value,
+                });
+              }}
+            />
+            <Form.Label className="mt-2 fw-lighter">Area di Lavoro</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              value={myProfileInfo.area}
+              onChange={(e) => {
+                setMyProfileInfo({
+                  ...myProfileInfo,
+                  area: e.target.value,
+                });
               }}
             />
             <Button
@@ -911,7 +1137,7 @@ function CentralSection() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseExperiencePut}>
+          <Button variant="secondary" onClick={handleCloseProfilePut}>
             Chiudi
           </Button>
         </Modal.Footer>
