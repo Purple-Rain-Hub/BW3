@@ -19,6 +19,28 @@ function CentralSection() {
   const [showExperience, setShowExperience] = useState(false);
   const [showExperiencePut, setShowExperiencePut] = useState(false);
   const [showProfilePut, setShowProfilePut] = useState(false);
+  const [randomImage, setRandomImage] = useState(null);
+  const API_KEY = "48545245-df42dd6ae1b58ed4617a974db";
+
+  useEffect(() => {
+    fetchRandomImage();
+  }, []);
+
+  const fetchRandomImage = async () => {
+    try {
+      const response = await fetch(
+        `https://pixabay.com/api/?key=${API_KEY}&q=coding&image_type=photo&per_page=50`
+      );
+      const data = await response.json();
+
+      if (data.hits.length > 0) {
+        const randomIndex = Math.floor(Math.random() * data.hits.length);
+        setRandomImage(data.hits[randomIndex].largeImageURL);
+      }
+    } catch (error) {
+      console.error("Errore nel fetch delle immagini:", error);
+    }
+  };
 
   const [newExperience, setNewExperience] = useState({
     role: "",
@@ -168,9 +190,9 @@ function CentralSection() {
             style={{
               height: "200px",
               objectFit: "cover",
-              backgroundImage: "url(https://placecats.com/700/700)",
+              backgroundImage: `url(${randomImage})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "110% 110%",
+              backgroundSize: "cover",
               borderTopLeftRadius: "12px",
               borderTopRightRadius: "12px",
             }}
