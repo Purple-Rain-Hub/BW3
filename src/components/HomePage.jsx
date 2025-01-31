@@ -104,7 +104,8 @@ const HomePage = () => {
                     }
                     alt="Profile Avatar"
                     style={{
-                      width: "30%",
+                      width: "80px",
+                      height: "80px",
                       borderRadius: "50%",
                       cursor: "pointer",
                     }}
