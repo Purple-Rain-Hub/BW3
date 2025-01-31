@@ -1,5 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Form,
+  Spinner,
+} from "react-bootstrap";
 import {
   PersonFillAdd,
   BookmarkFill,
@@ -43,6 +51,9 @@ const HomePage = () => {
 
   const postedPostId = useSelector((state) => {
     return state.postedPostId;
+  });
+  const hasPostsLoaded = useSelector((state) => {
+    return state.hasPostsLoaded;
   });
 
   const handleSubmit = function () {
@@ -363,15 +374,21 @@ const HomePage = () => {
                 </div>
               </Card.Body>
             </Card>
-
-            {posts &&
-              posts
-                .slice(posts.length - 25, posts.length)
-                .reverse()
-                .map((post) => {
-                  return <SinglePost key={post._id} post={post} />;
-                })}
-
+            {hasPostsLoaded ? (
+              <div>
+                {posts &&
+                  posts
+                    .slice(posts.length - 25, posts.length)
+                    .reverse()
+                    .map((post) => {
+                      return <SinglePost key={post._id} post={post} />;
+                    })}
+              </div>
+            ) : (
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            )}
             {/* <Card>
               <Card.Body>
                 <div className="d-flex align-items-center mb-3">

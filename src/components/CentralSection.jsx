@@ -1,4 +1,4 @@
-import { Button, Card, Form, Modal, Container } from "react-bootstrap";
+import { Button, Card, Form, Modal, Container, Spinner } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import ExperienceSection from "./ExperienceSection";
 import { useDispatch, useSelector } from "react-redux";
@@ -75,6 +75,12 @@ function CentralSection() {
   });
   const hasExpPicPost = useSelector((state) => {
     return state.hasExpPicPost;
+  });
+  const hasPropicLoaded = useSelector((state) => {
+    return state.hasPropicLoaded;
+  });
+  const hasExpLoaded = useSelector((state) => {
+    return state.hasExpLoaded;
   });
 
   const [myProfileInfo, setMyProfileInfo] = useState({});
@@ -187,12 +193,18 @@ function CentralSection() {
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               }}
             >
-              <img
-                src={myProfile.image || "https://placecats.com/300/300"}
-                alt="Profile"
-                className="w-100 h-100 rounded-circle"
-                style={{ objectFit: "cover" }}
-              />
+              {hasPropicLoaded ? (
+                <img
+                  src={myProfile.image || "https://placecats.com/300/300"}
+                  alt="Profile"
+                  className="w-100 h-100 rounded-circle"
+                  style={{ objectFit: "cover" }}
+                />
+              ) : (
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              )}
             </Button>
           </div>
 
@@ -641,7 +653,13 @@ function CentralSection() {
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <ExperienceSection />
+        {hasExpLoaded ? (
+          <ExperienceSection />
+        ) : (
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        )}
 
         <div className="text-center">
           <Button

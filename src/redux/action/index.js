@@ -23,6 +23,10 @@ export const getMyProfile = () => {
           type: "GET_MYPROFILE",
           payload: data,
         });
+        dispatch({
+          type: "HAS_PROPIC_LOADED",
+          payload: true
+        })
       } else {
         throw new Error("errore nella response di getMyProfile");
       }
@@ -52,6 +56,10 @@ export const getExperience = () => {
           type: "GET_EXPERIENCE",
           payload: data,
         });
+        dispatch({
+          type: "HAS_EXP_LOADED",
+          payload: true
+        })
       } else throw new Error("errore nella resposne di getExperience");
     } catch (error) {
       console.error("ERRORE FETCH:" + error);
@@ -110,6 +118,10 @@ export const postExperience = (experienceData, expPic, newExpId, hasExpPicPost) 
             payload: false
           })
         }
+        dispatch({
+          type: "HAS_EXP_LOADED",
+          payload: false
+        })
         dispatch(getExperience());
       } else throw new Error("errore nel POST della experience");
     } catch (error) {
@@ -198,6 +210,10 @@ export const putExperience = (exp, id, hasExpPicPut, expPic) => {
             payload: false
           })
         }
+        dispatch({
+          type: "HAS_EXP_LOADED",
+          payload: false
+        })
         dispatch(getExperience());
       } else throw new Error("errore nella PUT dell'experience");
     } catch (error) {
@@ -218,6 +234,10 @@ export const deleteExp = (id) => {
       if (response.ok) {
         dispatch({ type: "SHOW_EXPERIENCE_DEL", payload: { show: false, id: "" } });
         dispatch(getExperience());
+        dispatch({
+          type: "HAS_EXP_LOADED",
+          payload: false
+        })
       }
       else throw new Error("errore nella delete dell'exp");
     }
@@ -266,6 +286,10 @@ export const getAllPosts = () => {
           type: "GET_ALLPOSTS",
           payload: data,
         });
+        dispatch({
+          type: "HAS_POSTS_LOADED",
+          payload: true
+        })
       } else {
         throw new Error("errore nella response di getAllPosts");
       }
@@ -299,6 +323,10 @@ export const sendPost = (post) => {
             payload: data._id,
           });
         }
+        dispatch({
+          type: "HAS_POSTS_LOADED",
+          payload: false
+        })
       } else {
         throw new Error("errore nella response di sendPost");
       }
@@ -324,6 +352,10 @@ export const deletePost = (postId) => {
       if (response.ok) {
         console.log("Rimosso");
         dispatch(getAllPosts());
+        dispatch({
+          type: "HAS_POSTS_LOADED",
+          payload: false
+        })
       } else {
         throw new Error("errore nella response di deletePost");
       }
@@ -354,6 +386,10 @@ export const modifyPost = (postId, text, noImage) => {
         const data = await response.json();
         console.log(data);
         dispatch(getAllPosts());
+        dispatch({
+          type: "HAS_POSTS_LOADED",
+          payload: false
+        })
       } else {
         throw new Error("errore nella response di modifyPost");
       }
@@ -407,6 +443,10 @@ export const getComments = () => {
           type: "GET_COMMENTS",
           payload: data,
         });
+        dispatch({
+          type: "HAS_COMMENTS_LOADED",
+          payload: true
+        })
       } else {
         throw new Error("errore nella response di getComments");
       }
@@ -442,6 +482,10 @@ export const postComment = (comment, rate, elementId) => {
           type: "GET_AUTHOR_COMMENT",
           payload: data.author,
         });
+        dispatch({
+          type: "HAS_COMMENTS_LOADED",
+          payload: false
+        })
       } else {
         throw new Error("errore nella response di postComment");
       }
@@ -467,6 +511,10 @@ export const deleteComment = (commentId) => {
       if (response.ok) {
         console.log("Rimosso");
         dispatch(getComments());
+        dispatch({
+          type: "HAS_COMMENTS_LOADED",
+          payload: false
+        })
       } else {
         throw new Error("errore nella response di deleteComment");
       }
@@ -498,6 +546,10 @@ export const putComment = (comment, rate, elementId, commentId) => {
         const data = await response.json();
         console.log(data);
         dispatch(getComments());
+        dispatch({
+          type: "HAS_COMMENTS_LOADED",
+          payload: false
+        })
       } else {
         throw new Error("errore nella response di putComment");
       }
