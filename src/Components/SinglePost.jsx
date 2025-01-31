@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { Card, Image, Button, Form } from "react-bootstrap";
 import { HandThumbsUp, ChatDots } from "react-bootstrap-icons";
@@ -8,17 +7,17 @@ import { myID } from "../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost } from "../redux/action";
 import { modifyPost } from "../redux/action";
-import { useEffect, useState } from "react";
-import { setPostPic } from "../redux/action";
+import { useState } from "react";
+//import { setPostPic } from "../redux/action";
 import { Link } from "react-router-dom";
 import SingleComment from "./SingleComment";
 
 function SinglePost(props) {
   const [showModify, setShowModify] = useState(false);
   const [modifiedPost, setModifiedPost] = useState("");
-  const [postIdWithPicToChange, setPostIdWithPicToChange] = useState("");
+  //const [postIdWithPicToChange, setPostIdWithPicToChange] = useState("");
   const [changingPic, setChangingPic] = useState(null);
-  const [okToModify, setOkToModify] = useState(false);
+  //const [okToModify, setOkToModify] = useState(false);
   const [liked, setLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [isPicRemoved, setIsPicRemoved] = useState(false);
@@ -36,8 +35,13 @@ function SinglePost(props) {
 
   const handleModify = function (postId, text) {
     if (!isPicRemoved) {
-      dispatch(modifyPost(postId, text));
-      setOkToModify(true);
+      if (changingPic) {
+        const noImage = false;
+        dispatch(modifyPost(postId, text, noImage, changingPic));
+      } else {
+        dispatch(modifyPost(postId, text));
+      }
+      //setOkToModify(true);
     } else {
       const noImage = true;
       dispatch(modifyPost(postId, text, noImage));
@@ -52,14 +56,14 @@ function SinglePost(props) {
     setChangingPic(changedPostPic);
   };
 
-  useEffect(() => {
-    if (okToModify && changingPic && postIdWithPicToChange) {
-      dispatch(setPostPic(changingPic, postIdWithPicToChange));
-      //setChangingPic(null);
-      //setPostIdWithPicToChange("");
-      setOkToModify(false);
-    }
-  }, [okToModify]);
+  // useEffect(() => {
+  //   if (okToModify && changingPic && postIdWithPicToChange) {
+  //     dispatch(setPostPic(changingPic, postIdWithPicToChange));
+  //     //setChangingPic(null);
+  //     //setPostIdWithPicToChange("");
+  //     setOkToModify(false);
+  //   }
+  // }, [okToModify]);
 
   return (
     <Card className="mb-2">
@@ -132,7 +136,7 @@ function SinglePost(props) {
               type="file"
               accept="image/*"
               onChange={(e) => {
-                setPostIdWithPicToChange(props.post._id);
+                //setPostIdWithPicToChange(props.post._id);
                 setIsPicRemoved(false);
                 handleChangePostPic(e);
               }}
@@ -145,7 +149,7 @@ function SinglePost(props) {
                     : "btn btn-danger text-white"
                 }
                 onClick={() => {
-                  setPostIdWithPicToChange(props.post._id);
+                  //setPostIdWithPicToChange(props.post._id);
                   setIsPicRemoved(true);
                   setPicAgain(true);
                 }}

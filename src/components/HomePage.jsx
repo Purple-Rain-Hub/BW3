@@ -26,7 +26,7 @@ import { useSelector } from "react-redux";
 import * as Icon from "react-bootstrap-icons";
 import { useState } from "react";
 import { sendPost } from "../redux/action";
-import { setPostPic } from "../redux/action";
+//import { setPostPic } from "../redux/action";
 import { getComments } from "../redux/action";
 import { Link } from "react-router-dom";
 import NewsCardComponent from "./NewsCardComponent";
@@ -49,16 +49,25 @@ const HomePage = () => {
     return state.posts;
   });
 
-  const postedPostId = useSelector((state) => {
-    return state.postedPostId;
-  });
   const hasPostsLoaded = useSelector((state) => {
     return state.hasPostsLoaded;
   });
+  // const postedPostId = useSelector((state) => {
+  //   return state.postedPostId;
+  // });
 
   const handleSubmit = function () {
     setWrittenPost("");
-    dispatch(sendPost(writtenPost));
+    if (!pic && !isPostPic) {
+      dispatch(sendPost(writtenPost));
+    } else {
+      dispatch(sendPost(writtenPost, pic));
+      //document.getElementById("image-upload").value = "";
+      setFileName(null);
+      setPic(null);
+      setIsPostPic(false);
+    }
+
     // console.log(postedPostId);
     // if (isPostPic) {
     //   dispatch(setPostPic(pic, postedPostId));
@@ -88,16 +97,16 @@ const HomePage = () => {
   //   }
   // }, [isPostPic]);
 
-  useEffect(() => {
-    if (isPostPic && pic) {
-      // for (let [key, value] of pic.entries()) {
-      //   console.log(key, value);
-      // }
-      dispatch(setPostPic(pic, postedPostId));
-      //setIsPostPic(false);
-      //setPic(null);
-    }
-  }, [postedPostId]);
+  // useEffect(() => {
+  //   if (isPostPic && pic) {
+  //     // for (let [key, value] of pic.entries()) {
+  //     //   console.log(key, value);
+  //     // }
+  //     dispatch(setPostPic(pic, postedPostId));
+  //     //setIsPostPic(false);
+  //     //setPic(null);
+  //   }
+  // }, [postedPostId]);
 
   return (
     <Container fluid className="py-3" style={{ backgroundColor: "#F4F2EE" }}>

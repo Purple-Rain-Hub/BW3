@@ -93,7 +93,12 @@ export const postPropic = (propicData) => {
   };
 };
 
-export const postExperience = (experienceData, expPic, newExpId, hasExpPicPost) => {
+export const postExperience = (
+  experienceData,
+  expPic,
+  newExpId,
+  hasExpPicPost
+) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
@@ -115,8 +120,8 @@ export const postExperience = (experienceData, expPic, newExpId, hasExpPicPost) 
           dispatch(postExpPic(expPic, data._id));
           dispatch({
             type: "HAS_EXP_PIC_POST",
-            payload: false
-          })
+            payload: false,
+          });
         }
         dispatch({
           type: "HAS_EXP_LOADED",
@@ -207,8 +212,8 @@ export const putExperience = (exp, id, hasExpPicPut, expPic) => {
           dispatch(postExpPic(expPic, id._id));
           dispatch({
             type: "HAS_EXP_PIC_PUT",
-            payload: false
-          })
+            payload: false,
+          });
         }
         dispatch({
           type: "HAS_EXP_LOADED",
@@ -225,14 +230,23 @@ export const putExperience = (exp, id, hasExpPicPut, expPic) => {
 export const deleteExp = (id) => {
   return async (dispatch) => {
     try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/" + myID + "/experiences/" + id, {
-        method: "DELETE",
-        headers: {
-          "Authorization": "Bearer " + myToken,
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/" +
+        myID +
+        "/experiences/" +
+        id,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + myToken,
+          },
         }
-      })
+      );
       if (response.ok) {
-        dispatch({ type: "SHOW_EXPERIENCE_DEL", payload: { show: false, id: "" } });
+        dispatch({
+          type: "SHOW_EXPERIENCE_DEL",
+          payload: { show: false, id: "" },
+        });
         dispatch(getExperience());
         dispatch({
           type: "HAS_EXP_LOADED",
@@ -240,33 +254,34 @@ export const deleteExp = (id) => {
         })
       }
       else throw new Error("errore nella delete dell'exp");
+    } catch (error) {
+      console.error("ERRORE:", error);
     }
-    catch (error) {
-      console.error("ERRORE:", error)
-    }
-  }
-}
+  };
+};
 
 export const putProfile = (profile) => {
   return async (dispatch) => {
     try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/", {
-        method: "PUT",
-        body: JSON.stringify(profile),
-        headers: {
-          "Authorization": "Bearer " + myToken,
-          "Content-type": "application/json; charset=UTF-8",
+      const response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/profile/",
+        {
+          method: "PUT",
+          body: JSON.stringify(profile),
+          headers: {
+            Authorization: "Bearer " + myToken,
+            "Content-type": "application/json; charset=UTF-8",
+          },
         }
-      })
+      );
       if (response.ok) {
         dispatch(getMyProfile());
-      }
-      else throw new Error("errore nella PUT dell'profile");
+      } else throw new Error("errore nella PUT dell'profile");
     } catch (error) {
-      console.error("ERRORE:", error)
+      console.error("ERRORE:", error);
     }
-  }
-}
+  };
+};
 
 export const getAllPosts = () => {
   return async (dispatch) => {
@@ -299,7 +314,7 @@ export const getAllPosts = () => {
   };
 };
 
-export const sendPost = (post) => {
+export const sendPost = (post, pic) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
@@ -316,7 +331,7 @@ export const sendPost = (post) => {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        dispatch(getAllPosts());
+        //dispatch(getAllPosts());
         if (data) {
           dispatch({
             type: "GET_POSTEDPOST_ID",
@@ -327,6 +342,10 @@ export const sendPost = (post) => {
           type: "HAS_POSTS_LOADED",
           payload: false
         })
+        if (pic) {
+          dispatch(setPostPic(pic, data._id));
+        }
+        dispatch(getAllPosts());
       } else {
         throw new Error("errore nella response di sendPost");
       }
@@ -365,7 +384,7 @@ export const deletePost = (postId) => {
   };
 };
 
-export const modifyPost = (postId, text, noImage) => {
+export const modifyPost = (postId, text, noImage, pic) => {
   return async (dispatch) => {
     try {
       const noPic = noImage;
@@ -385,6 +404,9 @@ export const modifyPost = (postId, text, noImage) => {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
+        if (pic) {
+          dispatch(setPostPic(pic, postId));
+        }
         dispatch(getAllPosts());
         dispatch({
           type: "HAS_POSTS_LOADED",
