@@ -51,6 +51,8 @@ const HomePage = () => {
       dispatch(sendPost(writtenPost));
     } else {
       dispatch(sendPost(writtenPost, pic));
+      //document.getElementById("image-upload").value = "";
+      setFileName(null);
       setPic(null);
       setIsPostPic(false);
     }
