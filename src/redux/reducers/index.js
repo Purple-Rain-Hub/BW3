@@ -14,6 +14,10 @@ const initialState = {
   favorites: [],
   hasExpPicPut: false,
   hasExpPicPost: false,
+  hasPropicLoaded: false,
+  hasExpLoaded: false,
+  hasPostsLoaded: false,
+  hasCommentsLoaded: false,
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -83,6 +87,26 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         hasExpPicPost: action.payload,
       };
+    case "HAS_PROPIC_LOADED":
+      return {
+        ...state,
+        hasPropicLoaded: action.payload
+      };
+    case "HAS_EXP_LOADED":
+      return {
+        ...state,
+        hasExpLoaded: action.payload
+      }
+    case "HAS_POSTS_LOADED":
+      return {
+        ...state,
+        hasPostsLoaded: action.payload
+      }
+    case "HAS_COMMENTS_LOADED":
+      return {
+        ...state,
+        hasCommentsLoaded: action.payload
+      }
     default:
       return state;
   }
