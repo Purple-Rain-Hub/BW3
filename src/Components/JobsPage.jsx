@@ -2,32 +2,33 @@ import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import BorsaLavoro from "../assets/BorsaLavoro.svg";
 import { useState, useEffect } from "react";
 import NewOfferJob from "../assets/NewOfferJob.svg";
-import { BookmarkFill, ListUl } from "react-bootstrap-icons";
-//  seLocation per accedere ai parametri dell'URL
-import { useLocation } from "react-router-dom";
+import { BookmarkFill, Bookmark, ListUl } from "react-bootstrap-icons";
+import { useLocation, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addToFavorites, removeFromFavorites } from "../redux/action";
 
 const JobsPage = () => {
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.favorites || []);
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 5;
 
-  // Usa useLocation per ottenere l'oggetto location corrente
   const location = useLocation();
+
+  // Fetch dei lavori
   useEffect(() => {
-    // Estrai i parametri di ricerca dall'URL
     const searchParams = new URLSearchParams(location.search);
     const initialSearch = searchParams.get("search");
     if (initialSearch) {
-      // Se c'è un parametro di ricerca nell'URL, impostalo come valore di ricerca iniziale
       setSearch(initialSearch);
       fetchJobs(initialSearch);
     } else {
-      // Altrimenti, carica tutti i lavori
       fetchJobs();
     }
-  }, [location]); // Esegui l'effetto quando cambia la location
+  }, [location]);
 
   const fetchJobs = async (query = "") => {
     setLoading(true);
@@ -53,6 +54,14 @@ const JobsPage = () => {
     e.preventDefault();
     setCurrentPage(1);
     fetchJobs(search);
+  };
+
+  const toggleFavorite = (job) => {
+    if (favorites.some((fav) => fav._id === job._id)) {
+      dispatch(removeFromFavorites(job._id));
+    } else {
+      dispatch(addToFavorites(job));
+    }
   };
 
   const indexOfLastJob = currentPage * jobsPerPage;
@@ -83,14 +92,84 @@ const JobsPage = () => {
           <Col md={3}>
             <Card>
               <Card.Body>
-                <Button className="jobsButton1 d-flex align-items-center py-3 w-100">
-                  <ListUl className="me-2" size={32} />
-                  <strong>Preferenze</strong>
-                </Button>
-                <Button className="jobsButton1 d-flex align-items-center my-3 py-3 w-100">
-                  <BookmarkFill className="me-2" size={32} />
-                  <strong>Le mie offerte di lavoro</strong>
-                </Button>
+                <Link
+                  to="#"
+                  className="jobsButton2 p-2 d-flex align-items-center py-3 w-100 text-decoration-none bg-transparent border-0 rounded-3 transition-all position-relative overflow-hidden linkedin-style-button"
+                  style={{
+                    backgroundColor: "white",
+                    border: "1px solid #e0e0e0",
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <ListUl
+                    className="me-2 list-icon"
+                    size={32}
+                    style={{
+                      color: "#0A66C2",
+                      transition: "transform 0.3s ease, color 0.3s ease",
+                    }}
+                  />
+                  <strong
+                    style={{
+                      color: "#333",
+                      fontSize: "1.1rem",
+                      transition: "color 0.3s ease",
+                    }}
+                  >
+                    Preferenze
+                  </strong>
+
+                  <div
+                    className="position-absolute top-0 left-0 w-100 h-100 bg-primary opacity-0 transition-all"
+                    style={{
+                      zIndex: -1,
+                      background: "linear-gradient(45deg, #0A66C2, #74b9ff)",
+                      transform: "scaleX(0)",
+                      transformOrigin: "left",
+                      transition: "transform 0.3s ease, opacity 0.3s ease",
+                    }}
+                  ></div>
+                </Link>
+                <Link
+                  to="/favourites"
+                  className="jobsButton1 p-2 d-flex align-items-center my-3 py-3 w-100 text-decoration-none bg-transparent border-0 rounded-3 transition-all position-relative overflow-hidden linkedin-style-button"
+                  style={{
+                    backgroundColor: "white",
+                    border: "1px solid #e0e0e0",
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <BookmarkFill
+                    className="bookmark-icon me-2"
+                    size={32}
+                    style={{
+                      color: "#0A66C2",
+                      transition: "transform 0.3s ease, color 0.3s ease",
+                    }}
+                  />
+                  <strong
+                    style={{
+                      color: "#333",
+                      fontSize: "1.1rem",
+                      transition: "color 0.3s ease",
+                    }}
+                  >
+                    Le mie offerte di lavoro
+                  </strong>
+
+                  <div
+                    className="position-absolute top-0 left-0 w-100 h-100 bg-primary opacity-0 transition-all"
+                    style={{
+                      zIndex: -1,
+                      background: "linear-gradient(45deg, #0A66C2, #74b9ff)",
+                      transform: "scaleX(0)",
+                      transformOrigin: "left",
+                      transition: "transform 0.3s ease, opacity 0.3s ease",
+                    }}
+                  ></div>
+                </Link>
               </Card.Body>
             </Card>
             <div className="py-3">
@@ -142,7 +221,18 @@ const JobsPage = () => {
                   </div>
                 ) : currentJobs.length > 0 ? (
                   currentJobs.map((job) => (
-                    <div key={job._id} className="card mb-3">
+                    <div key={job._id} className="card mb-3 position-relative">
+                      <div
+                        className="position-absolute top-0 end-0 m-3"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => toggleFavorite(job)}
+                      >
+                        {favorites.some((fav) => fav._id === job._id) ? (
+                          <BookmarkFill size={24} color="#0A66C2" />
+                        ) : (
+                          <Bookmark size={24} color="#333" />
+                        )}
+                      </div>
                       <div className="card-body">
                         <h5 className="card-title">{job.title}</h5>
                         <p className="card-text">
@@ -176,25 +266,17 @@ const JobsPage = () => {
               </Card.Body>
             </Card>
 
-            {/* bottoni avanti e indietro */}
-            <div className="d-flex justify-content-center align-items-center my-4">
-              <button
-                className={`btn ${
-                  currentPage === 1 ? "btn-secondary" : "btn-primary"
-                } me-3`}
-                onClick={handlePreviousPage}
-                disabled={currentPage === 1}
-              >
-                Indietro
-              </button>
-              <span>Pagina {currentPage}</span>
-              <button
-                className="btn btn-primary ms-3"
+            {/* Pagination controls */}
+            <div className="d-flex justify-content-between mt-3">
+              <Button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                Precedente
+              </Button>
+              <Button
                 onClick={handleNextPage}
                 disabled={indexOfLastJob >= jobs.length}
               >
-                Avanti
-              </button>
+                Successivo
+              </Button>
             </div>
           </Col>
         </Row>

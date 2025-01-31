@@ -506,3 +506,13 @@ export const putComment = (comment, rate, elementId, commentId) => {
     }
   };
 };
+
+export const addToFavorites = (job) => ({
+  type: "ADD_TO_FAVORITES",
+  payload: job,
+});
+
+export const removeFromFavorites = (jobId) => ({
+  type: "REMOVE_FROM_FAVORITES",
+  payload: jobId,
+});

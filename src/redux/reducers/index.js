@@ -13,6 +13,7 @@ const initialState = {
   authorComment: "",
   hasExpPicPut: false,
   hasExpPicPost: false,
+  favorites: [],
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -72,6 +73,16 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         hasExpPicPost: action.payload
       }
+    case "ADD_TO_FAVORITES":
+      return {
+        ...state,
+        favorites: [...state.favorites, action.payload],
+      };
+    case "REMOVE_FROM_FAVORITES":
+      return {
+        ...state,
+        favorites: state.favorites.filter((job) => job._id !== action.payload),
+      };
     default:
       return state;
   }

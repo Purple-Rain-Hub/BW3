@@ -289,10 +289,38 @@ const NavBar = () => {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="/profile">
-                        Profilo
-                      </a>
+                      <Link
+                        to="/profile"
+                        className="btn m-2 rounded-pill fw-bold mt-3 d-flex align-items-center justify-content-center"
+                        style={{
+                          backgroundColor: "transparent",
+                          color: "#0B66C2",
+                          border: "2px solid #0B66C2",
+                          padding: "10px 20px",
+                          fontSize: "14px",
+                          transition: "all 0.3s ease",
+                          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                          width: "200px",
+                          margin: "0 auto",
+                          textDecoration: "none",
+                        }}
+                        onMouseOver={(e) => {
+                          e.target.style.backgroundColor = "#0B66C2";
+                          e.target.style.color = "white";
+                          e.target.style.boxShadow =
+                            "0 4px 8px rgba(0, 0, 0, 0.2)";
+                        }}
+                        onMouseOut={(e) => {
+                          e.target.style.backgroundColor = "transparent";
+                          e.target.style.color = "#0B66C2";
+                          e.target.style.boxShadow =
+                            "0 2px 4px rgba(0, 0, 0, 0.1)";
+                        }}
+                      >
+                        visualizza il profilo
+                      </Link>
                     </li>
+
                     <li>
                       <a className="dropdown-item" href="#">
                         Impostazioni
