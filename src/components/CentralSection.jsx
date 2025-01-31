@@ -253,7 +253,9 @@ function CentralSection() {
                     <span>Aggiungi badge di verifica</span>
                   </div>
                 </div>
+               <button className="btn" onClick={() => setShowProfilePut(true)}>
                 <Icon.Pencil className="align-self-center" />
+              </button>
               </div>
 
               <Card.Text
